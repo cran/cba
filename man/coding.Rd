@@ -10,12 +10,13 @@
 \usage{
 as.dummy(x, ...)
 
-\method{as.dummy}{matrix}(x, sep = " ", ...)
-\method{as.dummy}{data.frame}(x, sep = " ", ...)
+\method{as.dummy}{matrix}(x, sep = " ", drop = FALSE, ...)
+\method{as.dummy}{data.frame}(x, sep = " ", drop = FALSE, ...)
 }
 \arguments{
   \item{x}{an R object (see below)}
   \item{sep}{separator used for construction of colnames}
+  \item{drop}{drop factors with less than two levels}
   \item{\dots}{other (unused) arguments}
 }
 \details{

@@ -15,12 +15,29 @@ Added efficient conversion of nominal variables to dummy coding.
 Release 0.1-2
 Release date: 2005-08-30
 
-Major changes include merging in of Proximus. Vizualization is sketchy but
-useable. Most of the stuff definitly belongs to separate packages. However, 
+Major changes include merging in of Proximus. Visualization is sketchy but
+useable. Most of the stuff definitely belongs to separate packages. However, 
 it all ended up here. The C code is at least -Wall -pedantic clean.
 
 Release 0.1-3
-Release date: 2005-09-07
+Release date: 2005-09-08
 
-Renamed package to "cba" aka Clustering for Business Analytics
+The package develops into a trash bag: moved optimal leaf ordering and stuff in. This sucks!
+
+Release 0.1-4
+Release date: 2005-09-12
+
+Added drop option to as.dummy and sparse K-means code. 
+Added clusimplot (Michael)
+Added Mushroom data set (Michael)
+
+Release 0.1-5
+Release date: 2005-10-26
+
+Fixed similarity conversion for intraClusterSim in clusimplot (Michael)
+renamed clusimplot to cluproxplot (Cluster Proximity plot) (M)
+cluproxplot uses grid now and includes a silhouettes plot (M)
+added interface for seriation (M)
+
+
 

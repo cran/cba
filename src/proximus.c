@@ -41,7 +41,7 @@ typedef struct {
     int n;	/* number elements */
 } VEC;
 
-VEC *newVec(int n) {
+static VEC *newVec(int n) {
 
     int *v = Calloc(n, int);
     VEC *p = Calloc(1, VEC);
@@ -52,7 +52,7 @@ VEC *newVec(int n) {
     return p;
 }
 
-VEC *copyVec(VEC *v) {
+static VEC *copyVec(VEC *v) {
 	
     int i;
     VEC *r = newVec(v->n);
@@ -63,7 +63,7 @@ VEC *copyVec(VEC *v) {
     return r;
 }
 
-void freeVec(VEC *v) {
+static void freeVec(VEC *v) {
 
     if (v->v != NULL)
        Free(v->v);
@@ -73,7 +73,7 @@ void freeVec(VEC *v) {
 /* copy a vector to R where an offset is added 
  * to each element */
 
-SEXP vec2R(VEC *v, int o) {
+static SEXP vec2R(VEC *v, int o) {
 
     int j;
     
@@ -87,9 +87,9 @@ SEXP vec2R(VEC *v, int o) {
     return R_obj;
 }
 
-/* for debugging */
+/* for debugging
 
-void VecPrintf(VEC *v, char *s) {
+static void VecPrintf(VEC *v, char *s) {
 
     int j;
     
@@ -98,6 +98,8 @@ void VecPrintf(VEC *v, char *s) {
 	Rprintf(" (%i,%i)", j, v->v[j]);
     Rprintf("\n");
 }
+
+*/
 
 /* matrix for binary data in sparse column format */
 
@@ -108,7 +110,7 @@ typedef struct {
     int nc;	    /* number of columns */
 } MAT;
 
-void freeMat(MAT *m) {
+static void freeMat(MAT *m) {
 	
     Free(m->ri);
     Free(m->ci);
@@ -117,7 +119,7 @@ void freeMat(MAT *m) {
 
 /* copy and transpose R matrix to sparse matrix */
 
-MAT *R_mat2mat(SEXP R_mat) {
+static MAT *R_mat2mat(SEXP R_mat) {
 
     extern int debug;
 
@@ -174,7 +176,7 @@ MAT *R_mat2mat(SEXP R_mat) {
  * vector (v) from the left using a subset of the columns (s). the 
  * caller is reponsible for providing a proper results vector (r). */
 
-void matLeft(VEC *r, VEC *v, VEC *s, MAT *m) {
+static void matLeft(VEC *r, VEC *v, VEC *s, MAT *m) {
 
     int i, j, k, z;
     
@@ -200,7 +202,7 @@ void matLeft(VEC *r, VEC *v, VEC *s, MAT *m) {
 
 /* as above but multiply from the right */ 
 
-void matRight(VEC *r, VEC *v, MAT *m) {
+static void matRight(VEC *r, VEC *v, MAT *m) {
 
     int i, j;
 
@@ -227,7 +229,7 @@ typedef struct resNode {
 static int  res_cnt;		/* number of result elements */
 static RES *res_last;		/* last element of result list */
 
-void freeRes(RES *r) {
+static void freeRes(RES *r) {
 	
     RES *p, *q;
     
@@ -243,10 +245,11 @@ void freeRes(RES *r) {
 
 /* copy result list to R and clean up
  *
- * fixme: pointer protection by the caller?
+ * fixme: pointer protection should be 
+ *	  on the level of the caller
  */
 
-SEXP res2R(RES *r, MAT *m) {
+static SEXP res2R(RES *r, MAT *m) {
 
     int i, nr, nc;
     RES *p, *q;
@@ -320,7 +323,7 @@ SEXP res2R(RES *r, MAT *m) {
 static int min_size = 1;	/* user defined */
 static int max_iter = 16;	/* user defined */
 
-RES *approximate(VEC *s, MAT *m) {
+static RES *approximate(VEC *s, MAT *m) {
 
     extern int min_size;		/* minimum set size */
     extern int max_iter;		/* maximum iterations */
@@ -423,7 +426,7 @@ RES *approximate(VEC *s, MAT *m) {
 
 static int max_radius = 1;	/* user defined */
 
-VEC *presenceSet(VEC *s, MAT *m) {
+static VEC *presenceSet(VEC *s, MAT *m) {
 
     extern int debug;
     extern int max_radius;
@@ -464,7 +467,7 @@ VEC *presenceSet(VEC *s, MAT *m) {
 /* remove the set x from set s (column indexes). note: this is
  * not a general implementation of the setminus operation. */
 
-void remSet(VEC *x, VEC *s) {
+static void remSet(VEC *x, VEC *s) {
 
     int i, j, k;
     
@@ -484,7 +487,7 @@ void remSet(VEC *x, VEC *s) {
 
 static int min_retry  = 10;	/* user defined */
 
-RES *partition(VEC *s, MAT *m, int d, int i) {
+static RES *partition(VEC *s, MAT *m, int d, int i) {
 
     extern int max_radius;
     extern int min_retry;
@@ -573,9 +576,9 @@ RES *partition(VEC *s, MAT *m, int d, int i) {
     return zz;
 }
 
-/* user interface */
+/* R interface */
 
-SEXP proximus(SEXP R_mat, SEXP R_max_radius, SEXP R_min_size, SEXP R_min_retry, SEXP R_max_iter, SEXP R_debug) {
+SEXP proximus(SEXP R_mat, SEXP R_max_radius, SEXP R_min_size, SEXP R_min_retry,						     SEXP R_max_iter, SEXP R_debug) {
 
     extern int max_radius;		    /* see partition */
     extern int min_size;

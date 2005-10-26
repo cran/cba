@@ -23,7 +23,7 @@
   
   The classifier uses random tie-breaking and assigns samples with zero link 
   counts to \code{NA}. This allows for detection of possible outliers, or
-  interestin patterns.
+  interesting patterns.
 
   In the case a \code{drop} value greater than zero is specified, all 
   clusters with size equal or less than this value are removed from the 

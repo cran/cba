@@ -5,7 +5,7 @@
 /* dummy code a factor where NAs are ignored,
  * i.e. all indicators are FALSE */
 
-SEXP asDummy(SEXP R_x) {
+SEXP as_dummy(SEXP R_x) {
 
     int n, l, i, j;
 

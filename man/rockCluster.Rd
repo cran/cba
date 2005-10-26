@@ -69,7 +69,7 @@ rf <- fitted(rc)
 table(Votes$Class, rf$cl)
 \dontrun{
 ### large example from paper
-data(Mushroom, package="arules")
+data("Mushroom")
 x <- as.dummy(Mushroom[-1])
 rc <- rockCluster(x[sample(dim(x)[1],1000),], n=10, theta=0.8)
 print(rc)
