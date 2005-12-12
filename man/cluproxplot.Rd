@@ -14,9 +14,10 @@
   }
 \usage{
 cluproxplot(x, labels = NULL, method = NULL, args = NULL, 
-  axes = TRUE, average = TRUE, lines = TRUE, silhouettes = TRUE,
-  col = gray(seq(from = 0, to = 1, length = 100)),
-  linesCol = "blue", main = "cluproxplot", \ldots)
+  clusterLabels = TRUE, averages = TRUE, lines = TRUE, silhouettes = TRUE,
+  main = "Cluster proximity plot", 
+  col = gray.colors(64, 0 , 1), colorkey = TRUE, linesCol = "black", 
+  newpage = TRUE, pop = TRUE, \ldots)
 }
 \arguments{
   \item{x}{ an object of class \code{dist} (distance)
@@ -31,16 +32,19 @@ cluproxplot(x, labels = NULL, method = NULL, args = NULL,
       \code{\link{seriation}}} for available seriation heuristics.
   \item{args}{\code{"list"}; contains arguments passed on 
       to the seriation algorithms. }
-  \item{col}{ used color scheme. Default: gray-scale. }
-  \item{linesCol}{ color used for the lines to separate clusters. }
-  \item{main}{ main title of the plot. }
-  \item{axes}{ \code{"logical"}; display cluster labels in the plot.}
-  \item{average}{ \code{"logical"}; display in the lower triangle of the
+  \item{clusterLabels}{ \code{"logical"}; display cluster labels in the plot.}
+  \item{averages}{ \code{"logical"}; display in the lower triangle of the
       plot the average 
       pair-wise dissimilarity instead of the individual dissimilarities.}
   \item{lines}{ \code{"logical"}; draw lines to separate clusters.} 
   \item{silhouettes}{ \code{"logical"}; include a silhouette plot 
 	(see Rousseeuw, 1987).} 
+  \item{main}{ title for the plot.}
+  \item{col}{ colors used for the image plot (default: 64 shades of gray). }
+  \item{colorkey}{ place a color key under the plot. }
+  \item{linesCol}{ color used for the lines to separate clusters. }
+  \item{newpage}{\code{logical"}; start plot on a new page. }
+  \item{pop}{\code{logical"};  should the viewports created be popped?  }
   \item{\dots}{ further arguments passed on to \code{image}.}
 }
 \details{
@@ -55,7 +59,8 @@ used to plot \code{x}.}
 \item{k}{ \code{NULL} or integer scalar giving the number of clusters
 generated.}
 \item{description}{ a \code{data.frame}  
-   containing information (label, size, average intra-cluster dissimilarity) 
+   containing information (label, size, average intra-cluster dissimilarity
+   and the average silhouette) 
    for the clusters as displayed in the 
    plot (from top/left to bottom/right).}
 }
@@ -72,7 +77,7 @@ interpretation and validation of cluster analysis. J. Comput. Appl. Math.,
 \seealso{
   \code{\link[stats]{dist}}
   (in package \code{stats});
-   \code{\link[graphics]{image}} (in package \code{graphics}),
+   package \code{grid},
    \code{\link{seriation}}.
 }
 \author{Michael Hahsler (hahsler@ai.wu-wien.ac.at)}
@@ -85,7 +90,6 @@ x <- as.dummy(Votes[-17])
 ### calculate distance matrix
 d <- dists(x, method = "binary")
 
-op <- par(mfrow=c(2,2), pty="s")
 ### plot dissimilarity matrix unseriated
 res <- cluproxplot(d, method = "No seriation", main = "No seriation")
 
@@ -103,7 +107,6 @@ res <- cluproxplot(d, l, method = c("Optimal", "Optimal"),
 ### the result 
 names(res)
 res$description
-par(op)
 }
 \keyword{hplot}
 \keyword{cluster}

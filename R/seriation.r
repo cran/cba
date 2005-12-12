@@ -101,6 +101,7 @@ seriation <- function(x, method = NULL, args = NULL) {
 
   ### pre-calculate criterion for column pairs in x 
   criterion <- crossprod(x)
+  #criterion <- x
   
   return(order.greedy(1-as.dist(criterion))$order)
 }

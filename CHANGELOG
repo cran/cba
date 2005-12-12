@@ -40,4 +40,10 @@ cluproxplot uses grid now and includes a silhouettes plot (M)
 added interface for seriation (M)
 
 
+Release 0.1-6
+Release date: 2005-12-12
+
+cluproxplot uses now really grid (M)
+added colorkey for cluproxplot (M)
+
 

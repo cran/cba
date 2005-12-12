@@ -7,6 +7,7 @@
 }
 \usage{
 \method{subset}{dist}(x, subset, ...)
+\method{[[}{dist}(x, subset, ...)
 
 x[[i]]
 }
