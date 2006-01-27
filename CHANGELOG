@@ -46,4 +46,11 @@ Release date: 2005-12-12
 cluproxplot uses now really grid (M)
 added colorkey for cluproxplot (M)
 
+Release 0.1-7
+Release date: 2006-27-01
+
+added cluProxMatrix class w/ print and plot methods (M)
+simplified the cluproxplot interface by using plotOptions for all plotting 
+	related options (m)
+added threshold to cluproxplot (M)
 

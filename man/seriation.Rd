@@ -21,7 +21,7 @@ seriation(x, method = NULL, args = NULL)
     \item{Murtagh (1985), Algorithm B}{a simple heuristic (default method).}
     \item{Hierarchical Clustering}{ uses hierarchical clustering on the matrix; 
       the method can be passed as the element \code{method} in \code{args} 
-      (defaults to \code{"complete"}). The returned ordering 
+      (defaults to \code{"average"}). The returned ordering 
       is the ordering of the leaves in the 
       resulting dendrogram.}
     \item{Gruvaeus and Wainer (1972)}{ uses hierarchical clustering and 

@@ -46,7 +46,7 @@ seriation <- function(x, method = NULL, args = NULL) {
     if(class(args$hclust) == "hclust") {
 	hclust <- args$hclust  
     } else {
-	method <- if(!is.null(args$method)) args$method else "complete"
+	method <- if(!is.null(args$method)) args$method else "average"
 	hclust <- hclust(as.dist(x), method = method)
     }
 

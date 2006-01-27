@@ -1,19 +1,230 @@
 ###*******************************************************************
-### Cluster Proximity plot
-### Like CLUSION (Strehl and Gosh, 2002), just better
+### Cluster Visualization by Proximity matrix shading
 ###
 ### Author: Michael Hahsler
 
 
-cluproxplot <- function(x, labels = NULL, method = NULL, args = NULL,
-  clusterLabels = TRUE, averages = TRUE, lines = TRUE, silhouettes = TRUE,
-  main = "Cluster proximity plot", 
-  col = gray.colors(64, 0, 1), colorkey = TRUE, linesCol = "black", 
-  newpage = TRUE, pop = TRUE, ...) {
+cluproxplot <- function(x, labels = NULL, 
+  method = NULL, args = NULL,
+  plot = TRUE, plotOptions = NULL, ...) {
+
+  res <- arrange_proximity_matrix(x, labels = labels,
+    method = method, args = args)
+  if(plot == TRUE) plot(res, plotOptions)
+
+  invisible(res)
+}
+
+
+print.cluProxMatrix <- function(x, ...) {
+  d <- dim(x$x)
+  k <- if(!is.null(x$k)) x$k else "N/A (1)"
+
+  cat("Rearranged cluster proximity matrix\n")
+  cat("\nmatrix dimensions:",d[1],"x",d[2],"\n")
+
+  cat("\nused seriation methods\n")
+  print(x$method)
+  cat("\nnumber of clusters k:",k, "\n")
+  if(!is.null(x$k)) {
+    cat("\ncluster description\n")
+    print(x$description)
+  }
+}
+
+plot.cluProxMatrix <- function(x, plotOptions = NULL, ...) {
+
+  ### read plot options
+  ### defaults
+  options <- list(clusterLabels = TRUE, 
+    averages = TRUE, 
+    lines = TRUE, 
+    silhouettes = TRUE,
+    threshold = NULL,
+    main = "Cluster proximity plot",
+    col = gray.colors(64, 0, 1), 
+    colorkey = TRUE, 
+    linesCol = "black",
+    newpage = TRUE, 
+    pop = TRUE) 
+
+  
+  ### now check and add the plot options
+  if(!is.null(plotOptions) && length(plotOptions) != 0) {
+    m <- pmatch(names(plotOptions), names(options))
+
+    if(any(is.na(m))) stop(paste("Unknown plot option:", 
+	names(plotOptions)[is.na(m)], "\n\t"))
+ 
+    for (i in 1:length(m)) {
+      options[[m[i]]] <- unlist(plotOptions[i], use.names = FALSE)
+    }
+  
+  } 
+  
+  ### clear page
+  if(options$newpage) grid.newpage()
+
+  m <- x$x
+  k <- x$k
+  dim <- dim(m)[1]
+  labels <- x$labels
+  labels.unique <- unique(labels)
+
+  if(is.null(x$sil)) options$silhouettes <- FALSE
+  
+  ### color lower triangle panels with gray values for avg. (dis)similarity
+  if(options$averages == TRUE 
+    && !is.null(x$clusterDissMatrix) 
+    && !is.null(labels)) {
+
+    for(i in 1 : k) {
+      for( j in 1 : k) {
+
+	### check empty clusters
+	if(is.na(labels.unique[i])) next
+	if(is.na(labels.unique[j])) next
+
+	### upper panels stay the unchanged
+
+	### do lower panels
+	if(i > j) { 
+	  m[labels == labels.unique[i], 
+	    labels == labels.unique[j]] <- x$clusterDissMatrix[i, j] 
+	}
+
+	### do diagonal
+	if(i == j) {
+	  block <- m[labels == labels.unique[i], 
+	    labels == labels.unique[j]]
+
+	  block[lower.tri(block, diag = TRUE)] <-  x$clusterDissMatrix[i, j]
+
+	  m[labels == labels.unique[i],
+	    labels == labels.unique[j]] <- block
+
+	}
+      }
+    }
+  }
+
+  ### remove entries > threshold
+  
+  if(options$silhouettes == FALSE) {
+    pushViewport(viewport(layout = grid.layout(6, 3,
+	  widths = unit(c(3,1,3), c("lines", "null", "lines")),
+	  # title, space, image, space, colorkey, space
+	  heights = unit(c(3,3,1,1,1,3), 
+	    c("lines", "lines", "null", "lines", "lines", "lines")))))
+
+    main_vp <- viewport(layout.pos.col = 2, layout.pos.row = 1)
+    image_vp <- viewport(layout.pos.col = 2, layout.pos.row = 3)
+    colorkey_vp <- viewport(layout.pos.col = 2, layout.pos.row = 5)
+
+  }else{
+    pushViewport(viewport(layout = grid.layout(6, 5,
+	  widths = unit(c(3,3,1,1,3), 
+	    c("lines", "null", "lines", "null", "lines")),
+	  heights = unit(c(3,3,1,1,1,3), 
+	    c("lines", "lines", "null", "lines", "lines", "lines")))))
+
+    main_vp <- viewport(layout.pos.col = 2:4, layout.pos.row = 1)
+    image_vp <- viewport(layout.pos.col = 2, layout.pos.row = 3)
+    barplot_vp <- viewport(layout.pos.col = 4, layout.pos.row = 3)
+    colorkey_vp <- viewport(layout.pos.col = 2, layout.pos.row = 5)
+
+  }
+
+
+  ### main
+  pushViewport(main_vp)
+  grid.text(options$main, gp = gpar(fontface = "bold", cex = 1.5))
+  upViewport(1)
+
+  pushViewport(image_vp)
+  grid_simple_image(m, col = options$col, threshold = options$threshold)
+  upViewport(1)
+
+  if(options$colorkey == TRUE){
+    pushViewport(colorkey_vp)
+    grid_colorkey(0, max(m), col = options$col, threshold = options$threshold)
+    upViewport(1)
+  }
+
+  ### plot cluster borders if we have labels and order
+  if(!is.null(labels)) {
+
+    clusterWidth <- (tabulate(labels)[labels.unique])
+    clusterCuts <- cumsum(clusterWidth) + 0.5
+
+    if(options$clusterLabels == TRUE) {
+      clusterCenter <- clusterCuts - clusterWidth / 2
+
+      seekViewport("image")
+      #grid.text(labels.unique, x = clusterCenter, 
+	#	y = unit(-1, "lines"), default.unit="native")
+
+      ### above the plot
+      grid.text(labels.unique, x = clusterCenter, 
+	y = unit(1, "npc") + unit(1, "lines"), default.unit="native")
+      ### left of the plot
+      grid.text(labels.unique, x = unit(-1, "lines"),
+	y = clusterCenter, default.unit="native")
+      upViewport(2)
+    }
+
+    if(options$lines == TRUE){
+      ### remove last line
+      clusterCuts <- clusterCuts[-length(clusterCuts)]
+
+      seekViewport("image")
+      for(i in 1:k) {
+
+	grid.lines(
+	  x = c(0.5, dim + 0.5), 
+	  y = clusterCuts[i], 
+	  default.unit="native", gp = gpar(col = options$linesCol))
+
+	grid.lines(
+	  x = clusterCuts[i], 
+	  y = c(0.5, dim + 0.5), 
+	  default.unit="native", gp = gpar(col = options$linesCol))
+
+      }
+
+      ### redraw border
+      grid.rect(x = 0,5 * dim, y = 0.5 * dim, width = dim - 1, 
+	height =  dim - 1, default.units = "native", gp= gpar(col = "black"))
+
+      upViewport(2)
+
+    }
+  }
+
+  if(options$silhouettes == TRUE) {
+
+    ### get and reorder silhouettes
+    s <- x$sil[,"sil_width"]
+
+    pushViewport(barplot_vp)
+    grid_simple_barplot_horiz(s, xlab = "Silhouette width")
+    upViewport(1)
+
+  }
+
+  if (options$pop == TRUE) popViewport(1)
+  else upViewport(1)
+
+}
+
+
+
+arrange_proximity_matrix <- function(x, labels = NULL, method = NULL, 
+  args = NULL, ...) {
 
   dissimMeasure <- attr(x, "method")
   x <- as.matrix(x)
-
+  
   ### set everything to NULL first
   k <- NULL
   sil <- NULL
@@ -38,14 +249,12 @@ cluproxplot <- function(x, labels = NULL, method = NULL, args = NULL,
   if(pmatch(method[1], "No seriation", nomatch = FALSE)) { 
     order <- NULL
     labels <- NULL
-    silhouettes <- FALSE
     usedMethod[1] <- "No seriation"
 
     ### seriate whole matrix if no labels are given
   }else if(is.null(labels)) {
     order <- seriation(x, method = method[1], args = args)  
     usedMethod[1] <- attr(order, "method")
-    silhouettes <- FALSE
      
 
     ### seriate clusters for given labels
@@ -83,16 +292,13 @@ cluproxplot <- function(x, labels = NULL, method = NULL, args = NULL,
     }else{
 
       ### intra-cluster seriation
-    
-      if(pmatch(method[2], "Silhouette width", nomatch = FALSE)
-        || silhouettes == TRUE) {
-	### calculate silhouette values for later use
-	sil <- silhouette(labels, x)
-      }
-    
+
+      ### calculate silhouette values for later use
+      sil <- silhouette(labels, x)
+
       for(i in 1 : k) {
 	take <- which(labels == clusterOrder[i])
-	
+
 	### only seriate for >1 elements
 	if(length(take) > 1) {
 
@@ -129,176 +335,25 @@ cluproxplot <- function(x, labels = NULL, method = NULL, args = NULL,
   
   }
 
-
   ### reorder matrix
-  if(is.null(order)) xReordered <- x
-  else xReordered <- x[order, order]
-
+  #if(is.null(order)) xReordered <- x
+  #else xReordered <- x[order, order]
+  if(!is.null(order)) x <- x[order, order]
   
-  ### color lower triangle panels with gray values for avg. (dis)similarity
-  if(averages == TRUE && !is.null(clusterDissMatrix)) {
-    for(i in 1 : k) {
-      for( j in 1 : k) {
-
-	### check empty clusters
-	if(is.na(labels.unique[i])) next
-	if(is.na(labels.unique[j])) next
-	
-	### upper panels stay the unchanged
-	
-	### do lower panels
-	if(i > j) { 
-	  xReordered[labels == labels.unique[i], 
-	    labels == labels.unique[j]] <- clusterDissMatrix[i, j] 
-	}
-	
-	### do diagonal
-	if(i == j) {
-	  block <- xReordered[labels == labels.unique[i], 
-	    labels == labels.unique[j]]
-
-	  block[lower.tri(block, diag = TRUE)] <-  clusterDissMatrix[i, j]
-
-	  xReordered[labels == labels.unique[i],
-	    labels == labels.unique[j]] <- block
-
-	}
-
-      }
-    }
-
-  }
-
-
- 
-   ### clear page
-  if(newpage) grid.newpage()
-     
-  
-  if(silhouettes == FALSE) {
-    pushViewport(viewport(layout = grid.layout(6, 3,
-	  widths = unit(c(3,1,3), c("lines", "null", "lines")),
-	  # title, space, image, space, colorkey, space
-	  heights = unit(c(3,3,1,1,1,3), 
-	    c("lines", "lines", "null", "lines", "lines", "lines")))))
-
-    main_vp <- viewport(layout.pos.col = 2, layout.pos.row = 1)
-    image_vp <- viewport(layout.pos.col = 2, layout.pos.row = 3)
-    colorkey_vp <- viewport(layout.pos.col = 2, layout.pos.row = 5)
-    
-  
-  }else{
-    pushViewport(viewport(layout = grid.layout(6, 5,
-	  widths = unit(c(3,3,1,1,3), 
-	    c("lines", "null", "lines", "null", "lines")),
-	  heights = unit(c(3,3,1,1,1,3), 
-	    c("lines", "lines", "null", "lines", "lines", "lines")))))
-
-    main_vp <- viewport(layout.pos.col = 2:4, layout.pos.row = 1)
-    image_vp <- viewport(layout.pos.col = 2, layout.pos.row = 3)
-    barplot_vp <- viewport(layout.pos.col = 4, layout.pos.row = 3)
-    colorkey_vp <- viewport(layout.pos.col = 2, layout.pos.row = 5)
-
-  }
-  
-  
-  ### main
-  pushViewport(main_vp)
-  grid.text(main, gp = gpar(fontface = "bold", cex = 1.5))
-  upViewport(1)
-  
-  
-  ### plot image rotated back counter clockwise by 90 degrees
-  pushViewport(image_vp)
-  grid_simple_image(xReordered, col = col, boxCol = "black")
-  #grid_simple_image(xReordered, col = col, boxCol = linesCol)
-  upViewport(1)
-
-  if(colorkey == TRUE){
-    pushViewport(colorkey_vp)
-    grid_colorkey(0, max(xReordered), col)
-    upViewport(1)
-  }
- 
-      
   ### prepare for return value
   cluster.description <- NULL
 
-
   ### plot cluster borders if we have labels and order
   if(!is.null(labels)) {
-
-    clusterWidth <- (tabulate(labels)[labels.unique])
-    clusterCuts <- cumsum(clusterWidth) + 0.5
+    ### reorder silhouettes
+    sil <- sil[order,]
     
-    if(clusterLabels == TRUE) {
-      clusterCenter <- clusterCuts - clusterWidth / 2
-
-      seekViewport("image")
-      #grid.text(labels.unique, x = clusterCenter, 
-	#	y = unit(-1, "lines"), default.unit="native")
-
-      ### above the plot
-      grid.text(labels.unique, x = clusterCenter, 
-	y = unit(1, "npc") + unit(1, "lines"), default.unit="native")
-      ### left of the plot
-      grid.text(labels.unique, x = unit(-1, "lines"),
-	y = clusterCenter, default.unit="native")
-      upViewport(2)
-    }
-
-    
-    if(lines == TRUE){
-      ### remove last line
-      clusterCuts <- clusterCuts[-length(clusterCuts)]
-      
-      seekViewport("image")
-      for(i in 1:k) {
-	
-	grid.lines(
-	  x = c(0.5, dim + 0.5), 
-	  y = clusterCuts[i], 
-	  default.unit="native", gp = gpar(col = linesCol))
-	
-	grid.lines(
-	  x = clusterCuts[i], 
-	  y = c(0.5, dim + 0.5), 
-	  default.unit="native", gp = gpar(col = linesCol))
-      
-      }
-     
-      ### redraw border
-      grid.rect(x = 0,5 * dim, y = 0.5 * dim, width = dim - 1, height =  dim - 1, 
-	default.units = "native", gp= gpar(col = "black"))
-
-      
-      upViewport(2)
-    
-    }
-
-    if(silhouettes == TRUE) {
-
-      ### get and reorder silhouettes
-      s <- sil[order,]
-      s <- s[,"sil_width"]
-
-      pushViewport(barplot_vp)
-      grid_simple_barplot_horiz(s, xlab = "Silhouette width")
-      upViewport(1)
-
-    }
- 
-
+    ### calculate avg silhouettes
+    avgSil <- sapply(labels.unique, function(x) 
+      mean(sil[sil[,"cluster"]==x, "sil_width"])) 
     
     ### calculate intra-cluster dissimilarity
-    avgDissim <- diag(clusterDissimilarity(xReordered, labels))
-
-    ### calculate avg silhouettes
-    avgSil <- NA
-    if(!is.null(sil)) {
-      avgSil <- sapply(labels.unique, function(x) 
-	mean(sil[sil[,"cluster"]==x, "sil_width"])) 
-    }
+    avgDissim <- diag(clusterDissimilarity(x, labels))
   
     ### generate description
     cluster.description = data.frame(
@@ -309,22 +364,22 @@ cluproxplot <- function(x, labels = NULL, method = NULL, args = NULL,
       avgSilhouetteWidth = avgSil)
   }
   
-  
-
-
   ### remove method attibute from order
   attr(order, "method") <- NULL 
 
-  if (pop == TRUE) popViewport(1)
-  else upViewport(1)
-  
-  ### return results 
-  invisible(list(order = order, method = usedMethod, k = k,
-      dissimMeasure =  dissimMeasure,
-      description =  cluster.description))
+  result <- list(x = x, 
+    labels = labels, 
+    method = usedMethod, 
+    k = k, 
+    clusterDissMatrix =  clusterDissMatrix,
+    sil = sil,
+    order = order, 
+    dissimMeasure =  dissimMeasure,
+    description =  cluster.description)
+  class(result) <- "cluProxMatrix" 
+	      
+  invisible(result)
 }
-
-
 
 
 ###************************************************************************
@@ -364,11 +419,13 @@ clusterDissimilarity <- function(x, labels) {
 ### grid helpers
 
 grid_simple_image <- function(x, name = "image", 
-  col = gray.colors(12, 0, 1), boxCol = "black") {
+  col = gray.colors(12, 0, 1), threshold = NULL) {
 
   n <-  ncol(x)
   m <-  nrow(x)
   max_x <- max(x)
+ 
+  if(!is.null(threshold)) x[x>threshold] <- NA
   
   div <- 1/length(col)
   
@@ -389,7 +446,7 @@ grid_simple_image <- function(x, name = "image",
 
   ### make border
   grid.rect(x = (n+1)/2, y = (m+1)/2, width = n, height = m, 
-    default.units = "native", gp= gpar(col = boxCol))
+    default.units = "native")
 
   upViewport(1)
 }
@@ -418,7 +475,9 @@ grid_simple_barplot_horiz <- function(height, name = "barplot", xlab="") {
   upViewport(1)
 }
 
-grid_colorkey <- function(min_x, max_x, col, name = "colorkey") {
+grid_colorkey <- function(min_x, max_x, col, threshold = NULL, 
+  name = "colorkey") {
+  
   vp <- viewport(
     xscale = c(min_x, max_x), yscale = c(0,1), 
     default.unit="native", name = name)
@@ -429,13 +488,15 @@ grid_colorkey <- function(min_x, max_x, col, name = "colorkey") {
   width <- range/(n - 1)
   xs <- seq(min_x + width/2, max_x - width/2, length.out = n - 1)
   
+  ### dont display the part above the threshold 
+  col[xs > threshold] <- NA
   
   grid.rect(x = xs, y = 0, width = width, height = 1,
           just = c("centre", "bottom"), default.units = "native",
     	    gp = gpar(col = 0, fill = col))
 
   
-  
+  ### box
   grid.rect(x = 0, y = 0, width = 1, height = 1,
     just = c("left", "bottom"), default.units = "npc",
     gp = gpar(col = "black"))
