@@ -1,4 +1,4 @@
-export(proximus,rockCluster,ccfkms,dists,gknn,as.dummy,lmplot,clmplot,rlbmat,order.length,order.optimal,order.greedy,cluproxplot,seriation)
+export(proximus,rockCluster,ccfkms,dists,sdists,gknn,as.dummy,lmplot,clmplot,rlbmat,order.length,order.optimal,order.greedy,cluproxplot,seriation)
 S3method("as.dummy",logical)
 S3method("as.dummy",integer)
 S3method("as.dummy",factor)

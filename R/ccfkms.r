@@ -35,6 +35,7 @@ ccfkms <- function (x, n, p=NULL, par=2, max.iter=100, opt.std=FALSE,
     names(obj) <- c("centers", "size", "cl", "inv.inf")
     rownames(obj$centers) <- names(obj$size) <- levels(obj$cl)
     colnames(obj$centers) <- colnames(x)
+    names(obj$cl) <- rownames(x)
     obj <- c(obj, par=par, opt.std=opt.std)
     class(obj) <- "ccfkms"
     obj

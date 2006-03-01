@@ -78,9 +78,9 @@ table(Mushroom$classes, rp$cl)
 }
 ### real valued example
 gdist <- function(x, y=NULL) 1-exp(-dists(x, y)^2)
-x <- matrix(rnorm(200, sd=0.6)+rep(rep(c(1,-1),each=50),2), ncol=2)
-rc <- rockCluster(x, n=2, theta=0.75, fun=gdist, funArgs=NULL)
-print(rc)
+xr <- matrix(rnorm(200, sd=0.6)+rep(rep(c(1,-1),each=50),2), ncol=2)
+rcr <- rockCluster(xr, n=2, theta=0.75, fun=gdist, funArgs=NULL)
+print(rcr)
 }
 \keyword{cluster}
 %

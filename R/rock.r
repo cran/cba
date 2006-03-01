@@ -40,9 +40,10 @@ rockMerge <- function(x, n, theta=0.5, debug=FALSE) {
     storage.mode(n) <- "integer"
     storage.mode(theta) <- "real"
     storage.mode(debug) <- "logical"
-    x <- .Call("rockMerge", x, n, theta, debug)
-    names(x) <- c("cl","size")
-    invisible(x)
+    obj <- .Call("rockMerge", x, n, theta, debug)
+    names(obj) <- c("cl","size")
+    names(obj$cl) <- attr(x,"Labels")
+    invisible(obj)
 }
 
 # classify based on distances to clustered samples 
@@ -58,9 +59,10 @@ rockClass <- function(x, cl, beta=1-theta, theta=0.5) {
        storage.mode(x) <- "real"
     storage.mode(beta) <- storage.mode(theta) <- "real"
     storage.mode(cl) <- "integer"
-    x <- .Call("rockClass", x, cl, beta, theta)
-    names(x) <- c("cl","size")
-    invisible(x)
+    obj <- .Call("rockClass", x, cl, beta, theta)
+    names(obj) <- c("cl","size")
+    names(obj$cl) <- rownames(x)
+    invisible(obj)
 }
 
 # cluster interface

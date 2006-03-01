@@ -20,8 +20,10 @@ seriation <- function(x, method = NULL, args = NULL) {
   if(is.na(methodNr)) stop (paste("Unknown method:",sQuote(method)))
 
   ### we need a matrix
-  x <- as.matrix(x) 
+  #x <- as.matrix(x) 
+  if(class(x) != "dist") x <- as.dist(x)
 
+  
   if(methodNr == 1) {
     order <- .seriationMurtagh(1-x, args)
   }else if (methodNr == 2) {
@@ -41,13 +43,12 @@ seriation <- function(x, method = NULL, args = NULL) {
 
 # hclust wrapper
 .HclustWrapper <- function(x, args) {
-    x <- as.dist(x)
 
     if(class(args$hclust) == "hclust") {
 	hclust <- args$hclust  
     } else {
 	method <- if(!is.null(args$method)) args$method else "average"
-	hclust <- hclust(as.dist(x), method = method)
+	hclust <- hclust(x, method = method)
     }
 
     return(hclust)
@@ -65,7 +66,6 @@ seriation <- function(x, method = NULL, args = NULL) {
 # Hierarchical Cluster Analysis", British
 # Journal of Mathematical and Statistical Psychology, 25, 200-206.
 .seriationGruvaeus <- function(x, args) {
-    x <- as.dist(x)
 
     hclust <- .HclustWrapper(x, args) 
 
@@ -85,7 +85,6 @@ seriation <- function(x, method = NULL, args = NULL) {
 #  Bioinformatics, Vol. 17 Suppl. 1, pp. 22-29.
 .seriationOptimal <- function(x, args) {
   
-  x <- as.dist(x)
   hclust <- .HclustWrapper(x, args) 
 
   return(order.optimal(x, hclust$merge)$order) 
@@ -100,7 +99,7 @@ seriation <- function(x, method = NULL, args = NULL) {
   ### args not used!
 
   ### pre-calculate criterion for column pairs in x 
-  criterion <- crossprod(x)
+  criterion <- crossprod(as.matrix(x))
   #criterion <- x
   
   return(order.greedy(1-as.dist(criterion))$order)
@@ -109,10 +108,12 @@ seriation <- function(x, method = NULL, args = NULL) {
 ### replaced by the C code order.greedy
 .seriationMurtagh_R <- function(x, args) {
   ### args not used!
-  k <- dim(x)[1]
+  xm <- as.matrix(x)
+  
+  k <- dim(xm)[1]
 
   ### pre-calculate criterion for column pairs in x 
-  criterion <- crossprod(x)
+  criterion <- crossprod(xm)
 
   ### make enough space (0) means no column
   seriation <- integer(k * 2 - 1)

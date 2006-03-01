@@ -486,6 +486,96 @@ SEXP ebdist(SEXP R_x, SEXP R_y) {
     return R_obj;
 }
 
+/* calculate the fuzzy generalization of binary Jaccard distances 
+ * as proposed by Kurt Hornik, i.e. the ratio of the sums of
+ * the component (parallel) minima and maxima, respectively.
+ *
+ * note that the measure is only reasonably defined for positive
+ * real-valued components, e.g. from the interval [0,1].
+ */
+
+SEXP fbdist(SEXP R_x, SEXP R_y) {
+    
+    int nc, nx, ny; 
+    int i, j, k, l, m;
+    
+    double x1, x2, z1, z2;
+    double *x, *y;
+ 
+    SEXP R_obj;
+	        
+    nc = INTEGER(GET_DIM(R_x))[1];
+
+    if (R_y == R_NilValue)
+       R_y = R_x;
+		    
+    if (INTEGER(GET_DIM(R_y))[1] != nc)
+       error("fbdist: invalid number of columns");
+	
+    nx = INTEGER(GET_DIM(R_x))[0];
+    ny = INTEGER(GET_DIM(R_y))[0];
+
+    x = REAL(R_x);
+    y = REAL(R_y);
+	
+    if (R_x == R_y)
+       PROTECT(R_obj = NEW_NUMERIC(nx*(nx-1)/2));
+    else
+       PROTECT(R_obj = NEW_NUMERIC(nx*ny));
+		    
+    m = 0; 
+    for (j = 0; j < ny; j++) {
+	if (R_x == R_y) 
+	   i = j + 1;
+	else 
+	   i = 0;
+	for (i = i; i < nx; i++) {
+	    l = 0;
+	    z1 = 0;
+	    z2 = 0;
+	    for (k = 0; k < nc; k++) {
+		x1 = x[i+k*nx];
+		x2 = y[j+k*ny];
+	        if (ISNAN(x1) || ISNAN(x2))
+		   continue;
+		l++;
+		if (x1 > x2) {
+		   z1 += x2;
+		   z2 += x1;
+		}
+		else {
+		   z1 += x1;
+		   z2 += x2;
+		}
+	    }
+	    if (l > 0) {
+	       if (x2 == 0)
+		  REAL(R_obj)[m++] = 1;
+	       else
+		  REAL(R_obj)[m++] = 1 - z1 / z2;
+	    }
+	    else
+	       REAL(R_obj)[m++] = NA_REAL;
+	}
+    }
+
+    if (R_x != R_y) {
+
+       SEXP R_tmp;
+
+       PROTECT(R_tmp = NEW_INTEGER(2));
+
+       INTEGER(R_tmp)[0] = nx;
+       INTEGER(R_tmp)[1] = ny;
+	
+       SET_DIM(R_obj, R_tmp);
+       UNPROTECT(1);
+    }
+    
+    UNPROTECT(1);
+
+    return R_obj;
+}
 /* calculate angular distances (one minus cosine similarity) */
 
 SEXP adist(SEXP R_x, SEXP R_y) {
@@ -641,13 +731,15 @@ SEXP subset_dist(SEXP R_x, SEXP R_s, SEXP R_l) {
     k = 0;
     for (i = 0; i < m-1; i++) {
 	ii = s[i]-1;
-	ii = ii*(n-1)-ii*(ii+1)/2-1;
 	for (j = i+1; j < m; j++) {
 	    if (s[i] == s[j])
-	       z[k++] = 0;		/* by definition */
+	       z[k++] = 0;              /* by definition */
 	    else {
 	       jj = s[j]-1;
-	       z[k++] = x[jj+ii];
+	       if (s[i] > s[j])
+		  z[k++] = x[ii+jj*(n-1)-jj*(jj+1)/2-1];
+	       else
+		  z[k++] = x[jj+ii*(n-1)-ii*(ii+1)/2-1];
 	    }
 	}
     }

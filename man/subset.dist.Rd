@@ -35,10 +35,11 @@ x[[i]]
 \examples{
 x <- as.dist(matrix(1:36, ncol=6))
 subset(x, c(2,4,6))
+subset(x, c(4,2,6))               # same set but different order
 attr(x, "Labels") <- letters[1:6] # hack!
 subset(x, c(2,4,6))
 subset(x, letters[c(2,4,6)])
-subset(x, c(2,2,4,6))   # contains one zero 
+subset(x, c(2,2,4,6))		  # contains one zero 
 # this is more user friendly
 x[[c(2,4,6)]]
 x[[c("b","d","e")]]

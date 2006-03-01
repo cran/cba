@@ -223,7 +223,8 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
   args = NULL, ...) {
 
   dissimMeasure <- attr(x, "method")
-  x <- as.matrix(x)
+  xm <- as.matrix(x)
+  if(class(x) != "dist") x <- as.dist(x)
   
   ### set everything to NULL first
   k <- NULL
@@ -234,8 +235,8 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
   names(usedMethod) <- c("inter-cluster", "intra-cluster")
 
 
-  dim <- dim(x)[1]
-  if(dim != dim(x)[2]) 
+  dim <- dim(xm)[1]
+  if(dim != dim(xm)[2]) 
   stop("cluproxplot not implemented for non-symmetric matrices!")
 
   ### set default seriation
@@ -267,7 +268,7 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
     k <- length(unique(labels))
     
     ### seriate with average pairwise dissimilarites between clusters
-    clusterDissMatrix <- clusterDissimilarity(x, labels)
+    clusterDissMatrix <- clusterDissimilarity(xm, labels)
     
     if(k>2) {
       clusterOrder <- seriation(clusterDissMatrix, method = method[1], 
@@ -307,7 +308,7 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
 	   attr(intraOrder, "method") <- "Silhouette width"
 	   
 	  }else{
-	    block <- x[take, take, drop = FALSE] 
+	    block <- xm[take, take, drop = FALSE] 
 	    intraOrder <- seriation(block, method = method[2], args = args) 
 	  }
 
@@ -338,7 +339,7 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
   ### reorder matrix
   #if(is.null(order)) xReordered <- x
   #else xReordered <- x[order, order]
-  if(!is.null(order)) x <- x[order, order]
+  if(!is.null(order)) xm <- xm[order, order]
   
   ### prepare for return value
   cluster.description <- NULL
@@ -353,21 +354,22 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
       mean(sil[sil[,"cluster"]==x, "sil_width"])) 
     
     ### calculate intra-cluster dissimilarity
-    avgDissim <- diag(clusterDissimilarity(x, labels))
+    #avgDissim <- diag(clusterDissimilarity(xm, labels))
   
     ### generate description
     cluster.description = data.frame(
       position = c(1 : k),
       label = labels.unique, 
       size = tabulate(labels)[labels.unique],
-      avgDissimilarity = avgDissim[labels.unique],
+      #avgDissimilarity = avgDissim[labels.unique],
+      avgDissimilarity = diag(clusterDissMatrix)[labels.unique],
       avgSilhouetteWidth = avgSil)
   }
   
   ### remove method attibute from order
   attr(order, "method") <- NULL 
 
-  result <- list(x = x, 
+  result <- list(x = xm, 
     labels = labels, 
     method = usedMethod, 
     k = k, 
@@ -387,7 +389,7 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
 ### a dissimilarity matrix plus labels
 
 clusterDissimilarity <- function(x, labels) {
-  x <- as.matrix(x)
+  if(class(x) != "matrix") x <- as.matrix(x)
 
   ### kill self-dissimilarity (which is always 0)
   diag(x) <- NA

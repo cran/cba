@@ -54,3 +54,13 @@ simplified the cluproxplot interface by using plotOptions for all plotting
 	related options (m)
 added threshold to cluproxplot (M)
 
+Release 0.1-8
+Release date: 2006-03-01
+
+fixed random-access bug in subset_dist C code which made the return 
+value dependent on the order of the subset indexes (C)
+added names to cluster labels in rockCluster and ccfksm (C)
+added C code for fuzzy binary distance computation (C)
+added C code for distance computation on sequences (C)
+reduced cluproxplots memory needs (M)
+

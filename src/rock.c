@@ -12,7 +12,7 @@
  * The implementation uses a lower triangular matrix representation and 
  * comes in three parts: a function that computes link counts from 
  * distances, another that constructs a cluster solution by merging, and 
- * a function that classifies samples. Implementatin of the clustering 
+ * a function that classifies samples. Implementation of the clustering 
  * problem by separate functions is slightly inefficient but allows for 
  * reuse and further experimentation.
  *

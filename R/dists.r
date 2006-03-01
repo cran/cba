@@ -5,9 +5,10 @@
 # (C) ceeboo 2005
 
 dists <- function(x, y=NULL, method="minkowski", p=2) {
-    METHODS <- c("pdist","pdist","mdist","cdist","bdist","ebdist","adist")
+    METHODS <- c("pdist","pdist","mdist","cdist","bdist","ebdist","fbdist",
+                  "adist")
     names(METHODS) <- c("minkowski","manhatten","maximum","canberra","binary",
-                        "ebinary","angular")
+                        "ebinary","fbinary","angular")
     if (length(method) != 1 || !method %in% names(METHODS))
        stop("method not implemented")
     if (!is.matrix(x))

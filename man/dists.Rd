@@ -11,11 +11,11 @@ dists(x, y = NULL, method = "minkowski", p = 2)
 \arguments{
   \item{x}{a numeric matrix object}
   \item{y}{\code{NULL}, or a numeric matrix object}
-  \item{method}{a mnemonic string}
+  \item{method}{a mnemonic string referencing the distance measure}
   \item{p}{Minkowski metric parameter}
 }
 \details{
-  The interfaces is fashioned after \code{dist}: you have to specify a 
+  The interface is fashioned after \code{dist}: you have to specify a 
   \code{method} to use, i.e. a (not so) mnemonic name. 
 
   Methods that are also implemented in \code{\link{dist}} are: 
@@ -26,10 +26,13 @@ dists(x, y = NULL, method = "minkowski", p = 2)
   Additional methods implemented are:
   
 \describe{
-  \item{\code{ebinary}:}{one minus extended Jaccard similarities on real 
-    valued vectors using Euclidean distances.}
+  \item{\code{ebinary}:}{one minus extended Jaccard similarities on 
+    real-valued vectors using Euclidean distances.}
 
-  \item{\code{angular}:}{one minus cosine similarities on real valued 
+  \item{\code{fbinary}:}{one minus fuzzy Jaccard similarities on 
+    positive real-valued vectors as proposed by Kurt Hornik.}
+
+  \item{\code{angular}:}{one minus cosine similarities on real-valued 
     vectors.}
 }
 
@@ -54,8 +57,10 @@ dists(x, y = NULL, method = "minkowski", p = 2)
 ### binary data
 x <- matrix(sample(c(FALSE,TRUE),8,rep=TRUE), ncol=2)
 dists(x, method="binary")
-### real valued data
+### for real-valued data
 dists(x, method="ebinary")
+### for positive real-valued data
+dists(x, method="fbinary")
 ### cross distances
 dists(x, x, method="binary")
 ### this is the same but less efficient
