@@ -16,10 +16,10 @@
 }
 \details{
   If option \code{drop} is \code{TRUE} only patterns that satisfy the 
-  minimum size and maxium radius constraint are extracted. 
+  minimum size and maximum radius constraint are extracted. 
 }
 \value{
-  A list with the following items:
+  A list with the following components:
 
   \item{x}{the fitted data matrix.}
   \item{pl}{a factor of pattern (cluster) labels. The indexes of the 

@@ -12,14 +12,14 @@
 gknn(x, y, k = 1, l = 0, break.ties = TRUE, use.all = TRUE, prob = FALSE)
 }
 \arguments{
-  \item{x}{a cross-distances matrix}
-  \item{y}{a factor of class values of the columns of \code{x}}
-  \item{k}{number of nearest neighbors to consider}
-  \item{l}{minimum number of votes for a definite decision}
-  \item{break.ties}{option to break ties}
+  \item{x}{a cross-distances matrix.}
+  \item{y}{a factor of class values of the columns of \code{x}.}
+  \item{k}{number of nearest neighbors to consider.}
+  \item{l}{minimum number of votes for a definite decision.}
+  \item{break.ties}{option to break ties.}
   \item{use.all}{option to consider all neighbors that are tied with the 
-    kth neighbor}
-  \item{prob}{optionally return proportions of winning}
+    kth neighbor.}
+  \item{prob}{optionally return proportions of winning votes.}
 }
 \details{
   The rows of the cross-distances matrix are interpreted as referencing the 

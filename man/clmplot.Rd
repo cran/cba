@@ -8,7 +8,8 @@
   presentation.
 }
 \usage{
-clmplot(x, col, col.bycol = FALSE, order=FALSE, dists.method = "binary", hclust.method = "average", axes = FALSE, xlab = "", ylab = "", ...)
+clmplot(x, col, col.bycol = FALSE, order=FALSE, dists.method = "binary",
+        hclust.method = "average", axes = FALSE, xlab = "", ylab = "", ...)
 }
 \arguments{
   \item{x}{an logical matrix.}
@@ -39,10 +40,10 @@ clmplot(x, col, col.bycol = FALSE, order=FALSE, dists.method = "binary", hclust.
   columns) is less than 100.
 }
 \value{
-  A list with the following items:
+  A list with the following components:
 
-  \item{rows}{the row order}
-  \item{cols}{the column order}
+  \item{rows}{the row order.}
+  \item{cols}{the column order.}
 }
 \author{Christian Buchta}
 \seealso{

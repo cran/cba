@@ -16,7 +16,7 @@ seriation <- function(x, method = NULL, args = NULL) {
 
   ### standard seriation is Murtagh
   if(is.null(method)) methodNr <- 1
-  else methodNr <- pmatch(method, methods)
+  else methodNr <- pmatch(tolower(method), tolower(methods))
   if(is.na(methodNr)) stop (paste("Unknown method:",sQuote(method)))
 
   ### we need a matrix

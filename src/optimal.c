@@ -134,7 +134,7 @@ int checkRmerge(int *x, int n) {
  * is O(n^3). 
  *
  * the suggested improvement based on early termination of the search is 
- * currently not implemented. however, ties are breaken randomly. 
+ * currently not implemented. however, ties are broken randomly. 
  *
  * 3) recursively find the total optimal leaf ordering. 
  * 
@@ -150,7 +150,7 @@ int checkRmerge(int *x, int n) {
 static int calcAllOrder(double *x, int *e, int *oi, int *ok, int *oj, 
 				           int  ci, int  ck, int  cj, int n) {
 	
-    int i, ii, j, jj, k, kk, h, l;
+    int i, ii, j, jj, k, kk, h = 0, l;
     double s, z;
 	
     for (i = 0; i < ci; i++) {
@@ -196,7 +196,7 @@ static int calcAllOrder(double *x, int *e, int *oi, int *ok, int *oj,
 static int calcEndOrder(double *x, int *e, int *oi, int *ok, 
 				           int  ci, int  ck, int n) {
 
-    int i, ii, k, kk, h, l;
+    int i, ii, k, kk, h = 0, l;
     double s, z;
     
     for (i = 0; i < ci; i++) {
@@ -233,10 +233,10 @@ static int debug = FALSE;
 
 SEXP order_optimal(SEXP R_dist, SEXP R_merge) {
 
-    int n, i, ii, j, jj, k, kk, h, a, b;
-    int cl, cll, clr, cr, crl, crr;
+    int n, i, ii, j, jj, k, kk, h, a = 0, b = 0;
+    int cl = 0, cll = 0, clr = 0, cr = 0, crl = 0, crr = 0;
     int *l, *r, *c, *e;
-    int *left, *right, *o, *ol, *oll, *olr, *or, *orl, *orr;
+    int *left, *right, *o, *ol = 0, *oll = 0, *olr = 0, *or = 0, *orl = 0, *orr = 0;
 
     double s, z, zz;
     double *x;

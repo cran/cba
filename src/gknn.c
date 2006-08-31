@@ -52,7 +52,7 @@ SEXP gknn(SEXP R_x, SEXP R_y, SEXP R_k, SEXP R_l, SEXP R_break_ties,
     if (nc < 1)
        error("gknn: \"y\" invalid number of levels");
 
-    if (VECTOR_ELT(GET_LEVELS(R_y), nc-1) == NA_STRING)
+    if (STRING_ELT(GET_LEVELS(R_y), nc-1) == NA_STRING)
        error("gknn: \"y\" invalid level");
     
     y = INTEGER(R_y);			    /* class indexes (R shifted) */
@@ -178,7 +178,7 @@ SEXP gknn(SEXP R_x, SEXP R_y, SEXP R_k, SEXP R_l, SEXP R_break_ties,
     SET_LEVELS(R_obj, duplicate(GET_LEVELS(R_y)));
 
     PROTECT(R_str = NEW_STRING(1));
-    SET_ELEMENT(R_str , 0, mkChar("factor"));
+    SET_STRING_ELT(R_str , 0, mkChar("factor"));
 		    
     SET_CLASS(R_obj, R_str);
     UNPROTECT(1);

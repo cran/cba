@@ -9,12 +9,12 @@
 lmplot(x, block.size = 1, gray = FALSE, xlab = "", ylab = "", ...)
 }
 \arguments{
-  \item{x}{a logical matrix}
-  \item{block.size}{the interpolation block size}
-  \item{gray}{optionally use a gray scale}
-  \item{xlab}{title for the x axis}
-  \item{ylab}{title for the y axis}
-  \item{\dots}{further arguments to \code{image}}
+  \item{x}{a logical matrix.}
+  \item{block.size}{the interpolation block size.}
+  \item{gray}{optionally use a gray scale.}
+  \item{xlab}{title for the x axis.}
+  \item{ylab}{title for the y axis.}
+  \item{\dots}{further arguments to \code{image}.}
 }
 \details{
   \code{TRUE} is represented by the color white and \code{FALSE} by the 

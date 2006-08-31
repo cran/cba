@@ -1,4 +1,18 @@
-export(proximus,rockCluster,ccfkms,dists,sdists,gknn,as.dummy,lmplot,clmplot,rlbmat,order.length,order.optimal,order.greedy,cluproxplot,seriation)
+export(
+    proximus,
+    rockCluster, rockLink,
+    ccfkms,
+    rowSums.dist,dists,sdists,sdists.trace,
+    dapply,
+    cluster.dist,
+    gknn,
+    as.dummy,
+    lmplot,clmplot,
+    rlbmat,
+    order.length,order.optimal,order.greedy,
+    order.dist,order.matrix,order.data.frame,
+    stress,stress.dist,
+    cluproxplot,seriation)
 S3method("as.dummy",logical)
 S3method("as.dummy",integer)
 S3method("as.dummy",factor)
@@ -20,4 +34,5 @@ S3method(image,dist)
 S3method(cut,ordered)
 S3method(print,cluProxMatrix)
 S3method(plot,cluProxMatrix)
+S3method(plot,"sdists.graph")
 useDynLib(cba)

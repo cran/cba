@@ -1,20 +1,24 @@
 \name{rockCluster}
 \alias{rockCluster}
+\alias{rockLink}
 \title{Rock Clustering}
 \description{
   Cluster a data matrix using the Rock algorithm.
 }
 \usage{
-  rockCluster(x, n, beta = 1-theta, theta = 0.5, fun = "dists", funArgs = list(method="binary"), debug = FALSE)
+rockCluster(x, n, beta = 1-theta, theta = 0.5, fun = "dists",
+            funArgs = list(method="binary"), debug = FALSE)
+
+rockLink(x, beta = 0.5)
 }
 \arguments{
-  \item{x}{a data matrix}
-  \item{n}{the number of desired clusters}
-  \item{beta}{optional distance threshold}
-  \item{theta}{neighborhood parameter in the range [0,1)}
-  \item{fun}{distance function to use}
-  \item{funArgs}{a \code{list} of named parameter arguments to \code{fun}}
-  \item{debug}{turn on/off debugging output}
+  \item{x}{a data matrix; for \code{rockLink} an object of class \code{dist}.}
+  \item{n}{the number of desired clusters.}
+  \item{beta}{optional distance threshold.}
+  \item{theta}{neighborhood parameter in the range [0,1).}
+  \item{fun}{distance function to use.}
+  \item{funArgs}{a \code{list} of named parameter arguments to \code{fun}.}
+  \item{debug}{turn on/off debugging output.}
 }
 \details{
   The intended area of application is the clustering of binary (logical) 
@@ -39,15 +43,23 @@
   Note that tie-breaking is not implemented, i.e. the first max encountered 
   is used. However, permuting the order of the data can help in determining 
   the dependence of a solution on ties.
+
+  Function \code{rockLink} is provided for applications that need to compute
+  link count distances efficiently. Note that \code{NA} and \code{NaN}
+  distances are ignored but supplying such values for the threshold
+  \code{beta} results in an error.
 }
 \value{
-  An object of class \code{rock}. A list with the following elements:
+  \code{rockCluster} returns an object of class \code{rock}, a list with
+  the following components:
 
   \item{x}{the data matrix or a subset of it.}
   \item{cl}{a factor of cluster labels.}
   \item{size}{a vector of cluster sizes.}
   \item{beta}{see above.}
   \item{theta}{see above.}
+
+  \code{rockLink} returns an object of class \code{dist}.
 }
 \references{
   S. Guha, R. Rastogi, and K. Shim. ROCK: A Robust Clustering Algorithm for 

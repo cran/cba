@@ -7,18 +7,19 @@
   the maximum cluster radius and the minimum cluster size. 
 }
 \usage{
-proximus(x, max.radius = 2, min.size = 1, min.retry = 10, max.iter = 16, debug = FALSE)
+proximus(x, max.radius = 2, min.size = 1, min.retry = 10, max.iter = 16,
+         debug = FALSE)
 }
 \arguments{
-  \item{x}{a logical matrix}
+  \item{x}{a logical matrix.}
   \item{max.radius}{the maximum number of bits a member in a row set may 
-    deviate from its dominant pattern}
-  \item{min.size}{the minimum split size of a row set}
+    deviate from its dominant pattern.}
+  \item{min.size}{the minimum split size of a row set.}
   \item{min.retry}{number of retries to split a pure rank-one approximation 
-    (translates into a resampling rate)}
+    (translates into a resampling rate).}
   \item{max.iter}{the maximum number of iterations for finding a local 
-    rank-one approximation}
-  \item{debug}{optional debugging output}
+    rank-one approximation.}
+  \item{debug}{optional debugging output.}
 }
 \details{
   The intended area of application is the compression of high-dimensional 
@@ -51,19 +52,19 @@ proximus(x, max.radius = 2, min.size = 1, min.retry = 10, max.iter = 16, debug =
   the leaf nodes found so far is shown to the right of an asterisk.
 }
 \value{
-  An object of class \code{proximus} with the following elements:
+  An object of class \code{proximus} with the following components:
 
-  \item{nr}{the number of rows of the data matrix}
-  \item{nc}{the number of columns of the data matrix}
-  \item{a}{a list containing the approximations (patterns)}
-  \item{a$x}{a vector of row (presence set) indexes}
-  \item{a$y}{a vector of column (dominant attribute set) indexes}
-  \item{a$n}{the number of ones in the approximated submatrix}
-  \item{a$c}{the absolute error reduction by the approximation}
-  \item{max.radius}{see arguments}
-  \item{min.size}{see arguments}
-  \item{rownames}{rownames of the data matrix}
-  \item{colnames}{colnames of the data matrix}
+  \item{nr}{the number of rows of the data matrix.}
+  \item{nc}{the number of columns of the data matrix.}
+  \item{a}{a list containing the approximations (patterns).}
+  \item{a$x}{a vector of row (presence set) indexes.}
+  \item{a$y}{a vector of column (dominant attribute set) indexes.}
+  \item{a$n}{the number of ones in the approximated submatrix.}
+  \item{a$c}{the absolute error reduction by the approximation.}
+  \item{max.radius}{see arguments.}
+  \item{min.size}{see arguments.}
+  \item{rownames}{rownames of the data matrix.}
+  \item{colnames}{colnames of the data matrix.}
 }
 \references{
   M. Koyutürk, A. Graham, and N. Ramakrishnan. Compression, Clustering, and 

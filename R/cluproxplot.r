@@ -42,7 +42,7 @@ plot.cluProxMatrix <- function(x, plotOptions = NULL, ...) {
     silhouettes = TRUE,
     threshold = NULL,
     main = "Cluster proximity plot",
-    col = gray.colors(64, 0, 1), 
+    col = hcl(h = 0, c = 0, l = seq(5, 95, len = 100)), 
     colorkey = TRUE, 
     linesCol = "black",
     newpage = TRUE, 
@@ -247,7 +247,7 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
 
 
   ### no seriation
-  if(pmatch(method[1], "No seriation", nomatch = FALSE)) { 
+  if(pmatch(tolower(method[1]), "no seriation", nomatch = FALSE)) { 
     order <- NULL
     labels <- NULL
     usedMethod[1] <- "No seriation"
@@ -283,7 +283,7 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
     ### determine order for matrix from cluster order
     order <- c()
 
-    if(pmatch(method[2], "No seriation", nomatch = FALSE)) {
+    if(pmatch(tolower(method[2]), "no seriation", nomatch = FALSE)) {
       ### no intra-cluster seriation
       for(i in 1 : k) {
 	order <- c(order, which(labels == clusterOrder[i]))
@@ -303,7 +303,7 @@ arrange_proximity_matrix <- function(x, labels = NULL, method = NULL,
 	### only seriate for >1 elements
 	if(length(take) > 1) {
 
-	  if(pmatch(method[2], "Silhouette width", nomatch = FALSE)) {
+	  if(pmatch(tolower(method[2]), "silhouette width", nomatch = FALSE)) {
 	   intraOrder <-  order(sil[take, "sil_width"], decreasing = TRUE)
 	   attr(intraOrder, "method") <- "Silhouette width"
 	   
@@ -440,7 +440,7 @@ grid_simple_image <- function(x, name = "image",
   ### make shure we have a color for the maximal value (see floor +1)
   col[length(col)+1] <- col[length(col)]
   
-  ### the highest value is white
+  ### the highest value is lightest color!
   xs <- sapply(c(1:m), "rep.int", times = n)
   grid.rect(x = xs, y = c(1:n), 1, 1, 
     gp = gpar(fill = col[floor(x/max_x/div)+1], col=0), 
@@ -487,8 +487,8 @@ grid_colorkey <- function(min_x, max_x, col, threshold = NULL,
 
   range <- max_x - min_x
   n <- length(col) 
-  width <- range/(n - 1)
-  xs <- seq(min_x + width/2, max_x - width/2, length.out = n - 1)
+  width <- range/(n)
+  xs <- seq(min_x + width/2, max_x - width/2, length.out = n)
   
   ### dont display the part above the threshold 
   col[xs > threshold] <- NA

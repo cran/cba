@@ -1,5 +1,6 @@
 \name{dists}
 \alias{dists}
+\alias{dapply}
 \title{Matrix Distance Computation}
 \description{
   This function computes and return the auto-distance matrix between the 
@@ -7,12 +8,16 @@
 }
 \usage{
 dists(x, y = NULL, method = "minkowski", p = 2)
+
+dapply(x, y, FUN, ...)
 }
 \arguments{
-  \item{x}{a numeric matrix object}
-  \item{y}{\code{NULL}, or a numeric matrix object}
-  \item{method}{a mnemonic string referencing the distance measure}
-  \item{p}{Minkowski metric parameter}
+  \item{x}{a numeric matrix object.}
+  \item{y}{\code{NULL}, or a numeric matrix object.}
+  \item{method}{a mnemonic string referencing the distance measure.}
+  \item{p}{Minkowski metric parameter.}
+  \item{FUN}{a user supplied function.}
+  \item{\dots}{further arguments to the user supplied function.}
 }
 \details{
   The interface is fashioned after \code{dist}: you have to specify a 
@@ -44,6 +49,10 @@ dists(x, y = NULL, method = "minkowski", p = 2)
   two (near) zero vectors are involved in the computation of \code{binary}, 
   \code{ebinary}, and \code{angular}. Note that this is inconsistent with
   the coding of \code{NA} by \code{as.dummy}.
+
+  Function \code{dapply} allows the user to apply arbitrary distance
+  functions that take as arguments at least two vectors (i.e. rows of
+  \code{x}, etc.) and return a scalar real value.
 }
 \value{
   Auto distances are returned as an object of class \code{dist} and 
@@ -65,6 +74,14 @@ dists(x, method="fbinary")
 dists(x, x, method="binary")
 ### this is the same but less efficient
 as.matrix(dists(x, method="binary"))
+## test inheritance of names
+rownames(x) <- LETTERS[1:4]
+dists(x)
+dists(x,x)
+## custom distance function
+f <- function(x, y) sum(x*y)
+dapply(x, FUN=f)
+dapply(x,x, FUN=f)
 }
 \keyword{cluster}
 

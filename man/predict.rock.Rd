@@ -11,10 +11,10 @@
 \method{fitted}{rock}(object, ...)
 }
 \arguments{
-  \item{object}{an object of class \code{rock}}
-  \item{x}{a data matrix containing test or new samples}
-  \item{drop}{cluster size threshold}
-  \item{\dots}{further (unused) arguments}
+  \item{object}{an object of class \code{rock}.}
+  \item{x}{a data matrix containing test or new samples.}
+  \item{drop}{cluster size threshold.}
+  \item{\dots}{further (unused) arguments.}
 }
 \details{
   Provides a wrapper function to the Rock classifier: cluster memberships 
@@ -34,7 +34,7 @@
   necessarily be the same as those obtained from the cluster algorithm.
 }
 \value{
-  A list with the following elements:
+  A list with the following components:
 
   \item{cl}{a factor of cluster memberships of the samples.}
   \item{size}{a vector of cluster sizes.}

@@ -14,10 +14,10 @@ as.dummy(x, ...)
 \method{as.dummy}{data.frame}(x, sep = " ", drop = FALSE, ...)
 }
 \arguments{
-  \item{x}{an R object (see below)}
-  \item{sep}{separator used for construction of colnames}
-  \item{drop}{drop factors with less than two levels}
-  \item{\dots}{other (unused) arguments}
+  \item{x}{an R object (see below).}
+  \item{sep}{separator used for construction of colnames.}
+  \item{drop}{drop factors with less than two levels.}
+  \item{\dots}{other (unused) arguments.}
 }
 \details{
   The generic is applicable to factor and to R objects that can be 
@@ -40,7 +40,7 @@ as.dummy(x, ...)
 }
 \author{Christian Buchta}
 \section{Warning}{This is experimental code which may change in the future.}
-%\seealso{\code{\link{}},}
+\seealso{\code{\link{as.logical}}.}
 \examples{
 ### 
 x <- as.integer(sample(3,10,rep=TRUE))

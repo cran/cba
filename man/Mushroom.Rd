@@ -46,9 +46,9 @@ data("Mushroom")
     \item{\code{stalk-root}}{a factor with levels \code{bulbous},
       \code{club}, \code{equal}, and \code{rooted}. }
     \item{\code{stalk-surface-above-ring}}{a factor with levels
-      \code{ibrous}, \code{scaly}, \code{silky}, and \code{smooth}.}
+      \code{fibrous}, \code{scaly}, \code{silky}, and \code{smooth}.}
     \item{\code{stalk-surface-below-ring}}{a factor with levels
-      \code{ibrous}, \code{scaly}, \code{silky}, and \code{smooth}.}
+      \code{fibrous}, \code{scaly}, \code{silky}, and \code{smooth}.}
     \item{\code{stalk-color-above-ring}}{a factor with levels
       \code{brown}, \code{buff}, \code{cinnamon}, \code{gray},
       \code{orange}, \code{pink}, \code{red}, \code{white}, and

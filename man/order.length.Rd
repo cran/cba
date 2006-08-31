@@ -27,7 +27,7 @@ order.length(dist, order)
   If there are non-finite distance values \code{NA} is returned.
 }
 \value{
-  A single real value.
+  A scalar real value.
 }
 \references{
   R. Sedgewick. (2002) Algorithms in C. Part 5. Graph Algorithms.

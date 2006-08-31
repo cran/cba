@@ -5,17 +5,18 @@
   Partition a data set into convex sets using conjugate convex functions.
 }
 \usage{
-ccfkms(x, n, p = NULL, par = 2, max.iter = 100, opt.std = FALSE, opt.retry = 0, debug = FALSE)
+ccfkms(x, n, p = NULL, par = 2, max.iter = 100, opt.std = FALSE,
+       opt.retry = 0, debug = FALSE)
 }
 \arguments{
-  \item{x}{a data matrix}
-  \item{n}{optional number of prototypes}
-  \item{p}{a matrix of initial prototypes}
-  \item{par}{type or parameter of conjugate convex function}
-  \item{max.iter}{maximum number of iterations}
-  \item{opt.std}{optionally standardize the data}
-  \item{opt.retry}{number of retries}
-  \item{debug}{optionally turn on debugging output}
+  \item{x}{a data matrix.}
+  \item{n}{optional number of prototypes.}
+  \item{p}{a matrix of initial prototypes.}
+  \item{par}{type or parameter of conjugate convex function.}
+  \item{max.iter}{maximum number of iterations.}
+  \item{opt.std}{optionally standardize the data.}
+  \item{opt.retry}{number of retries.}
+  \item{debug}{optionally turn on debugging output.}
 }
 \details{
   Two types of conjugate convex functions are available: one that is based on 
@@ -51,7 +52,7 @@ ccfkms(x, n, p = NULL, par = 2, max.iter = 100, opt.std = FALSE, opt.retry = 0, 
   memberships of the samples.
 }
 \value{
-  A list with the following items:
+  A list with the following components:
 
   \item{centers}{a matrix of cluster means (final prototypes).}
   \item{size}{a vector of cluster sizes.}
@@ -67,11 +68,13 @@ ccfkms(x, n, p = NULL, par = 2, max.iter = 100, opt.std = FALSE, opt.retry = 0, 
 \author{Christian Buchta}
 %\note{}
 \seealso{
-  \code{\link{kmeans}}, \code{cmeans}, \code{kkmeans} for similar or related techniques.
+  \code{\link{kmeans}}, \code{cmeans}, \code{kkmeans} for similar or related
+  cluster techniques.
 }
 \examples{
 ### extend proximus example
 x <- rlbmat()
+rownames(x) <- seq(dim(x)[1])
 cm <- ccfkms(x, n=4, opt.retry=10)
 pcm <- predict(cm, x)
 }

@@ -38,19 +38,24 @@
  * 
  * The same data structure is used as the return value.
  *
- * note that we do not test for NA and NaN values because these are by 
- * default large (see the documentation for the behavior of the various
- * sorting functions), so that they (usually) won't pass the threshold 
- * (except the user sets NA, which seems pretty useless to me). 
+ * we now test for NA and NaN (at the cost of runtime) as we do not
+ * want to rely on the implementation detail that NA is a large number.
+ * as befor we settle for ignoring such values. although this is not 
+ * correct we avoid computing 2^k results (see also cluster.dist)
+ *
+ * ceeboo 2005, 2006
  */
 
 SEXP rockLink(SEXP R_x, SEXP R_beta) {
-
+    if (TYPEOF(R_x) != REALSXP)
+	error("rockLink: 'x' invalid storage type");
+    if (TYPEOF(R_beta) != REALSXP)
+	error("rockLink: 'beta' invalid storage type");
     int m, n;
     int i, j, k, kk, l;
     int *v, *p;
     
-    double beta;
+    double z, beta;
     double *x; 
 
     SEXP R_obj;
@@ -60,16 +65,19 @@ SEXP rockLink(SEXP R_x, SEXP R_beta) {
     n = 1 + (int) sqrt(2*m);
     
     if (m < 3 || m != n*(n-1)/2)		    /* logical constraint */
-       error("calcRLink: invalid vector length");
+       error("rockLink: 'x' invalid length");
 	       
     x = REAL(R_x);
 
     beta = REAL(R_beta)[0];
+
+    if (ISNAN(beta))
+	error("rockLink: 'beta' NA or NaN");
     
     PROTECT(R_obj = NEW_INTEGER(m));
    
     for (l = 0; l < m; l++)
-	INTEGER(R_obj)[l] = 0;				/* this sucks!? */
+	INTEGER(R_obj)[l] = 0;				/* this sucks! */
     
     v = Calloc(n, int);
     p = Calloc(n, int);					/* column offset */
@@ -79,13 +87,21 @@ SEXP rockLink(SEXP R_x, SEXP R_beta) {
     
     for (i = 0; i < n; i++) {
         l = 0;
-	for (k = 0; k < i; k++)
-	    if (beta >= x[i+p[k]])		    /* omit NA, NaN test */
+	for (k = 0; k < i; k++) {
+	    z = x[i+p[k]];
+	    if (ISNAN(z))
+		continue;
+	    if (beta >= z)
 	       v[l++] = k;
+	}
 	kk = p[i];
-	for (k = i+1; k < n; k++)
-	    if (beta >= x[k+kk])		    /* omit NA, NaN test */
+	for (k = i+1; k < n; k++) {
+	    z = x[k+kk];
+	    if (ISNAN(z))
+		continue;
+	    if (beta >= z)
 	       v[l++] = k;
+	}
 	for (j = 1; j < l; j++)
 	    for (k = 0; k < j; k++) {
 		kk = p[v[k]];
@@ -187,7 +203,7 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
     }
     
     /* find the maximum of a column (in the lower 
-     * triangular part if it) and the corresponding
+     * triangular part of it) and the corresponding
      * row index.
      */
     
@@ -386,7 +402,7 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
     PROTECT(R_str = NEW_STRING(m));
     for (j = 0; j < m; j++) {
 	sprintf(s,"%i",j+1);
-	SET_ELEMENT(R_str, j, mkChar(s));
+	SET_STRING_ELT(R_str, j, mkChar(s));
     }
     Free(s);
     
@@ -394,7 +410,7 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
     UNPROTECT(1);
     
     PROTECT(R_str = NEW_STRING(1));
-    SET_ELEMENT(R_str, 0, mkChar("factor"));
+    SET_STRING_ELT(R_str, 0, mkChar("factor"));
 	                    
     SET_CLASS(R_tmp, R_str);
     UNPROTECT(1);
@@ -429,7 +445,7 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
     UNPROTECT(1);
     
     PROTECT(R_str = NEW_STRING(1));
-    SET_ELEMENT(R_str, 0, mkChar("table"));
+    SET_STRING_ELT(R_str, 0, mkChar("table"));
     
     SET_CLASS(R_tmp, R_str);
     UNPROTECT(1);
@@ -567,15 +583,15 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     
     PROTECT(R_str = NEW_STRING(na));
     for (j = 0; j < nl; j++)
-	SET_ELEMENT(R_str, j, mkChar(CHAR(VECTOR_ELT(R_lev, j))));
+	SET_STRING_ELT(R_str, j, mkChar(CHAR(STRING_ELT(R_lev, j))));
     if (na>nl)
-       SET_ELEMENT(R_str, j, NA_STRING);
+       SET_STRING_ELT(R_str, j, NA_STRING);
     
     SET_LEVELS(R_tmp, R_str);
     UNPROTECT(1);
     
     PROTECT(R_str = NEW_STRING(1));
-    SET_ELEMENT(R_str, 0, mkChar("factor"));
+    SET_STRING_ELT(R_str, 0, mkChar("factor"));
 	                    
     SET_CLASS(R_tmp, R_str);
     UNPROTECT(1);
@@ -599,7 +615,7 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     UNPROTECT(1);
 
     PROTECT(R_str = NEW_STRING(1));
-    SET_ELEMENT(R_str , 0, mkChar("table"));
+    SET_STRING_ELT(R_str , 0, mkChar("table"));
 
     SET_CLASS(R_tmp, R_str);
     UNPROTECT(1);		

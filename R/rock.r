@@ -23,7 +23,8 @@ rockLink <- function(x, beta=0.5) {
     obj <- structure(obj, Size=attr(x,"Size"),
                      class="dist", Diag=FALSE, Upper=FALSE,
                      Labels=attr(x, "Labels"), method="rock")
-    invisible(obj)
+    #invisible(obj)
+    obj
 }
 
 # merge into clusters (internal function)

@@ -10,7 +10,7 @@
 \arguments{
   \item{x}{an ordered factor.}
   \item{breaks}{a logical, character, or index vector of cut points.}
-  \item{\dots}{further (unused) arguments}
+  \item{\dots}{further (unused) arguments.}
 }
 \details{
   If \code{breaks} is of class \code{logical} it must have the same length 

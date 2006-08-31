@@ -1,6 +1,25 @@
 
+* complete this list with known issues.
+
+* improve the documentation.
+
+* consider an option for handling of ties
+  in clusterers (which support it).
 
 * standard methods for ccfkms are missing
 
-* further testing.
+* unit tests to detect bugs caused by changes 
+  in the R source code. at least my trust is
+  gone with the copy on write issue.
 
+* reconsider overloading of image.matrix
+
+* replace Calloc with calloc, etc. and use
+  own checks and cleanups.
+
+* dist and sdist could issue a warning if
+  NAs occur in the result.
+
+* check again the duplicate or not issue :-(
+
+ceeboo 2006

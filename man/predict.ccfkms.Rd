@@ -8,10 +8,10 @@
 \method{predict}{ccfkms}(object, x, drop = 1, ...)
 }
 \arguments{
-  \item{object}{an object of class \code{ccfkms}}
-  \item{x}{a data matrix containing test or new samples}
-  \item{drop}{cluster size threshold}
-  \item{\dots}{other (unused) arguments}
+  \item{object}{an object of class \code{ccfkms}.}
+  \item{x}{a data matrix containing test or new samples.}
+  \item{drop}{cluster size threshold.}
+  \item{\dots}{other (unused) arguments.}
 }
 \details{
   This is a wrapper to \code{\link{ccfkms}} which uses a single iteration 
@@ -22,7 +22,7 @@
   classifier.
 }
 \value{
-  A list with the following elements:
+  A list with the following components:
 
   \item{centers}{a matrix of cluster means.}
   \item{size}{a vector of cluster sizes.}

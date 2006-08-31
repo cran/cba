@@ -47,7 +47,7 @@ cluproxplot uses now really grid (M)
 added colorkey for cluproxplot (M)
 
 Release 0.1-7
-Release date: 2006-27-01
+Release date: 2006-01-27
 
 added cluProxMatrix class w/ print and plot methods (M)
 simplified the cluproxplot interface by using plotOptions for all plotting 
@@ -63,4 +63,24 @@ added names to cluster labels in rockCluster and ccfksm (C)
 added C code for fuzzy binary distance computation (C)
 added C code for distance computation on sequences (C)
 reduced cluproxplots memory needs (M)
+introduced hcl colorspace and fixed colorkey for cluproxplot (M)
+
+Release 0.1-9
+Release date: see next
+
+fixed asymmetric weights bug in sdists (C)
+added traceback function for sdists (C)
+fixed bug due to copy on change in all distance functions (C)
+added rowSums.dist and dapply (C)
+added interrupt checks to all distance functions (C)
+added traceback plot for sdists (C)
+added cluster.dist (C)
+
+Release 0.2-0
+Release date: 2006-08-31
+
+added stress (C)
+fixed future problems with strict type checking in C
+by using SET_STRING_ELT instead of SET_ELEMENT.
+
 

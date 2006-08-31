@@ -16,11 +16,11 @@ order.greedy(dist)
   starts with a random leaf and uses tie-breaking.
 
   Clearly, the algorithm is more an ordering than a cluster algorithm. 
-  However, it constructs a binary merge tree so that the linear ordring 
+  However, it constructs a binary merge tree so that the linear ordering 
   of its leaves could be further improved.
 }
 \value{
-  A list with the following items:
+  A list with the following components:
   
   \item{merge}{a matrix containing the merge tree.}
   \item{order}{a vector containing the leaf ordering.}
@@ -52,7 +52,7 @@ image(d[[co$order]], main="hlcust + optimal")
 image(d[[hg$order]], main="greedy")
 image(d[[go$order]], main="greedy + optimal")
 par(op)
-# compare lenghts
+# compare lengths
 order.length(d, hc$order)
 order.length(d, co$order)
 order.length(d, hg$order)

@@ -7,11 +7,10 @@
 \usage{
 lminter(x, block.size = 1, nbin = 0)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{a logical matrix}
-  \item{block.size}{the interpolation block size}
-  \item{nbin}{the number of density bins}
+  \item{x}{a logical matrix.}
+  \item{block.size}{the interpolation block size.}
+  \item{nbin}{the number of density bins.}
 }
 \details{
   Partitions a binary matrix into square blocks of specified size 
@@ -31,7 +30,7 @@ lminter(x, block.size = 1, nbin = 0)
 }
 \author{Christian Buchta}
 \note{Package internal function.}
-\seealso{\code{\link{lmplot}} for plotting logical matrices }
+\seealso{\code{\link{lmplot}} for plotting logical matrices.}
 \examples{
 \dontrun{
 x <- matrix(sample(c(FALSE, TRUE), 4 ,rep=TRUE), ncol=2)

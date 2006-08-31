@@ -29,12 +29,12 @@ order.optimal(dist, merge)
   Note that non-finite distance values are not allowed.
 }
 \value{
-  A list with the following elements:
+  A list with the following components:
 
   \item{merge}{a matrix containing the merge tree corresponding with the 
     optimal leaf order.}
   \item{order}{a vector containing the optimal leaf order.}
-  \item{length}{the lenght of the ordering.}
+  \item{length}{the length of the ordering.}
 }
 \references{
   Z. Bar-Joseph, E. D. Demaine, D. K. Gifford, and T. Jaakkola.

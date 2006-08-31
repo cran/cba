@@ -266,9 +266,9 @@ static SEXP res2R(RES *r, MAT *m) {
 
     PROTECT(R_obj = NEW_STRING(3));
     
-    SET_ELEMENT(R_obj, 0, mkChar("nr"));
-    SET_ELEMENT(R_obj, 1, mkChar("nc"));
-    SET_ELEMENT(R_obj, 2, mkChar("a"));
+    SET_STRING_ELT(R_obj, 0, mkChar("nr"));
+    SET_STRING_ELT(R_obj, 1, mkChar("nc"));
+    SET_STRING_ELT(R_obj, 2, mkChar("a"));
 
     SET_NAMES(R_ret, R_obj);
 
@@ -295,11 +295,11 @@ static SEXP res2R(RES *r, MAT *m) {
 	
         PROTECT(R_obj = NEW_STRING(5));
     
-        SET_ELEMENT(R_obj, 0, mkChar("x"));
-        SET_ELEMENT(R_obj, 1, mkChar("y"));
-        SET_ELEMENT(R_obj, 2, mkChar("n"));
-        SET_ELEMENT(R_obj, 3, mkChar("c"));
-        SET_ELEMENT(R_obj, 4, mkChar("r"));
+        SET_STRING_ELT(R_obj, 0, mkChar("x"));
+        SET_STRING_ELT(R_obj, 1, mkChar("y"));
+        SET_STRING_ELT(R_obj, 2, mkChar("n"));
+        SET_STRING_ELT(R_obj, 3, mkChar("c"));
+        SET_STRING_ELT(R_obj, 4, mkChar("r"));
 
         SET_NAMES(R_res, R_obj);
 	

@@ -9,8 +9,8 @@
 \method{summary}{proximus}(object, ...)
 }
 \arguments{
-  \item{object}{an object of class \code{proximus}}
-  \item{\dots}{further (unused) arguments}
+  \item{object}{an object of class \code{proximus}.}
+  \item{\dots}{further (unused) arguments.}
 }
 \details{
 }
@@ -36,7 +36,7 @@
 \author{Christian Buchta}
 \section{Warning}{The function may change in future releases}
 \seealso{
-  \code{\link{proximus}} for obtaining a result object
+  \code{\link{proximus}} for obtaining a result object.
 }
 \examples{
 ### see proximus

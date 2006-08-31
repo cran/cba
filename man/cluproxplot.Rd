@@ -15,7 +15,7 @@ The visualization was also inspired by CLUSION (see Strehl and Ghosh, 2002).
   }
 \usage{
 cluproxplot(x, labels = NULL, method = NULL, args = NULL, 
-  plot = TRUE, plotOptions = NULL, \ldots)   
+            plot = TRUE, plotOptions = NULL, \ldots)   
 }
 \arguments{
   \item{x}{ an object of class \code{dist} (distance)
@@ -48,7 +48,8 @@ cluproxplot(x, labels = NULL, method = NULL, args = NULL,
   \item{threshold}{ \code{"numeric"}; only plot distances below the 
     threshold.} 
   \item{main}{ title for the plot.}
-  \item{col}{ colors used for the image plot (default: 64 shades of gray). }
+  \item{col}{ colors used for the image plot (default: 100 shades of gray using
+    the hcl colorspace with \code{hcl(h = 0, c = 0, l = seq(5, 95, len = 100))}). }
   \item{colorkey}{ place a color key under the plot. }
   \item{linesCol}{ color used for the lines to separate clusters. }
   \item{newpage}{\code{logical"}; start plot on a new page 
@@ -63,7 +64,7 @@ cluproxplot(x, labels = NULL, method = NULL, args = NULL,
 % To come\ldots
 }
 \value{
-An invisible object of class \code{"cluProxMatrix"} of the folowing elements:
+An invisible object of class \code{"cluProxMatrix"} of the following elements:
 \item{order}{ \code{NULL} or integer vector giving the order 
 used to plot \code{x}.}
 \item{method}{ vector of character strings indicating the seriation methods 
@@ -122,8 +123,11 @@ res <- cluproxplot(d, l, plotOptions = list(main = "PAM + Seriation (Murtagh)"))
 res <- cluproxplot(d, l, method = c("Optimal", "Optimal"), plot = FALSE)
 res
 
+
+### use blue (hue is 260 with decreasing chroma and  increasing luminance 
+### towards a distance of 1)
 plot(res, plotOptions = list(main = "PAM + Seriation (Optimal Leaf ordering)", 
-	col = terrain.colors(64)))
+	col = hcl(h = 260, c = seq(75,0, length=5), l = seq(30,95, length=5))))
 
 ### the result contains more information, e.g., the order used for reordering
 ### the matrix

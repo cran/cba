@@ -142,7 +142,7 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
     int *pf, *pm;
 
     double par;
-    double x, y, z, max_var, max_inf, old_inf, inf, var;
+    double x = 0, y, z, max_var, max_inf, old_inf, inf, var;
     double *am, *as, *p, *pt, *cc, *ct;
 
     char *s;
@@ -435,7 +435,7 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
     PROTECT(R_tmp = NEW_STRING(np));
     for (j = 0; j < np; j++) {
 	sprintf(s,"%i",j+1);
-	SET_ELEMENT(R_tmp, j, mkChar(s));
+	SET_STRING_ELT(R_tmp, j, mkChar(s));
     }
     Free(s);
 		    
