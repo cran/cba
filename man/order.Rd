@@ -9,13 +9,15 @@
 }
 \usage{
 order.dist(x, index = FALSE)
-order.matrix(x, type = "neumann", index = FALSE)
-order.data.frame(x, type = "neumann", index = FALSE)
+order.matrix(x, type = "neumann", by = c("both","rows","cols"), index = FALSE)
+order.data.frame(x, type = "neumann", by = c("both","rows","cols"),
+                 index = FALSE)
 }
 \arguments{
   \item{x}{an object of class \code{dist}, \code{matrix}, or
     \code{data.frame}.}
   \item{type}{the type of stress measure to use (see details).}
+  \item{by}{option to order either by rows, or columns, or both.}
   \item{index}{option to return the order index(ex) instead of the
     reordered object.}
 }
@@ -32,7 +34,7 @@ order.data.frame(x, type = "neumann", index = FALSE)
   \code{order.matrix} tries to minimize the stress measure of a matrix
   (see \code{stress} by using the same TSP heuristic as above, once for
   the column and once for the row ordering (while the other dimension is
-  fixed).
+  fixed) if \code{by = "both"}.
 
   \code{order.data.frame} uses attributes of type \code{numeric}
   and \code{logical} only, combines them into a normalized matrix and

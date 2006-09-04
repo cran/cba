@@ -670,7 +670,7 @@ SEXP subset_dist(SEXP R_x, SEXP R_s, SEXP R_l) {
     
     if (m < 2)
 	error("invalid subscripts");
-    for (int k = 0; k < m; k++)
+    for (k = 0; k < m; k++)
 	if (INTEGER(R_s)[k] == NA_INTEGER)
 	    error("invalid subscripts");
 		
@@ -732,7 +732,7 @@ SEXP rowSums_dist(SEXP x, SEXP na_rm) {
         error("invalid data parameter");
     if (TYPEOF(na_rm) != LGLSXP)
         error("invalid option paramter");
-    int k, n;
+    int i, j, k, n;
     SEXP r;
 
     n = 1 + (int) sqrt(2*LENGTH(x));
@@ -742,12 +742,12 @@ SEXP rowSums_dist(SEXP x, SEXP na_rm) {
     
     PROTECT(r = allocVector(REALSXP, n));
     
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
 	REAL(r)[i] = 0;
     
     k = 0;
-    for (int i = 0; i < n-1; i++) 
-        for (int j = i+1; j < n; j++) {
+    for (i = 0; i < n-1; i++) 
+        for (j = i+1; j < n; j++) {
             double z = REAL(x)[k++];
             if (!R_FINITE(z)) {
                if (ISNAN(z)) {
@@ -778,7 +778,7 @@ SEXP rowSums_dist(SEXP x, SEXP na_rm) {
  */
 
 SEXP apply_dist(SEXP p) {
-    int k, n, nx, ny, as_matrix = 0;
+    int i, j, k, l, n, nx, ny, as_matrix = 0;
     SEXP r, c, tx, ty;
     SEXP x, y, f;
 
@@ -814,17 +814,17 @@ SEXP apply_dist(SEXP p) {
 
     c = LCONS(f, LCONS(tx, LCONS(ty, p)));
     
-    k = 0;
-    for (int j = 0; j < ny; j++) {
-	for (int k = 0; k < n; k++)
+    l = 0;
+    for (j = 0; j < ny; j++) {
+	for (k = 0; k < n; k++)
 	    REAL(ty)[k] = REAL(y)[j+k*ny];
-	for (int i = ((!as_matrix && x == y) ? j+1 : 0); i < nx; i++) {
-	    for (int k = 0; k < n; k++)
+	for (i = ((!as_matrix && x == y) ? j+1 : 0); i < nx; i++) {
+	    for (k = 0; k < n; k++)
 		REAL(tx)[k] = REAL(x)[i+k*nx];
 	    SEXP s = eval(c, R_GlobalEnv);
 	    if (TYPEOF(s) != REALSXP || LENGTH(s) != 1)
 		error("invalid return value");
-	    REAL(r)[k++] = REAL(s)[0];
+	    REAL(r)[l++] = REAL(s)[0];
 	}			
 	R_CheckUserInterrupt();
     }

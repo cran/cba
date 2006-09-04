@@ -263,9 +263,9 @@ double edist_awl(int *x, int *y, double *w, int nx, int ny, int nw,
 // test for exact symmetry
 
 int is_symmetric(double *x, int n) {
-    int r = 1;			// true
-    for (int i = 0; i < n-1; i++)
-	for (int j = i+1; j < n; j++)
+    int i, j, r = 1;			// true
+    for (i = 0; i < n-1; i++)
+	for (j = i+1; j < n; j++)
 	    if (x[i+j*n] != x[j+i*n]) {
 		r = 0;
 		break;
@@ -553,8 +553,7 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 
     int (*stfun)(char *, int, int, char *, int *) = NULL;
     
-    int nx, ny, nw;
-    int n, k;
+    int i, j, k, n, nx, ny, nw;
     
     double d, *v = 0, *t;	// temporary storage
     char *b, *s;		// temporary storage
@@ -608,9 +607,9 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 
 #ifdef TB_DEBUG
     Rprintf("traceback codes: 1 = up, 2 = left, 4 = replace, 8 = match\n\n");
-    for (int i = 0; i <= nx; i++) {
+    for (i = 0; i <= nx; i++) {
 	Rprintf("[%2i]", i);
-	for (int j = 0; j <= ny; j++)
+	for (j = 0; j <= ny; j++)
 	    if (b[i+j*(nx+1)] & 16)
 		Rprintf("(%2i)",b[i+j*(nx+1)] ^ 16);
 	    else
@@ -624,7 +623,7 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 	SEXP x0, y0, x1, y1;
 	
 	k = 0;
-	for (int i = 1; i < (nx+1)*(ny+1); i++) {
+	for (i = 1; i < (nx+1)*(ny+1); i++) {
 	    b0 = b[i];
 	    k += ((b0 & 1) == 1) + ((b0 & 2) == 2) + (((b0 & 4) == 4) || ((b0 & 8) == 8));
 	}
@@ -635,8 +634,8 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 	SET_VECTOR_ELT(tb, 3, (y1 = allocVector(INTSXP, k)));
 
 	k = 0;
-	for (int i = 0; i <= nx; i++)
-	    for (int j = 0; j <= ny; j++) {
+	for (i = 0; i <= nx; i++)
+	    for (j = 0; j <= ny; j++) {
 		b0 = b[i+j*(nx+1)];
 		if (b0 & 1) {
 		    INTEGER(x0)[k] = i-1;
@@ -669,7 +668,7 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 	n = (*stfun)(b, nx, ny, s, &k);
 	PROTECT(r);
 	c = allocVector(CHARSXP, k);
-	for (int i = 0; i < k; i++)
+	for (i = 0; i < k; i++)
 	    CHAR(c)[k-i-1] = s[i];
 	r = CONS(c, r);
 	UNPROTECT(1);
@@ -699,7 +698,7 @@ SEXP sdists_align(SEXP R_x, SEXP R_y, SEXP t) {
     if (TYPEOF(t) != STRSXP || LENGTH(t) != 1)
 	error("invalid transcript parameter");
     
-    int i, j, i0, j0;
+    int i, j, k, i0, j0;
 
     SEXP r, x = (SEXP)0, y = (SEXP)0;
     
@@ -722,7 +721,7 @@ SEXP sdists_align(SEXP R_x, SEXP R_y, SEXP t) {
     UNPROTECT(1);
  
     i = j = i0 = j0 = 0;
-    for (int k = 0; k < LENGTH(t); k++) {
+    for (k = 0; k < LENGTH(t); k++) {
 	if (i > LENGTH(R_x) || j > LENGTH(R_y))
 	    error("invalid edit transcript");
 	switch (CHAR(t)[k]) {
@@ -778,24 +777,23 @@ SEXP sdists_align(SEXP R_x, SEXP R_y, SEXP t) {
 SEXP sdists_graph(SEXP x) {
     if (TYPEOF(x) != STRSXP)
 	error("invalid type");
-    int l, k0, k1, nx = 0, ny = 0, n = 0;
+    int i = 0, j = 0, h, k, l, p = 0, q = 0, k0, k1, nx = 0, ny = 0, n = 0;
     int *i0, *i1;
     SEXP r, x0, y0, x1, y1, f;
 
     k0 = 0;
-    for (int k = 0; k < LENGTH(x); k++)
+    for (k = 0; k < LENGTH(x); k++)
 	k0 += LENGTH(STRING_ELT(x, k));
     
     i0 = Calloc(k0, int);
     
     k0 = 0;
-    for (int h = 0; h < LENGTH(x); h++) {
-	int i, l, p, q;
+    for (h = 0; h < LENGTH(x); h++) {
 	SEXP c = STRING_ELT(x, h);
 	
 	if (h == 0) {
 	    nx = ny = LENGTH(c);
-	    for (int k = 0; k < LENGTH(c); k++)
+	    for (k = 0; k < LENGTH(c); k++)
 		switch (CHAR(c)[k]) {
 		case 'i':
 		case 'I':
@@ -810,7 +808,7 @@ SEXP sdists_graph(SEXP x) {
 	
 	p = q = LENGTH(c);
 	i = l = 0;
-	for (int k = 0; k < LENGTH(c); k++) {
+	for (k = 0; k < LENGTH(c); k++) {
 	    switch (CHAR(c)[k]) {
 	    case 'i':
 	    case 'I':
@@ -846,7 +844,7 @@ SEXP sdists_graph(SEXP x) {
 
     l = i0[0];
     k1 = 0;
-    for (int k = 0; k < k0; k++) {
+    for (k = 0; k < k0; k++) {
 	if (i0[k] != l) {
 	    l = i0[k];
 	    i0[++k1] = l;
@@ -863,8 +861,7 @@ SEXP sdists_graph(SEXP x) {
     SET_VECTOR_ELT(r, 3, (y1 = allocVector(INTSXP, k1)));
     SET_VECTOR_ELT(r, 4, (f  = allocVector(INTSXP, k1)));
     
-    for (int k = 0; k < k1; k++) {
-	int i, j;
+    for (k = 0; k < k1; k++) {
 	l = i0[k];
 	i = l % n;
 	j = (l - i) / n;

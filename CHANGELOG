@@ -83,4 +83,9 @@ added stress (C)
 fixed future problems with strict type checking in C
 by using SET_STRING_ELT instead of SET_ELEMENT.
 
+Release 0.2-1
+Release date: 2006-09-04
+
+fixed Windoze C99 versus gnu99 issues (C)
+fixed order.matrix and order.data.frame (C)
 

@@ -70,13 +70,27 @@ order.dist <- function(x, index = FALSE) {
     subset(x, k)
 }
 
-order.matrix <- function(x, type = "neumann", index = FALSE) {
+order.matrix <-
+function(x, type = "neumann", by = c("both","rows","cols"), index = FALSE) {
     if (!is.matrix(x))
         stop("'x' not a matrix")
-    r <- sample(dim(x)[1])
-    c <- sample(dim(x)[2])
-    c <- c[.Call("orderTSP", stress.dist(x,r,c,TRUE, type), seq(c))]
-    r <- r[.Call("orderTSP", stress.dist(x,r,c,FALSE,type), seq(r))]
+    by <- match.arg(by)
+    if (by == "both") {
+        r <- sample(dim(x)[1])
+        c <- sample(dim(x)[2])
+        c <- c[.Call("orderTSP", stress.dist(x,r,c,TRUE, type), seq(c))] 
+        r <- r[.Call("orderTSP", stress.dist(x,r,c,FALSE,type), seq(r))]
+    } else
+    if (by == "rows") {
+        r <- sample(dim(x)[1])
+        c <- seq(dim(x)[2])
+        r <- r[.Call("orderTSP", stress.dist(x,r,c,FALSE,type), seq(r))]
+    } else
+    if (by == "cols") {
+        r <- seq(dim(x)[1])
+        c <- sample(dim(x)[2])
+        c <- c[.Call("orderTSP", stress.dist(x,r,c,TRUE, type), seq(c))] 
+    }
     cat("stress:",stress(x,r,c,type),"\n")
     if (index)
         return(list(rows=r, cols=c))
@@ -88,7 +102,8 @@ order.matrix <- function(x, type = "neumann", index = FALSE) {
     x
 }
 
-order.data.frame <- function(x, type = "neumann", index = FALSE) {
+order.data.frame <-
+function(x, type = "neumann", by = c("both","rows","cols"), index = FALSE) {
     if (!inherits(x, "data.frame"))
         stop("'x' not a data frame")
     k <- sapply(x, function(x) is.numeric(x) || is.logical(x))
@@ -106,10 +121,12 @@ order.data.frame <- function(x, type = "neumann", index = FALSE) {
             (x+m)/(max(x)-m)
         }
     })))
-    o <- order.matrix(z,index=TRUE)
-    c <- o$cols
-    o$cols <- seq(k)
-    o$cols[k] <- c
+    o <- order.matrix(z, type, by, index=TRUE)
+    if (by == "cols" || by == "both") {
+        c <- o$cols
+        o$cols <- seq(k)
+        o$cols[k] <- c
+    }
     if (index)
         return(o)
     x[o$rows,o$cols]

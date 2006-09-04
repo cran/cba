@@ -409,7 +409,7 @@ SEXP orderTSP(SEXP x, SEXP t) {
 	error("'x' invalid storage type");
     if (TYPEOF(t) != INTSXP)
 	error("'t' invalid storage type");
-    int n, f = 0;
+    int i, n, f = 0;
 
     n = 1 + (int) sqrt(2*LENGTH(x));
     if (LENGTH(x) != n*(n-1)/2)
@@ -417,7 +417,7 @@ SEXP orderTSP(SEXP x, SEXP t) {
     if (LENGTH(t) != n)
 	error("'t' invalid length");
 
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
 	if (INTEGER(t)[i] < 1 || INTEGER(t)[i] > n)
 	    error("'t' invalid");
     
