@@ -1,6 +1,7 @@
 \name{dists}
 \alias{dists}
 \alias{dapply}
+\alias{dapply.list}
 \title{Matrix Distance Computation}
 \description{
   This function computes and return the auto-distance matrix between the 
@@ -9,7 +10,8 @@
 \usage{
 dists(x, y = NULL, method = "minkowski", p = 2)
 
-dapply(x, y, FUN, ...)
+dapply(x, y = NULL, FUN, ...)
+dapply.list(x, y = NULL, FUN, ...)
 }
 \arguments{
   \item{x}{a numeric matrix object.}
@@ -27,6 +29,12 @@ dapply(x, y, FUN, ...)
   \code{minkowski}, \code{maximum}, \code{canberra}, and \code{binary}. 
   See the documentation there. Note that for \code{binary} the 
   arguments \code{x} (and \code{y}) must be \code{logical}.
+
+  For method \code{canberra} note that the distances are weighted
+  by the ratio of the total number of columns to the number of
+  columns not excluded from the sum. Also note that if one of the
+  values is \code{Inf} and the other is finite, the pair gets
+  included in the sum with value \code{1}.
 
   Additional methods implemented are:
   
@@ -52,14 +60,20 @@ dapply(x, y, FUN, ...)
 
   Function \code{dapply} allows the user to apply arbitrary distance
   functions that take as arguments at least two vectors (i.e. rows of
-  \code{x}, etc.) and return a scalar real value.
+  \code{x}, etc.) and return a scalar real value. Note that further
+  arguments to \code{FUN} must be named if \code{y = NULL}.
+
+  Function \code{dapply.list} works as above except that argument
+  \code{x} (and \code{y}) is a list. 
+  
 }
 \value{
   Auto distances are returned as an object of class \code{dist} and 
   cross-distances as an object of class \code{matrix}. 
 }
 \author{Christian Buchta}
-\section{Warning}{The interface is experimental and may change in the future.}
+\section{Warning}{
+  This interface is deprecated. Use package \pkg{proxy} instead.
 }
 \seealso{\code{\link{dist}} for compatibility information.}
 \examples{
@@ -82,6 +96,10 @@ dists(x,x)
 f <- function(x, y) sum(x*y)
 dapply(x, FUN=f)
 dapply(x,x, FUN=f)
+## working with lists
+z <- unlist(apply(x, 1, list), recursive = FALSE)
+dapply.list(z, FUN=f)
+dapply.list(z, z, FUN=f)
 }
 \keyword{cluster}
 

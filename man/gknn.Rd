@@ -9,7 +9,8 @@
   (default).
 }
 \usage{
-gknn(x, y, k = 1, l = 0, break.ties = TRUE, use.all = TRUE, prob = FALSE)
+gknn(x, y, k = 1, l = 0, break.ties = TRUE, use.all = TRUE,
+     prob = FALSE)
 }
 \arguments{
   \item{x}{a cross-distances matrix.}
@@ -25,7 +26,7 @@ gknn(x, y, k = 1, l = 0, break.ties = TRUE, use.all = TRUE, prob = FALSE)
   The rows of the cross-distances matrix are interpreted as referencing the 
   test samples and the columns as referencing the training samples.
 
-  The options are fashioned after \code{knn} in package \code{class} but are
+  The options are fashioned after \code{knn} in package \pkg{class} but are
   extended for tie breaking of votes, e.g. if only definite (majority) votes 
   are of interest.
 

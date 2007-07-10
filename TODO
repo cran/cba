@@ -17,9 +17,42 @@
 * replace Calloc with calloc, etc. and use
   own checks and cleanups.
 
+* replace initializations of R vector memory
+  that use a for loop with, e.g.
+  memset(REAL(x), sizeof(double) * n)
+
 * dist and sdist could issue a warning if
   NAs occur in the result.
 
 * check again the duplicate or not issue :-(
+  [current experience indicates it should
+   work]
+
+* recheck the handling of NA and NaN in dists
+  and elsewhere.
+
+* check if the R interface to ccfkms checks for
+  unique initial solutions. reconsider how these
+  solutions are generated. consider providing
+  a default interface that searches for a "proper"
+  number of clusters.
 
 ceeboo 2006
+
++ rethink the current approach to dists in favor
+  of the dist C level interface. this might be
+  more developper friendly in the long run.
+
++ we cannot optionally include package Matrix.
+
++ the fixation on double for dists computations 
+  may be too restrictive. at least we need to
+  shift more checking to the C level functions due
+  to the migration to package proxy.
+
+ceeboo 2007
+
+
+
+
+

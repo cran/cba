@@ -28,13 +28,13 @@ cluproxplot(x, labels = NULL, method = NULL, args = NULL,
     seriation algorithms. The first element indicates the inter-cluster
     and the second element the intra-cluster seriation method. See 
     \code{\link{seriation}}} for available seriation heuristics.
-  \item{args}{\code{"list"}; contains arguments passed on 
+  \item{args}{\code{list}; contains arguments passed on 
     to the seriation algorithms. }
-  \item{plot}{\code{logical"};  if \code{FALSE}, no plot is produced. The 
+  \item{plot}{\code{logical};  if \code{FALSE}, no plot is produced. The 
     returned object can be plotted later using the function \code{plot}
     which takes as the second argument a a list of plotting options (see
     \code{plotOptions} below).}
-  \item{plotOptions}{\code{"list"}; options for plotting the matrix. The list
+  \item{plotOptions}{\code{list}; options for plotting the matrix. The list
     can contain the following elements:
     \describe{
   \item{clusterLabels}{ \code{"logical"}; display cluster labels in the plot.}
@@ -53,9 +53,9 @@ cluproxplot(x, labels = NULL, method = NULL, args = NULL,
   \item{colorkey}{ place a color key under the plot. }
   \item{linesCol}{ color used for the lines to separate clusters. }
   \item{newpage}{\code{logical"}; start plot on a new page 
-    (see package \code{grid}). }
+    (see package \pkg{grid}). }
   \item{pop}{\code{logical"};  should the viewports created be popped 
-    (see package \code{grid})?  }
+    (see package \pkg{grid})?  }
     } 
     }
   \item{\dots}{ further arguments; currently unused. }
@@ -92,9 +92,9 @@ INFORMS Journal on Computing, 208-230, 2003.
 }
 \seealso{
   \code{\link[stats]{dist}}
-  (in package \code{stats});
-   package \code{grid},
-   \code{\link{seriation}}.
+  (in package \pkg{stats});
+   package \pkg{grid},
+   \pkg{\link{seriation}}.
 }
 \author{Michael Hahsler (hahsler@ai.wu-wien.ac.at)}
 \examples{

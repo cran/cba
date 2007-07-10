@@ -37,9 +37,9 @@
  *         2) maybe return a flag indicating convergence issues?
  *  
  *  Note that the code is prepared for direct intefacing with sparse 
- *  data structures, such as dgCMatrix from the R package Matrix.
+ *  data structures, such as dgRMatrix from the R package Matrix.
  *  
- *  (C) ceeboo 2003, 2004, 2005  
+ *  (C) ceeboo 2003, 2004, 2005, 2007  
 */    
 
 #include <R.h>
@@ -55,10 +55,12 @@ typedef struct {
     double *cv;	    /* pointer to array of column values */
     int nr;         /* number of rows */
     int nc;         /* number of columns */
+    int s;	    // non-sparse input data = 0
 } SMAT;
 
 static void FreeSMat(SMAT *m) {
-	
+    if (m->s != 0)
+	return;
     Free(m->ri);
     Free(m->ci);
     Free(m->cv);
@@ -69,7 +71,7 @@ static void FreeSMat(SMAT *m) {
 /* copy R matrix in full-storage representation to sparse 
  * representation. treat as read only (!) */
 
-static SMAT *R_mat2smat(SEXP R_mat) {
+static SMAT *matrix2smat(SEXP R_mat) {
 
     extern int debug;
 
@@ -133,6 +135,41 @@ static SMAT *R_mat2smat(SEXP R_mat) {
     return m;
 }
 
+static SMAT *dgRMatrix2smat(SEXP R_x) {
+    SMAT *m;
+    SEXP x = getAttrib(R_x, install("x"));
+    if (TYPEOF(x) != REALSXP)
+	error("ccfkms: slot 'x' of dgRMatrix not of storage type real");
+
+    m = (SMAT *) malloc(sizeof(SMAT));
+    
+    m->ri = INTEGER(getAttrib(R_x, install("p")));
+    m->ci = INTEGER(getAttrib(R_x, install("j")));
+    m->cv = REAL(x);
+    m->nr = INTEGER(getAttrib(R_x, install("Dim")))[0];
+    m->nc = INTEGER(getAttrib(R_x, install("Dim")))[1];
+    m->s  = 1;
+
+    return m;
+}
+
+static SMAT *dgCMatrix2smat(SEXP R_x) {
+    SMAT *m;
+    SEXP x = getAttrib(R_x, install("x"));
+    if (TYPEOF(x) != REALSXP)
+	error("ccfkms: slot 'x' of dgCMatrix not of storage type real");
+
+    m = (SMAT *) malloc(sizeof(SMAT));
+    m->ri = INTEGER(getAttrib(R_x, install("p")));
+    m->ci = INTEGER(getAttrib(R_x, install("i")));
+    m->cv = REAL(x);
+    m->nr = INTEGER(getAttrib(R_x, install("Dim")))[1];
+    m->nc = INTEGER(getAttrib(R_x, install("Dim")))[0];
+    m->s  = 1;
+
+    return m;
+}
+
 SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std, 
 							     SEXP R_debug) {
     extern int debug;
@@ -147,13 +184,19 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
 
     char *s;
 
-    SMAT *m;
+    SMAT *m = NULL;
 
     SEXP R_obj, R_tmp;
     
     debug = INTEGER(R_debug)[0];
-	
-    m = R_mat2smat(R_x);			/* data matrix */
+    
+    if (inherits(R_x, "dgRMatrix"))
+	m = dgRMatrix2smat(R_x);
+    else
+    if (inherits(R_x, "dgCMatrix"))
+	m = dgCMatrix2smat(R_x);
+    else
+	m = matrix2smat(R_x);			/* data matrix */
     
     /* compute attribute means. standardization 
      * is optional. if used we transform so that 

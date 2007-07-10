@@ -6,8 +6,8 @@
   block structure. 
 }
 \usage{
-rlbmat(npat = 4, rows = 20, cols = 12, over = 4, noise = 0.01, prob = 0.8,
-       perfect = FALSE)
+rlbmat(npat = 4, rows = 20, cols = 12, over = 4, noise = 0.01,
+       prob = 0.8, perfect = FALSE)
 }
 \arguments{
   \item{npat}{number of patterns.}

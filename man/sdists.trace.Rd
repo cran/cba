@@ -45,10 +45,10 @@ sdists.trace(x, y, method = "ow", weight = c(1, 0, 2),
   their sole purpose is to obtain a common representation of the two
   sequences. Finally, only alignments of maximal length are reported.
 
-  The time complexity of finding a transcript is O(n+m) for two sequences 
-  of length n and m, respectively O(n*m) for the local alignment problem.
-  However, note that the runtime for generating all transcripts can be 
-  O((n*m)\^3) in the worst case.
+  The time complexity of finding a transcript is \eqn{O(n+m)} for two
+  sequences of length n and m, respectively \eqn{O(n*m)} for the local
+  alignment problem. However, note that the runtime for generating all
+  transcripts can be \eqn{O((n*m)^3)} in the worst case.
 }
 \value{
   A list with components each a list of two factors, the aligned sequences.
@@ -56,7 +56,7 @@ sdists.trace(x, y, method = "ow", weight = c(1, 0, 2),
   \code{value} contains the minimum cost, i.e. the distance (or negative
   similarity).
   
-  If \code{graph = TRUE} a vector or edit transcripts is returned with
+  If \code{graph = TRUE} a vector of edit transcripts is returned with
   attributes \code{value}, \code{table}, \code{pointer}, and \code{graph}.
   The second contains the values of the dynamic programming table and the
   third a list of vectors \code{x0, y0, x1, y1} representing the
@@ -66,12 +66,13 @@ sdists.trace(x, y, method = "ow", weight = c(1, 0, 2),
   coordinates as used by \code{segments}, each representing a pair of
   indexes into the first and second sequence, and the number of times an
   edge occurs on a path. Note that the origin of the coordinate system
-  (0,0) corresponds to the element of \code{table} indexed by ("",""),
+  (0,0) corresponds to the element of \code{table} indexed by
+  (\code{""},\code{""}),
   where \code{""} indicates the space symbol. Thus, if used as subscripts
   the coordinates have to be offset by one.
 }
 \references{
-    D. Gusfield (1997) Algorithms on Strings, Trees, and Sequences. 
+    D. Gusfield (1997). \emph{Algorithms on Strings, Trees, and Sequences}. 
     Cambridge University Press, Chapter 11.
 }
 \author{Christian Buchta}

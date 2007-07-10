@@ -9,7 +9,8 @@
 }
 \usage{
 order.dist(x, index = FALSE)
-order.matrix(x, type = "neumann", by = c("both","rows","cols"), index = FALSE)
+order.matrix(x, type = "neumann", by = c("both","rows","cols"),
+	     index = FALSE)
 order.data.frame(x, type = "neumann", by = c("both","rows","cols"),
                  index = FALSE)
 }
@@ -23,7 +24,7 @@ order.data.frame(x, type = "neumann", by = c("both","rows","cols"),
 }
 \details{
   These functions try to improve the presentation of an object of class
-  \code{dist}, \code{matrix}, or \code{data.frame} by reordering the rows
+  \code{dist}, \code{matrix}, or\cr\code{data.frame} by reordering the rows
   and columns such that similar entries are grouped together.
 
   \code{order.dist} uses a simple heuristic to solve the TSP problem of

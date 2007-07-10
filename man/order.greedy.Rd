@@ -27,8 +27,8 @@ order.greedy(dist)
   \item{height}{a vector containing the merge heights.}
 }
 \references{
-  F. Murtagh (1985). Multidimensional Cluster Algorithms. Lectures in
-  Computational Statistics, Physica Verlag, pp. 15.
+  F. Murtagh (1985). Multidimensional Cluster Algorithms. \emph{Lectures in
+  Computational Statistics}, Physica Verlag, pp. 15.
 }
 \author{Christian Buchta}
 \note{The merge heights may not be monotonic.}

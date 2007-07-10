@@ -63,7 +63,7 @@ rockLink(x, beta = 0.5)
 }
 \references{
   S. Guha, R. Rastogi, and K. Shim. ROCK: A Robust Clustering Algorithm for 
-  Categorical Attributes. Information Science Vol. 25, No. 5, 2000.
+  Categorical Attributes. \emph{Information Science}, Vol. 25, No. 5, 2000.
 }
 \author{Christian Buchta}
 \seealso{

@@ -8,8 +8,9 @@
   presentation.
 }
 \usage{
-clmplot(x, col, col.bycol = FALSE, order=FALSE, dists.method = "binary",
-        hclust.method = "average", axes = FALSE, xlab = "", ylab = "", ...)
+clmplot(x, col, col.bycol = FALSE, order=FALSE,
+	dists.method = "binary", hclust.method = "average",
+	axes = FALSE, xlab = "", ylab = "", ...)
 }
 \arguments{
   \item{x}{an logical matrix.}
@@ -24,7 +25,7 @@ clmplot(x, col, col.bycol = FALSE, order=FALSE, dists.method = "binary",
 }
 \details{
   For dummy coded data the level \code{FALSE} is assumed to carry no 
-  information and is colored "white". Thus, the level \code{TRUE} can 
+  information and is colored \code{white}. Thus, the level \code{TRUE} can 
   be colored according to some classification of the rows (or columns) 
   of the data matrix. If no color specification is supplied the default 
   color \code{black} is used.
@@ -49,7 +50,7 @@ clmplot(x, col, col.bycol = FALSE, order=FALSE, dists.method = "binary",
 \seealso{
   \code{\link{lmplot}} for plotting of logical data at reduced resolutions,
   \code{\link{heatmap}} for ordered plotting of real-valued data, and
-    package \code{gclus} for ordering functions.
+    package \pkg{gclus} for ordering functions.
 }
 \examples{
 x <- matrix(sample(c(FALSE,TRUE),100,rep=TRUE),ncol=10)

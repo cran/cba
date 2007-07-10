@@ -26,8 +26,8 @@ dists <- function(x, y=NULL, method="minkowski", p=2) {
           stop(paste(sQuote("x"),"not logical"))
     }
     else
-       if (!is.real(x))
-          storage.mode(x) <- "real"
+       if (!is.double(x))
+          storage.mode(x) <- "double"
     if (!is.null(y)) {
        if (!is.matrix(y))
           stop(paste(sQuote("y"),"not a matrix"))
@@ -38,20 +38,20 @@ dists <- function(x, y=NULL, method="minkowski", p=2) {
              stop(paste(sQuote("y"),"not logical"))
        }
        else
-          if (!is.real(y))
-             storage.mode(y) <- "real"
+          if (!is.double(y))
+             storage.mode(y) <- "double"
     }
     if (method == "minkowski") {
        if (p < 0 || p == Inf)
           stop(paste(sQuote("p"),"illegal value"))
-       storage.mode(p) <- "real"
+       storage.mode(p) <- "double"
 
        obj <- .Call(METHODS[method], x, y, p)
        attr(obj,"p") <- p
     }
     else if (method == "manhatten") {
        p <- 0
-       storage.mode(p) <- "real"
+       storage.mode(p) <- "double"
 
        obj <- .Call(METHODS[method], x, y, p)
        attr(obj,"p") <- p
@@ -102,7 +102,7 @@ subset.dist <- function(x, subset, ...) {
 rowSums.dist <- colSums.dist <- function(x, na.rm = FALSE) {
     if (!inherits(x, "dist"))
         stop("'x' not of class 'dist'")
-    storage.mode(x) <- "real"
+    storage.mode(x) <- "double"
     if (!is.logical(na.rm))
         stop("'na.rm' not logical")
     obj <- .Call("rowSums_dist", x, na.rm)
@@ -110,20 +110,56 @@ rowSums.dist <- colSums.dist <- function(x, na.rm = FALSE) {
     obj
 }
 
+## for na.rm = TRUE cf. mean(NA, na.rm = TRUE)
+
+rowMeans.dist <- colMeans.dist <- function(x, na.rm = FALSE, diag = TRUE) {
+    s <- rowSums.dist(x, na.rm)
+    if (na.rm) {
+        x[!(is.na(x) | is.nan(x))] <- 1
+        s / (rowSums.dist(x, na.rm) + (diag == TRUE))
+    } else
+        s / (length(s) - (diag == FALSE))
+}
+
+## backports
+
+row.dist <- function(x)
+    .Call("row_dist", x, FALSE)
+
+col.dist <- function(x)
+    .Call("row_dist", x, TRUE)
+
+dim.dist <- function(x)
+    rep(attr(x, "Size"), 2)
+
+dimnames.dist <- 
+   names.dist <- function(x)
+    attr(x, "Labels")
+
+"dimnames<-.dist" <-
+   "names<-.dist" <- function(x, value) {
+    if (length(value) != attr(x, "Size"))
+        stop("dimension of 'x' and length of 'value' do not conform")
+    attr(x, "Labels") <- as.character(value)
+    x
+}
+
+##
+
 dapply <- function(x, y = NULL, FUN, ...) {
     if (!is.matrix(x))
         stop(gettext("'x' not a matrix"))
-    storage.mode(x) <- "real"
+    storage.mode(x) <- "double"
     if (!is.null(y)) {
         if (!is.matrix(y))
             stop(gettext("'y' not a matrix"))
         if (dim(x)[2] != dim(y)[2])
             stop(gettext("'x' and 'y' do not conform"))
-        storage.mode(y) <- "real"
+        storage.mode(y) <- "double"
     }
     if (!is.function(FUN))
         stop("'FUN' not a function")
-    obj <- .External("apply_dist", x, y, FUN, ...)
+    obj <- .External("apply_dist_matrix", x, y, FUN, ...)
     if (!is.null(y)) {
         rownames(obj) <- rownames(x)
         colnames(obj) <- rownames(y)
@@ -134,12 +170,32 @@ dapply <- function(x, y = NULL, FUN, ...) {
     obj
 }
 
+dapply.list <- function(x, y = NULL, FUN, ...) {
+    if (!is.list(x))
+        stop(gettext("'x' not a list"))
+    if (!is.null(y)) {
+        if (!is.list(y))
+            stop(gettext("'y' not a list"))
+    }
+    if (!is.function(FUN))
+        stop("'FUN' not a function")
+    obj <- .External("apply_dist_list", x, y, FUN, ...)
+    if (!is.null(y)) {
+        rownames(obj) <- names(x)
+        colnames(obj) <- names(y)
+    } else 
+        obj <- structure(obj, Size=length(x), class="dist",
+                              Diag=FALSE, Upper=FALSE,
+                              Labels=names(x))
+    obj
+}
+
 ##
 
 cluster.dist <- function(x, beta) {
     if (!inherits(x, "dist"))
         stop("'x' not of class dist")
-    storage.mode(x) <- storage.mode(beta) <- "real"
+    storage.mode(x) <- storage.mode(beta) <- "double"
     obj <- .Call("cluster_dist", x, beta)
     names(obj) <- attr(x,"Labels")
     obj

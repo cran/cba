@@ -18,7 +18,7 @@
   \item{\dots}{further unused arguments.}
 }
 \details{
-  This function plots the dynamic programming table, the (back)pointers 
+  This function plots the dynamic programming table, the (back)pointers
   and the combined graph of optimal edit transcripts (alignments) computed
   with \code{sdist.trace}. The fist sequence is represented by the y-axis
   and the second by the x-axis.
@@ -26,7 +26,7 @@
   The circumference of a circle is proportional to the minimum cost
   (maximum weight) of edit (alignment) operations leading to a table cell.
   \code{circle.scale} specifies the type of normalization performed where
-  \code{last} means the last table entry (containing the optimum value). 
+  \code{last} means the last table entry (containing the optimum value).
   
   The (back)pointers, defining possible (traceback) paths, are plotted
   as \code{dotted} edges. Note that a traceback starts in the last cell
@@ -41,15 +41,14 @@
 %\value{
 %}
 \references{
-  D. Gusfield (1997) Algorithms on Strings, Trees, and Sequences. 
+  D. Gusfield (1997). \emph{Algorithms on Strings, Trees, and Sequences}. 
   Cambridge University Press, Chapter 11.
 	  
-  Inspired by: http://home.uchicago.edu/~aabbott/
+  Inspired by: \url{http://home.uchicago.edu/~aabbott/}.
 }
 \author{Christian Buchta}
 \note{
-  Some issues with grid were fixed in R.2.4.x and thus a few things will
-  be improved here upon its release.
+  Some issues with grid were fixed in R.2.4.x (Fixme ?).
 }
 \seealso{\code{\link{sdists.trace}}, \code{\link{plot}}}
 \examples{

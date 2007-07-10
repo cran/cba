@@ -53,8 +53,8 @@ sdists <- function(x,y=NULL, method="ow", weight=c(1,0,2),
     if (!is.null(y)) 
        y <- lapply(y,function(x) 
                 factor(x,levels=l,exclude=if(is.integer(x))NA else exclude))
-    if (!is.real(weight))
-       storage.mode(weight) <- "real"
+    if (!is.double(weight))
+       storage.mode(weight) <- "double"
     obj <- .Call("sdists",x,y,as.integer(code),weight)
     if (is.null(y))
        obj <- structure(obj, Size=length(x), class="dist",
@@ -122,8 +122,8 @@ function(x,y, method="ow", weight=c(1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = 
     }
     x <- factor(x,levels=l1,exclude=if(is.integer(x))NA else exclude)
     y <- factor(y,levels=l2,exclude=if(is.integer(y))NA else exclude)
-    if (!is.real(weight))
-        storage.mode(weight) <- "real"
+    if (!is.double(weight))
+        storage.mode(weight) <- "double"
     t <- .Call("sdists_transcript", x, y, as.integer(code), weight, graph)
     if (is.na(t[1]))
         return(t)
@@ -139,6 +139,7 @@ function(x,y, method="ow", weight=c(1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = 
     z <- lapply(t, function(t) .Call("sdists_align", x, y, t))
     names(z) <- t
     attr(z, "value") <- attr(t, "value")
+    class(z) <- "sdists.trace"
     z
 }
 

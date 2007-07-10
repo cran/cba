@@ -30,7 +30,7 @@ order.length(dist, order)
   A scalar real value.
 }
 \references{
-  R. Sedgewick. (2002) Algorithms in C. Part 5. Graph Algorithms.
+  R. Sedgewick. (2002). \emph{Algorithms in C. Part 5. Graph Algorithms}.
   3rd Edition, Addison-Wesley.
 }
 \author{Christian Buchta}

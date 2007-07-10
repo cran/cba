@@ -45,8 +45,10 @@ double edist_ow(int *x, int *y, double *w, int nx, int ny, int nw,
 	    if (i == 0) {
 	       if (j == 0) {
 		  z0[j] = z2 = 0;
+		  if (b)
+		     b[0] = 0;
 		  if (v)
-		    v[0] = 0;
+		     v[0] = 0;
 	       }
 	       else {
 		  if (y[j-1] == NA_INTEGER)
@@ -106,6 +108,8 @@ double edist_aw(int *x, int *y, double *w, int nx, int ny, int nw,
 	    if (i == 0) {
 	       if (j == 0) {
 		  z0[j] = z2 = z3 = w[0];
+		  if (b)
+		     b[0] = 0;
 		  if (v)
 		     v[0] = z3;
 	       }
@@ -174,6 +178,8 @@ double edist_awl(int *x, int *y, double *w, int nx, int ny, int nw,
 	    if (i == 0) {
 	       if (j == 0) {
 		  z0[j] = z = 0;
+		  if (b)
+		     b[0] = 0;
 		  if (v)
 		     v[0] = 0;
 		}
@@ -284,15 +290,9 @@ SEXP sdists(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight) {
     double (*sdfun)(int *, int *, double *, int, int, int, double *, char *, double *v) = NULL;
 	
     int nx, ny, nw;
-    int i, j, k, lx, ly;
-    int nt = 32;		/* initial length of temporary storage */
+    int i, j, k;
     int as_matrix = 0;		/* fixes copy on write */
-    
-    double *t;
-    
-    SEXP x, y;			/* pointer to sequence vector */
-
-    SEXP R_obj;			/* return value */
+    SEXP x, y, t, r;		/* return value */
 	
     nw = LENGTH(R_weight);
     
@@ -328,38 +328,34 @@ SEXP sdists(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight) {
     ny = LENGTH(R_y);
 
     if (!as_matrix && R_x == R_y)
-       PROTECT(R_obj = NEW_NUMERIC(nx*(nx-1)/2));
+       PROTECT(r = allocVector(REALSXP, nx*(nx-1)/2));
     else
-       PROTECT(R_obj = allocMatrix(REALSXP, nx, ny));
+       PROTECT(r = allocMatrix(REALSXP, nx, ny));
 
-    t  = Calloc(nt, double);			/* temporary storage */
-    
+    PROTECT(t = allocVector(REALSXP, 256));	/* temporary storage */
+
     k = 0;
     for (j = 0; j < ny; j++) {
 	if (!as_matrix && R_x == R_y)
 	   i = j + 1;
 	else
 	   i = 0;
-	y  = VECTOR_ELT(R_y,j);
-	ly = LENGTH(y);
-	if (ly >= nt) {				/* more (double) storage */
-	    do     nt *= 2; 
-	    while (ly >= nt);
-	    t  = Realloc(t,nt,double);
+	y  = VECTOR_ELT(R_y, j);
+	if (LENGTH(y) >= LENGTH(t)) {		/* more storage */
+	    UNPROTECT(1);
+	    PROTECT(t = allocVector(REALSXP, LENGTH(y) * 2));
 	}
 	for (i = i; i < nx; i++) {
-	    x  = VECTOR_ELT(R_x,i);
-	    lx = LENGTH(x);
-	    REAL(R_obj)[k++] = (*sdfun)(INTEGER(x),INTEGER(y),REAL(R_weight),
-					lx,ly,nw,t,0,0);
+	    x  = VECTOR_ELT(R_x, i);
+	    REAL(r)[k++] = (*sdfun)(INTEGER(x), INTEGER(y), REAL(R_weight),
+				    LENGTH(x), LENGTH(y), nw, REAL(t), 0, 0);
+	    R_CheckUserInterrupt();
 	}
-	R_CheckUserInterrupt();
     }
-    Free(t);
 
-    UNPROTECT(1);
+    UNPROTECT(2);
 	    
-    return R_obj;
+    return r;
 }
 
 /*  get the next edit transcript. the input arguments are a pointer 
@@ -556,9 +552,9 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
     int i, j, k, n, nx, ny, nw;
     
     double d, *v = 0, *t;	// temporary storage
-    char *b, *s;		// temporary storage
+    char c, *b, *s;		// temporary storage
     
-    SEXP r, c, tv = (SEXP)0, tb = (SEXP)0;
+    SEXP r, tv = (SEXP)0, tb = (SEXP)0;
 
     nw = length(R_weight);
     
@@ -588,20 +584,23 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
     nx = length(R_x);
     ny = length(R_y);
 
-    t = Calloc(ny+1, double);
-    b = Calloc((nx+1)*(ny+1), char);
-
     if (LOGICAL(R_table)[0] == TRUE) {
 	PROTECT(tv = allocMatrix(REALSXP, nx+1, ny+1));
 	PROTECT(tb = allocVector(VECSXP, 4));
 	v = REAL(tv);
     }
-    
+    // R.2.6.x
+    b = (char *) CHAR(PROTECT(allocVector(CHARSXP, (nx+1)*(ny+1))));
+
+    t = Calloc(ny+1, double);
+
     d = (*sdfun)(INTEGER(R_x),INTEGER(R_y), REAL(R_weight), nx, ny, nw, t, b, v);
     Free(t);
 
     if (!R_FINITE(d)) {
-	Free(b);
+	UNPROTECT(1);
+	if (LOGICAL(R_table)[0] == TRUE)
+	    UNPROTECT(2);
 	return ScalarReal(d);
     }
 
@@ -660,32 +659,35 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 		}   
 	    }
     }
-
-    s = Calloc(nx+ny+1, char);
+    // R.2.6.x
+    s = (char *) CHAR(PROTECT(allocVector(CHARSXP, nx+ny+1)));
 
     r = R_NilValue;
     do {
 	n = (*stfun)(b, nx, ny, s, &k);
+	for (i = 0; i < k/2; i++) {
+	    c = s[i];
+	    s[i] = s[k-i-1];
+	    s[k-i-1] = c;
+	}
 	PROTECT(r);
-	c = allocVector(CHARSXP, k);
-	for (i = 0; i < k; i++)
-	    CHAR(c)[k-i-1] = s[i];
-	r = CONS(c, r);
+	r = CONS(mkChar(s), r);
 	UNPROTECT(1);
 	R_CheckUserInterrupt();
     } while (n);
-    Free(b);
-    Free(s);
-    
-    r = PairToVectorList(r);
+
+    UNPROTECT(2);
+
+    PROTECT(r = PairToVectorList(r));
     SET_TYPEOF(r, STRSXP);
     setAttrib(r, install("value"), ScalarReal(d));
 
     if (LOGICAL(R_table)[0] == TRUE) {
 	setAttrib(r, install("table"), tv);
 	setAttrib(r, install("pointer"), tb);
-	UNPROTECT(2);
-    }
+	UNPROTECT(3);
+    } else
+	UNPROTECT(1);
 
     return r;
 }

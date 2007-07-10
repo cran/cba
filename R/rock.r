@@ -16,9 +16,9 @@
 rockLink <- function(x, beta=0.5) {
     if (!inherits(x, "dist"))
        stop(paste(sQuote("x"),"not of class dist"))
-    if (!is.real(x))
-       storage.mode(x) <- "real"
-    storage.mode(beta) <- "real"
+    if (!is.double(x))
+       storage.mode(x) <- "double"
+    storage.mode(beta) <- "double"
     obj <- .Call("rockLink", x, beta)
     obj <- structure(obj, Size=attr(x,"Size"),
                      class="dist", Diag=FALSE, Upper=FALSE,
@@ -39,7 +39,7 @@ rockMerge <- function(x, n, theta=0.5, debug=FALSE) {
     if (!is.integer(x))
        storage.mode(x) <- "integer"
     storage.mode(n) <- "integer"
-    storage.mode(theta) <- "real"
+    storage.mode(theta) <- "double"
     storage.mode(debug) <- "logical"
     obj <- .Call("rockMerge", x, n, theta, debug)
     names(obj) <- c("cl","size")
@@ -56,9 +56,9 @@ rockClass <- function(x, cl, beta=1-theta, theta=0.5) {
        stop(paste(sQuote("x"),"not a mtrix"))
     if (!is.factor(cl))
        stop(paste(sQuote("cl"),"not a factor"))
-    if (!is.real(x))
-       storage.mode(x) <- "real"
-    storage.mode(beta) <- storage.mode(theta) <- "real"
+    if (!is.double(x))
+       storage.mode(x) <- "double"
+    storage.mode(beta) <- storage.mode(theta) <- "double"
     storage.mode(cl) <- "integer"
     obj <- .Call("rockClass", x, cl, beta, theta)
     names(obj) <- c("cl","size")
@@ -71,7 +71,7 @@ rockClass <- function(x, cl, beta=1-theta, theta=0.5) {
 rockCluster <- function(x, n, beta=1-theta, theta=0.5, fun="dists", 
                         funArgs=list(method="binary"), debug=FALSE) {
     if (!is.matrix(x))
-       stop(paste(sQuote("x"),"not a matrix"))
+       warning(paste(sQuote("x"),"not a matrix"))
     if (n < 1)
        stop(paste(sQuote("n"),"illegal value"))
     if (is.function(fun))
@@ -95,7 +95,7 @@ rockCluster <- function(x, n, beta=1-theta, theta=0.5, fun="dists",
 
 predict.rock <- function(object, x, drop=1, ...) {
     if (!is.matrix(x))
-       stop(paste(sQuote("x"),"not a matrix"))
+       warning(paste(sQuote("x"),"not a matrix"))
     # drop 
     if (drop > 0) {
        d <- which(object$size <= drop)

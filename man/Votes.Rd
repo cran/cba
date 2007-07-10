@@ -16,23 +16,23 @@
 \format{
   A data frame with 435 observations on the following 17 variables.
   \describe{
-    \item{\code{handicapped-infants}}{a factor with levels \code{n} \code{y}}
-    \item{\code{water-project-cost-sharing}}{a factor with levels \code{n} \code{y}}
-    \item{\code{adoption-of-the-budget-resolution}}{a factor with levels \code{n} \code{y}}
-    \item{\code{physician-fee-freeze}}{a factor with levels \code{n} \code{y}}
-    \item{\code{el-salvador-aid}}{a factor with levels \code{n} \code{y}}
-    \item{\code{religious-groups-in-schools}}{a factor with levels \code{n} \code{y}}
-    \item{\code{anti-satellite-test-ban}}{a factor with levels \code{n} \code{y}}
-    \item{\code{aid-to-nicaraguan-contras}}{a factor with levels \code{n} \code{y}}
-    \item{\code{mx-missile}}{a factor with levels \code{n} \code{y}}
-    \item{\code{immigration}}{a factor with levels \code{n} \code{y}}
-    \item{\code{synfuels-corporation-cutback}}{a factor with levels \code{n} \code{y}}
-    \item{\code{education-spending}}{a factor with levels \code{n} \code{y}}
-    \item{\code{superfund-right-to-sue}}{a factor with levels \code{n} \code{y}}
-    \item{\code{crime}}{a factor with levels \code{n} \code{y}}
-    \item{\code{duty-free-exports}}{a factor with levels \code{n} \code{y}}
-    \item{\code{export-administration-act-south-africa}}{a factor with levels \code{n} \code{y}}
-    \item{\code{Class}}{a factor with levels \code{democrat} \code{republican}}
+    \item{\code{handicapped-infants}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{water-project-cost-sharing}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{adoption-of-the-budget-resolution}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{physician-fee-freeze}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{el-salvador-aid}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{religious-groups-in-schools}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{anti-satellite-test-ban}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{aid-to-nicaraguan-contras}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{mx-missile}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{immigration}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{synfuels-corporation-cutback}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{education-spending}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{superfund-right-to-sue}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{crime}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{duty-free-exports}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{export-administration-act-south-africa}}{a factor with levels \code{n} and \code{y}}
+    \item{\code{Class}}{a factor with levels \code{democrat} and \code{republican}}
   }
 }
 \details{

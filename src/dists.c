@@ -168,6 +168,9 @@ SEXP mdist(SEXP R_x, SEXP R_y) {
 }
 
 /* calculate Canberra distances (cf. dist)
+ *
+ * note that for a pair (1, Inf) the ratio
+ * is defined to be 1.
  */
 
 SEXP cdist(SEXP R_x, SEXP R_y) {
@@ -175,7 +178,7 @@ SEXP cdist(SEXP R_x, SEXP R_y) {
     int nc, nx, ny; 
     int i, j, k, l, m, as_matrix = 0;
     
-    double d, z;
+    double z, z0, z1, z2;
     double *x, *y;
 
     SEXP R_obj;
@@ -200,7 +203,7 @@ SEXP cdist(SEXP R_x, SEXP R_y) {
        PROTECT(R_obj = NEW_NUMERIC(nx*(nx-1)/2));
     else
        PROTECT(R_obj = allocMatrix(REALSXP, nx, ny));
-		    
+    
     m = 0; 
     for (j = 0; j < ny; j++) {
 	if (!as_matrix && R_x == R_y)
@@ -211,17 +214,30 @@ SEXP cdist(SEXP R_x, SEXP R_y) {
 	    l = 0;
 	    z = 0;
 	    for (k = 0; k < nc; k++) {
-	        if (ISNAN(x[i+k*nx]) || ISNAN(y[j+k*ny]))
-		   continue;
-		d = fabs(x[i+k*nx]+y[j+k*ny]);
-		if (ISNAN(d))
-		   continue;
+		z0 = x[i+k*nx];
+		z1 = y[j+k*ny];
+		if (ISNAN(z0) || ISNAN(z1))
+		    continue;
+		z2 = fabs(z0-z1);
+		z1 = fabs(z0+z1);
+		if (z1 < DBL_MIN && z2 < DBL_MIN)
+		    continue;
+		z0 = z2 / z1;
+		if (ISNAN(z0)) {
+		    if (!R_FINITE(z2) && z2 == z1)
+			z0 = 1;
+		    else
+			continue;
+		}
 		l++;
-		z += fabs(x[i+k*nx]-y[j+k*ny]) / d;
+		z += z0;
 	    }
-	    if (l > 0)
-	       REAL(R_obj)[m++] = z;
-	    else
+	    if (l > 0) {
+		if (l < nc)
+		    REAL(R_obj)[m++] = z * nc / l;
+		else
+		    REAL(R_obj)[m++] = z;
+	    } else
 	       REAL(R_obj)[m++] = NA_REAL;
 	}
 	R_CheckUserInterrupt();
@@ -336,9 +352,9 @@ SEXP bdist(SEXP R_x, SEXP R_y) {
     return R_obj;
 }
 
-/* calculate extended binary distances (one minus extended Jaccard),
- * i.e. the squared Euclidean distance divided by the squared
- * Euclidean distance minus the scalar product. 
+/* calculate extended binary distances a.k.a. inverted Tanimoto
+ * similarities, i.e. one minus the scalar product divided by the
+ * squared Euclidean distance minus the scalar product. 
  *
  * fixme: the policy of mapping NaNs to NA is not very informative.
  *
@@ -641,12 +657,17 @@ SEXP adist(SEXP R_x, SEXP R_y) {
  * note that subscriptArray returns indexes that start
  * at 1 instead of zero. Yuck!
  * 
- * ceeboo 2005, 2006
+ * we now return a vector of length zero if the lentgh
+ * of the subscript vector is less than 2.
+ * 
+ * ceeboo 2005, 2006, 2007
  */
 
 SEXP subset_dist(SEXP R_x, SEXP R_s, SEXP R_l) {
     if (TYPEOF(R_x) != REALSXP)
 	error("invalid data parameter");
+    if (LENGTH(R_s) < 2)
+	return(allocVector(REALSXP, 0));
     int n, m;
     int i, ii, j, jj, k;
 
@@ -704,7 +725,8 @@ SEXP subset_dist(SEXP R_x, SEXP R_s, SEXP R_l) {
        
        PROTECT(R_str = NEW_STRING(m));
        for (k = 0; k < m; k++)
-	   SET_STRING_ELT(R_str, k, duplicate(STRING_ELT(R_l, s[k]-1)));
+	   SET_STRING_ELT(R_str, k, STRING_ELT(R_l, s[k]-1));
+	   //SET_STRING_ELT(R_str, k, duplicate(STRING_ELT(R_l, s[k]-1)));
 
        setAttrib(R_obj, install("Labels"), R_str);
        UNPROTECT(1);
@@ -769,6 +791,32 @@ SEXP rowSums_dist(SEXP x, SEXP na_rm) {
     return r;
 }
 
+//
+
+SEXP row_dist(SEXP x, SEXP col) {
+    if (!inherits(x, "dist"))
+        error("'x' not of class dist");
+    if (isNull(col) || TYPEOF(col) != LGLSXP)
+        error("'col' not of type logical");
+    int i, j, n, nx;
+    SEXP r;
+
+    nx = 1 + (int) sqrt(2*LENGTH(x));
+    if (LENGTH(x) != nx*(nx-1)/2)
+        error("'x' invalid length");
+
+    PROTECT(r = allocVector(INTSXP, LENGTH(x)));
+    
+    n = 0;
+    for (j = 1; j < nx; j++)
+        for (i = j+1; i < nx+1; i++) 
+            INTEGER(r)[n++] = (*LOGICAL(col)) ? j : i;
+
+    UNPROTECT(1);
+
+    return r;
+}
+
 /* compute auto- or cross-distances with a user-supplied
  * function given matrix data. this is experimental code.
  *
@@ -777,7 +825,7 @@ SEXP rowSums_dist(SEXP x, SEXP na_rm) {
  * ceeboo 2006
  */
 
-SEXP apply_dist(SEXP p) {
+SEXP apply_dist_matrix(SEXP p) {
     int i, j, k, l, n, nx, ny, as_matrix = 0;
     SEXP r, c, tx, ty;
     SEXP x, y, f;
@@ -786,6 +834,8 @@ SEXP apply_dist(SEXP p) {
     if (length(p) < 3)
 	error("invalid number of arguments");
     x = CAR(p); y = CADR(p);
+    if (TYPEOF(x) != REALSXP || (!isNull(y) && TYPEOF(y) != REALSXP))
+	error("invalid data parameter(s)");
     if (!isMatrix(x) || (!isNull(y) && !isMatrix(y)))
 	error("invalid data parameter(s)");
     p = CDDR(p); f = CAR(p); 
@@ -812,7 +862,7 @@ SEXP apply_dist(SEXP p) {
     PROTECT(tx = allocVector(REALSXP, n)); 
     PROTECT(ty = allocVector(REALSXP, n));
 
-    c = LCONS(f, LCONS(tx, LCONS(ty, p)));
+    PROTECT(c = LCONS(f, LCONS(tx, LCONS(ty, p))));
     
     l = 0;
     for (j = 0; j < ny; j++) {
@@ -829,7 +879,69 @@ SEXP apply_dist(SEXP p) {
 	R_CheckUserInterrupt();
     }
 
-    UNPROTECT(3);
+    UNPROTECT(4);
+    return r;
+}
+
+SEXP apply_dist_list(SEXP p) {
+    int i, j, l, nx, ny, as_matrix = 0;
+    SEXP r, c, tx, ty;
+    SEXP x, y, f;
+
+    p = CDR(p);
+    if (length(p) < 3)
+        error("invalid number of arguments");
+    x = CAR(p); y = CADR(p);
+    if (TYPEOF(x) != VECSXP || (!isNull(y) && TYPEOF(y) != VECSXP))
+        error("invalid data parameter(s)");
+    p = CDDR(p); f = CAR(p); 
+    if (!isFunction(f))
+        error("invalid function parameter");
+    p = CDR(p);
+
+    if (isNull(y))
+        y = x;  
+    else
+       as_matrix = 1;
+   
+    nx = LENGTH(x);
+    ny = LENGTH(y);
+
+    if (!as_matrix && x == y)
+        PROTECT(r = allocVector(REALSXP, nx*(nx-1)/2));
+    else
+        PROTECT(r = allocMatrix(REALSXP, nx, ny));
+    
+    PROTECT(c = LCONS(f, (tx = LCONS(R_NilValue, 
+                         (ty = LCONS(R_NilValue, p))))));
+   
+    l = 0;
+    for (j = 0; j < ny; j++) {
+        SETCAR(ty, VECTOR_ELT(y, j));
+        for (i = ((!as_matrix && x == y) ? j+1 : 0); i < nx; i++) {
+            SETCAR(tx, VECTOR_ELT(x, i));
+            SEXP s = eval(c, R_GlobalEnv);
+            if (LENGTH(s) != 1)
+                error("not a scalar return value");
+            switch(TYPEOF(s)) {
+            case REALSXP:
+                REAL(r)[l++] = REAL(s)[0];
+                break;
+            case INTSXP:
+                REAL(r)[l++] = (double) INTEGER(s)[0];
+                break;
+            case LGLSXP:
+                REAL(r)[l++] = (double) LOGICAL(s)[0];
+                break;
+            default:
+                REAL(r)[l++] = REAL(coerceVector(s, REALSXP))[0];
+            }
+        }                       
+        R_CheckUserInterrupt();
+    }
+
+    UNPROTECT(2);
+
     return r;
 }
 

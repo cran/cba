@@ -22,9 +22,8 @@ static MDS minDist(double *x, int j, int *c, int *p, int n) {
     int i, k, l;
     double v;
 
-    MDS m;
+    MDS m = {R_PosInf, 0};
    
-    m.v = R_PosInf;
     l = 0;
     for (k = 0; k < n; k++) {
 	i = c[k];
@@ -64,7 +63,7 @@ SEXP order_greedy(SEXP R_dist) {
 
     double *x, *height;
 
-    MDS l, ll, r, rr;
+    MDS l, ll = {R_NaN, 0}, r, rr = {R_NaN, 0};
     
     SEXP R_obj;
 

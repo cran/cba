@@ -1,3 +1,4 @@
+\encoding{iso-8859-1}
 \name{proximus}
 \alias{proximus}
 \title{Proximus}
@@ -7,8 +8,8 @@
   the maximum cluster radius and the minimum cluster size. 
 }
 \usage{
-proximus(x, max.radius = 2, min.size = 1, min.retry = 10, max.iter = 16,
-         debug = FALSE)
+proximus(x, max.radius = 2, min.size = 1, min.retry = 10,
+	 max.iter = 16, debug = FALSE)
 }
 \arguments{
   \item{x}{a logical matrix.}
@@ -24,7 +25,7 @@ proximus(x, max.radius = 2, min.size = 1, min.retry = 10, max.iter = 16,
 \details{
   The intended area of application is the compression of high-dimensional 
   binary data into representative patterns. For instance, purchase incidence 
-  (market basket date) or term-document matrices may be preprocessed by 
+  (market basket data) or term-document matrices may be preprocessed by 
   Proximus for later association rule mining.
 
   The algorithm is of a recursive partitioning type. 
@@ -32,9 +33,9 @@ proximus(x, max.radius = 2, min.size = 1, min.retry = 10, max.iter = 16,
   rank-one approximation of the current submatrix (row set). That is a 
   specialization of principal components to binary data which represents a 
   matrix as the outer product of two binary vectors. The node expansion stops 
-  if a submatrix is pure, i.e. the column (presence set) vector indicates 
+  if a submatrix is pure, i.e., the column (presence set) vector indicates 
   all the rows and the Hamming distances from the row (dominant attribute 
-  set) pattern vector, or the size of the row set, are equal or less than 
+  set) pattern vector, or the size of the row set, are less than or equal
   the specified threshold. In the case the rank-one approximation does not 
   result in a split but the radius constraint is violated, the matrix is 
   split using a random row and the radius constraint.
@@ -69,7 +70,7 @@ proximus(x, max.radius = 2, min.size = 1, min.retry = 10, max.iter = 16,
 \references{
   M. Koyutürk, A. Graham, and N. Ramakrishnan. Compression, Clustering, and 
   Pattern Discovery in Very High-Dimensional Discrete-Attribute Data Sets. 
-  IEEE Transactions On Knowledge and Data Engineering, Vol. 17, No. 4, 
+  \emph{IEEE Transactions On Knowledge and Data Engineering}, Vol. 17, No. 4, 
   (April) 2005.
 }
 \author{Christian Buchta}

@@ -1,9 +1,12 @@
+import("Matrix")
 export(
     proximus,
     rockCluster, rockLink,
     ccfkms,
-    rowSums.dist,dists,sdists,sdists.trace,
-    dapply,
+    row.dist, col.dist,
+    colSums.dist,colMeans.dist,
+    rowSums.dist,rowMeans.dist,dists,sdists,sdists.trace,
+    dapply,dapply.list,
     cluster.dist,
     gknn,
     as.dummy,
@@ -27,6 +30,9 @@ S3method(print,proximus)
 S3method(summary,proximus)
 S3method(print,"summary.proximus")
 S3method(predict,ccfkms)
+S3method(dim,dist)
+S3method(dimnames,dist)
+S3method("dimnames<-",dist)
 S3method(subset,dist)
 S3method("[[",dist)
 S3method(image,matrix)

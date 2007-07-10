@@ -36,20 +36,20 @@ The order as a vector of \code{integer}. The attribute \code{"method"} contains
 the method as a character string.
 }
 \references{
-F. Murtagh (1985). Multidimensional Cluster Algorithms. Lectures
-in Computational Statistics, Physica Verlag, pp. 15.
+F. Murtagh (1985). Multidimensional Cluster Algorithms. \emph{Lectures
+in Computational Statistics}, Physica Verlag, pp. 15.
 
 Gruvaeus, G. and Wainer, H. (1972), "Two Additions to
-Hierarchical Cluster Analysis", British
-Journal of Mathematical and Statistical Psychology, 25, 200-206.
+Hierarchical Cluster Analysis", \emph{British
+Journal of Mathematical and Statistical Psychology}, 25, 200-206.
 
 Hurley, Catherine B. Clustering Visualizations of Multidimensional Data. 
-Journal of Computational
-and Graphical Statistics, 13(4), pages 788-806, 2004.
+\emph{Journal of Computational and Graphical Statistics}, 13(4),
+pages 788-806, 2004.
 
 Z. Bar-Joseph, E. D. Demaine, D. K. Gifford, and T. Jaakkola.
-(2001) Fast Optimal Leaf Ordering for Hierarchical Clustering.
-Bioinformatics, Vol. 17 Suppl. 1, pp. 22-29.
+(2001). Fast Optimal Leaf Ordering for Hierarchical Clustering.
+\emph{Bioinformatics}, Vol. 17 Suppl. 1, pp. 22-29.
 }
 \seealso{
 }

@@ -63,13 +63,18 @@ ccfkms(x, n, p = NULL, par = 2, max.iter = 100, opt.std = FALSE,
 }
 \references{
   Helmut Strasser and Klaus Poetzelberger. Data Compression by 
-  Unsupervised Classification. SFB Report Series, No. 10, 1997.
+  Unsupervised Classification. \emph{SFB Report Series}, No. 10, 1997.
 }
 \author{Christian Buchta}
-%\note{}
+\note{
+Support for data matrices \code{x} in sparse \code{dgTMatrix} and 
+\code{dgCMatrix} format (see package \pkg{Matrix}) is experimental. 
+Support for the \code{dgRMatrix} format is currently suspended
+due to problems with package \pkg{Matrix}.
+}
 \seealso{
   \code{\link{kmeans}}, \code{cmeans}, \code{kkmeans} for similar or related
-  cluster techniques.
+  clustering techniques.
 }
 \examples{
 ### extend proximus example
@@ -77,5 +82,15 @@ x <- rlbmat()
 rownames(x) <- seq(dim(x)[1])
 cm <- ccfkms(x, n=4, opt.retry=10)
 pcm <- predict(cm, x)
+\dontrun{
+### using sparse data may be more time-efficient
+### depending on the goodness of the implementation
+### of subset, etc. in package Matrix.
+require(Matrix)
+#sx <- as(x, "dgRMatrix")    # currently broken
+sx <- as(x, "dgCMatrix")
+system.time(scm <- ccfkms(sx, n=4, opt.retry=50))
+system.time(cm <- ccfkms(x, n=4, opt.retry=50))
+}
 }
 \keyword{cluster}

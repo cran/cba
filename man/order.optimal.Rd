@@ -13,7 +13,8 @@ order.optimal(dist, merge)
   \item{merge}{a binary merge tree (see \code{\link{hclust}}).}
 }
 \details{
-  A binary tree has 2\^(n-1) internal nodes (subtrees) and the same
+  A binary tree has \eqn{2^{n-1}}{2^(n-1)} internal nodes (subtrees) and
+  the same
   number of leaf orderings. That is, at each internal node the left 
   and right subtree (or leaves) can be swapped, or, in terms of a
   dendrogram, be flipped.
@@ -38,11 +39,11 @@ order.optimal(dist, merge)
 }
 \references{
   Z. Bar-Joseph, E. D. Demaine, D. K. Gifford, and T. Jaakkola.
-  (2001) Fast Optimal Leaf Ordering for Hierarchical Clustering.
-  Bioinformatics, Vol. 17 Suppl. 1, pp. 22-29. 
+  (2001). Fast Optimal Leaf Ordering for Hierarchical Clustering.
+  \emph{Bioinformatics}, Vol. 17 Suppl. 1, pp. 22-29. 
 }
 \author{Christian Buchta}
-\note{The time complexity of the algorithm is o(n\^3).}
+\note{The time complexity of the algorithm is \eqn{O(n^3)}.}
 \seealso{
   \code{\link{hclust}} for hierarchical clustering and
   \code{\link{order.length}} for computing the objective value of a 

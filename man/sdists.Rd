@@ -36,7 +36,8 @@ sdists(x, y = NULL, method = "ow", weight = c(1, 0, 2),
 	needs to be specified with the convention that the first row/column 
 	defines the replacement with the empty (space) symbol. The colnames 
 	of this matrix are used as the levels argument for the encoding as 
-	factor. Consequently, unspecified symbols are mapped to \code{NA}.}
+	\code{factor}. Consequently, unspecified symbols are mapped to
+	\code{NA}.}
     \item{\code{awl}:}{alphabet-weight local sequential alignment similarity.
 	The weight matrix must be as described above. However, note that
 	zero acts as threshold for a 'restart' of the search for a local
@@ -62,7 +63,7 @@ sdists(x, y = NULL, method = "ow", weight = c(1, 0, 2),
   cross-distances as an object of class \code{matrix}. 
 }
 \references{
-    D. Gusfield (1997) Algorithms on Strings, Trees, and Sequences. 
+    D. Gusfield (1997). \emph{Algorithms on Strings, Trees, and Sequences}. 
     Cambridge University Press, Chapter 11.
 }
 \author{Christian Buchta}
