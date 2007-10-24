@@ -12,14 +12,12 @@
 \method{subset}{dist}(x, subset, ...)
 \method{[[}{dist}(x, subset, ...)
 
-x[[i]]
-
 row.dist(x)
 col.dist(x)
 }
 \arguments{
   \item{x}{an object of class \code{dist}.}
-  \item{subset, i}{logical, character, or index vector.}
+  \item{subset}{logical, character, or index vector.}
   \item{\dots}{further (unused) arguments.}
 }
 \details{

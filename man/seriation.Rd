@@ -51,8 +51,6 @@ Z. Bar-Joseph, E. D. Demaine, D. K. Gifford, and T. Jaakkola.
 (2001). Fast Optimal Leaf Ordering for Hierarchical Clustering.
 \emph{Bioinformatics}, Vol. 17 Suppl. 1, pp. 22-29.
 }
-\seealso{
-}
 \author{Michael Hahsler (hahsler@ai.wu-wien.ac.at)}
 \examples{
 data("Votes")

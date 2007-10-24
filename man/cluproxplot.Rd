@@ -60,9 +60,9 @@ cluproxplot(x, labels = NULL, method = NULL, args = NULL,
     }
   \item{\dots}{ further arguments; currently unused. }
 }
-\details{
+% \details{
 % To come\ldots
-}
+% }
 \value{
 An invisible object of class \code{"cluProxMatrix"} of the following elements:
 \item{order}{ \code{NULL} or integer vector giving the order 

@@ -15,7 +15,8 @@ export(
     order.length,order.optimal,order.greedy,
     order.dist,order.matrix,order.data.frame,
     stress,stress.dist,
-    cluproxplot,seriation)
+    cluproxplot,seriation,
+    circleplot.dist)
 S3method("as.dummy",logical)
 S3method("as.dummy",integer)
 S3method("as.dummy",factor)

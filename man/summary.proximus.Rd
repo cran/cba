@@ -12,8 +12,6 @@
   \item{object}{an object of class \code{proximus}.}
   \item{\dots}{further (unused) arguments.}
 }
-\details{
-}
 \value{
   An object of class \code{summary.proximus} with the following elements:
 

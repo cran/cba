@@ -53,11 +53,11 @@ double edist_ow(int *x, int *y, double *w, int nx, int ny, int nw,
 	       else {
 		  if (y[j-1] == NA_INTEGER)
 		     return NA_REAL;
-		  z0[j] = j * w[0];
+		  z2 = z0[j] = j * w[0];
 		  if (b)
 		     b[j*(nx+1)] = 2;
 		  if (v)
-		     v[j*(nx+1)] = z0[j];
+		     v[j*(nx+1)] = z2;
 	       }
 	    } else if (j == 0) {
 		      x0 = x[i-1];
@@ -117,11 +117,11 @@ double edist_aw(int *x, int *y, double *w, int nx, int ny, int nw,
 		  y0 = y[j-1];
 		  if (y0 == NA_INTEGER)
 		     return NA_REAL;
-		  z0[j] = z0[j-1] + w[(y0-1)*nw];
+		  z2 = z0[j] = z0[j-1] + w[(y0-1)*nw];
 		  if (b)
 		     b[j*(nx+1)] = 2;
 		  if (v)
-		     v[j*(nx+1)] = z0[j];
+		     v[j*(nx+1)] = z2;
 	       }
 	    } else if (j == 0) {
 		      x0 = x[i-1];
