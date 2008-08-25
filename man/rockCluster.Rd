@@ -86,7 +86,7 @@ x <- as.dummy(Mushroom[-1])
 rc <- rockCluster(x[sample(dim(x)[1],1000),], n=10, theta=0.8)
 print(rc)
 rp <- predict(rc, x)
-table(Mushroom$classes, rp$cl)
+table(Mushroom$class, rp$cl)
 }
 ### real valued example
 gdist <- function(x, y=NULL) 1-exp(-dists(x, y)^2)

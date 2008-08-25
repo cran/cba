@@ -1,4 +1,4 @@
-\encoding{iso-8859-1}
+\encoding{latin1}
 \name{proximus}
 \alias{proximus}
 \title{Proximus}
