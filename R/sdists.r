@@ -1,7 +1,7 @@
 
 # implements a wrapper to distance (similarity) computation on 
 # collections of sequences. auto and cross distances can be
-# computed (compare with dists)
+# computed (compare with dist in package proxy)
 #
 # note that 1) we can supply lists of vectors or vectors of 
 #              character (strings)
@@ -12,11 +12,12 @@
 #              symbol (space)
 #           4) include NA, etc if exclude = NULL
 #           5) but the C function returns NA if NAs are encounterd
+#           6) use parallel mode only if y != NULL
 # 
-# ceeboo 2006
+# ceeboo 2006, 2008
 
 sdists <- function(x,y=NULL, method="ow", weight=c(1,0,2),
-                   exclude=c(NA,NaN,Inf,-Inf)) {
+                   exclude=c(NA,NaN,Inf,-Inf), pairwise = FALSE) {
     METHODS <- c("ow","aw","awl")
     code <- pmatch(method, METHODS)
     if (is.na(code))
@@ -50,17 +51,20 @@ sdists <- function(x,y=NULL, method="ow", weight=c(1,0,2),
     }
     x <- lapply(x,function(x) 
              factor(x,levels=l,exclude=if(is.integer(x))NA else exclude))
-    if (!is.null(y)) 
+    if (!is.null(y)) { 
        y <- lapply(y,function(x) 
                 factor(x,levels=l,exclude=if(is.integer(x))NA else exclude))
+       if (pairwise && length(x) != length(y))
+           stop("'pairwise', lengths of 'x' and 'y' do not conform")
+    }
     if (!is.double(weight))
        storage.mode(weight) <- "double"
-    obj <- .Call("sdists",x,y,as.integer(code),weight)
+    obj <- .Call("sdists",x,y,as.integer(code),weight,pairwise)
     if (is.null(y))
        obj <- structure(obj, Size=length(x), class="dist",
                              Diag=FALSE, Upper=FALSE,
                              Labels=names(x), method=method)
-    else {
+    else if (!pairwise) {
        rownames(obj) <- names(x)
        colnames(obj) <- names(y)
     }

@@ -6,7 +6,7 @@
   Cluster a data matrix using the Rock algorithm.
 }
 \usage{
-rockCluster(x, n, beta = 1-theta, theta = 0.5, fun = "dists",
+rockCluster(x, n, beta = 1-theta, theta = 0.5, fun = "dist",
             funArgs = list(method="binary"), debug = FALSE)
 
 rockLink(x, beta = 0.5)
@@ -23,7 +23,8 @@ rockLink(x, beta = 0.5)
 \details{
   The intended area of application is the clustering of binary (logical) 
   data. For instance in a preprocessing step in data mining. However, 
-  arbitrary distance metrics could be used (see \code{\link{dists}}). 
+  arbitrary distance metrics could be used (see
+  \code{\link[proxy:dist]{dist}}). 
 
   According to the reference (see below) the distance threshold and the 
   neighborhood parameter are coupled. Thus, higher values of the neighborhood 
@@ -67,7 +68,7 @@ rockLink(x, beta = 0.5)
 }
 \author{Christian Buchta}
 \seealso{
-  \code{\link{dists}} for common distance functions,
+  \code{\link[proxy:dist]{dist}} for common distance functions,
   \code{\link{predict}} for classifying new data samples, and
   \code{\link{fitted}} for classifying the clustered data samples.
 }
@@ -89,7 +90,7 @@ rp <- predict(rc, x)
 table(Mushroom$class, rp$cl)
 }
 ### real valued example
-gdist <- function(x, y=NULL) 1-exp(-dists(x, y)^2)
+gdist <- function(x, y=NULL) 1-exp(-dist(x, y)^2)
 xr <- matrix(rnorm(200, sd=0.6)+rep(rep(c(1,-1),each=50),2), ncol=2)
 rcr <- rockCluster(xr, n=2, theta=0.75, fun=gdist, funArgs=NULL)
 print(rcr)

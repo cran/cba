@@ -68,7 +68,7 @@ rockClass <- function(x, cl, beta=1-theta, theta=0.5) {
 
 # cluster interface
 
-rockCluster <- function(x, n, beta=1-theta, theta=0.5, fun="dists", 
+rockCluster <- function(x, n, beta=1-theta, theta=0.5, fun="dist", 
                         funArgs=list(method="binary"), debug=FALSE) {
     if (!is.matrix(x))
        warning(paste(sQuote("x"),"not a matrix"))

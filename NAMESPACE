@@ -3,10 +3,7 @@ export(
     proximus,
     rockCluster, rockLink,
     ccfkms,
-    row.dist, col.dist,
-    colSums.dist,colMeans.dist,
-    rowSums.dist,rowMeans.dist,dists,sdists,sdists.trace,
-    dapply,dapply.list,
+    sdists,sdists.trace,sdists.center,sdists.center.align,
     cluster.dist,
     gknn,
     as.dummy,
@@ -15,7 +12,6 @@ export(
     order.length,order.optimal,order.greedy,
     order.dist,order.matrix,order.data.frame,
     stress,stress.dist,
-    cluproxplot,seriation,
     circleplot.dist)
 S3method("as.dummy",logical)
 S3method("as.dummy",integer)
@@ -31,15 +27,8 @@ S3method(print,proximus)
 S3method(summary,proximus)
 S3method(print,"summary.proximus")
 S3method(predict,ccfkms)
-S3method(dim,dist)
-S3method(dimnames,dist)
-S3method("dimnames<-",dist)
-S3method(subset,dist)
-S3method("[[",dist)
 S3method(image,matrix)
 S3method(image,dist)
 S3method(cut,ordered)
-S3method(print,cluProxMatrix)
-S3method(plot,cluProxMatrix)
 S3method(plot,"sdists.graph")
 useDynLib(cba)

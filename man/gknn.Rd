@@ -46,14 +46,14 @@ gknn(x, y, k = 1, l = 0, break.ties = TRUE, use.all = TRUE,
   (if option \code{prob} was used).
 }
 \author{Christian Buchta}
-\seealso{\code{\link{dists}} for efficient computation of cross-distances.}
+\seealso{\code{\link[proxy:dist]{dist}} for efficient computation of cross-distances.}
 \examples{
 \dontrun{
 ### extend Rock example
 data(Votes)
 x <- as.dummy(Votes[-17])
 rc <- rockAll(x, n=2, m=100, theta=0.73, predict=FALSE, debug=TRUE)
-gc <- gknn(dists(x, rc$y, method="binary"), rc$cl, k=3)
+gc <- gknn(dist(x, rc$y, method="binary"), rc$cl, k=3)
 table(gc[rc$s], rc$cl)
 }
 }

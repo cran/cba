@@ -46,15 +46,15 @@ lmplot <- function(x, block.size=1, gray=FALSE, xlab="", ylab="", ...) {
 # columns) and to reorder by rows and columns (using hclust).
 
 clmplot <- function(x, col, col.bycol=FALSE, order=FALSE, 
-                     dists.method="binary", hclust.method="average",  
+                     dist.method="binary", hclust.method="average",  
                      axes=FALSE, xlab="", ylab="", ...) {
     if (!is.logical(x))
        stop(paste(sQuote("x"),"not logical"))
 
     if (order) {
-       ro <- hclust(dists(x, method=dists.method),
+       ro <- hclust(dist(x, method=dist.method),
                     method=hclust.method)$order
-       co <- hclust(dists(t(x), method=dists.method), 
+       co <- hclust(dist(t(x), method=dist.method), 
                     method=hclust.method)$order
        x <- x[ro, co]
     }

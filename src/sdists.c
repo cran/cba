@@ -279,19 +279,20 @@ int is_symmetric(double *x, int n) {
     return r;
 }
 
-SEXP sdists(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight) {
+SEXP sdists(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_pairwise) {
     if (TYPEOF(R_x) != VECSXP || (!isNull(R_y) && TYPEOF(R_y) != VECSXP))
 	error("invalid sequence parameters");
     if (TYPEOF(R_method) != INTSXP)
 	error("invalid method parameter");
     if (TYPEOF(R_weight) != REALSXP)
 	error("invalid weight parameter");
+    if (TYPEOF(R_pairwise) != LGLSXP)
+	error("invalid pairwise parameter");
 
     double (*sdfun)(int *, int *, double *, int, int, int, double *, char *, double *v) = NULL;
 	
     int nx, ny, nw;
-    int i, j, k;
-    int as_matrix = 0;		/* fixes copy on write */
+    int i, j, k, n, m = 0;	/* default symmetric */
     SEXP x, y, t, r;		/* return value */
 	
     nw = LENGTH(R_weight);
@@ -316,36 +317,51 @@ SEXP sdists(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight) {
 	    error("method not implemented");
     }
     
-    if (R_y == R_NilValue) {
+    if (isNull(R_y)) {
        if (isMatrix(R_weight) && !is_symmetric(REAL(R_weight), nw))
-	  error("auto-similarities for asymmetric weights not implemented");
+	    error("auto-similarities for asymmetric weights not implemented");
        R_y = R_x;
     } 
     else
-       as_matrix = 1;
+    if (LOGICAL(R_pairwise)[0] == TRUE)
+	m = 2;
+    else
+	m = 1;
 	
     nx = LENGTH(R_x);
     ny = LENGTH(R_y);
 
-    if (!as_matrix && R_x == R_y)
-       PROTECT(r = allocVector(REALSXP, nx*(nx-1)/2));
+    if (m == 2 && nx != ny)
+	error("invalid number of rows for pairwise mode");
+
+    if (m == 0)
+	PROTECT(r = allocVector(REALSXP, nx*(nx-1)/2));
     else
-       PROTECT(r = allocMatrix(REALSXP, nx, ny));
+    if (m == 1)
+	PROTECT(r = allocMatrix(REALSXP, nx, ny));
+    else 
+	PROTECT(r = allocVector(REALSXP, nx));
 
     PROTECT(t = allocVector(REALSXP, 256));	/* temporary storage */
 
     k = 0;
+    n = nx;
     for (j = 0; j < ny; j++) {
-	if (!as_matrix && R_x == R_y)
-	   i = j + 1;
+	if (m == 0)
+	    i = j + 1;
 	else
-	   i = 0;
+	if (m == 1)
+	    i = 0;
+	else {
+	    i = j;
+	    n = j + 1;
+	}
 	y  = VECTOR_ELT(R_y, j);
 	if (LENGTH(y) >= LENGTH(t)) {		/* more storage */
 	    UNPROTECT(1);
 	    PROTECT(t = allocVector(REALSXP, LENGTH(y) * 2));
 	}
-	for (i = i; i < nx; i++) {
+	for (i = i; i < n; i++) {
 	    x  = VECTOR_ELT(R_x, i);
 	    REAL(r)[k++] = (*sdfun)(INTEGER(x), INTEGER(y), REAL(R_weight),
 				    LENGTH(x), LENGTH(y), nw, REAL(t), 0, 0);
@@ -421,7 +437,7 @@ static int next_transcript(char *b, int i, int j, char *s, int *l) {
  * the endpoint of a local alignment (if any). then we proceed as above
  * until we hit zero or either of the two sequences is exhausted. 
  * remaining prefixes or suffixes are aligned by padding with wildcards 
- * where insertions or deletions at the ends are used to acount for 
+ * where insertions or deletions at the ends are used to account for 
  * differences in lenghths (shifting the shorter prefix or suffix in the 
  * direction of the local alignment). we use the codes {'i', 'd', '?'} 
  * in order to distinguish these edit operations from those necessary
@@ -531,7 +547,7 @@ next:
  *
  * the distance is returned as attribute 'value'. the values of the 
  * dynamic programming table may be returned as attribute 'table' for 
- * plotting, etc. For attribute 'pointer' contains an R ''segments''
+ * plotting, etc. Attribute 'pointer' contains an R ''segments''
  * compatible representation of the (back)pointers (see also below).
  */
 
@@ -589,8 +605,8 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 	PROTECT(tb = allocVector(VECSXP, 4));
 	v = REAL(tv);
     }
-    // R.2.6.x
-    b = (char *) CHAR(PROTECT(allocVector(CHARSXP, (nx+1)*(ny+1))));
+    // R-2.9.x
+    b = (char *) RAW(PROTECT(allocVector(RAWSXP, (nx+1)*(ny+1))));
 
     t = Calloc(ny+1, double);
 
@@ -659,8 +675,8 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 		}   
 	    }
     }
-    // R.2.6.x
-    s = (char *) CHAR(PROTECT(allocVector(CHARSXP, nx+ny+1)));
+    // R-2.9.x
+    s = (char *) RAW(PROTECT(allocVector(RAWSXP, nx+ny+1)));
 
     r = R_NilValue;
     do {
@@ -712,16 +728,14 @@ SEXP sdists_align(SEXP R_x, SEXP R_y, SEXP t) {
     SET_VECTOR_ELT(r, 1, (y = allocVector(INTSXP, LENGTH(t))));
     
     if (isFactor(R_x)) {
-	SET_LEVELS(x, duplicate(GET_LEVELS(R_x)));
+	SET_LEVELS(x, GET_LEVELS(R_x));
 	setAttrib(x, install("class"), mkString("factor"));
     }
     if (isFactor(R_y)) {
-	SET_LEVELS(y, duplicate(GET_LEVELS(R_y)));
+	SET_LEVELS(y, GET_LEVELS(R_y));
 	setAttrib(y, install("class"), mkString("factor"));
     }
 
-    UNPROTECT(1);
- 
     i = j = i0 = j0 = 0;
     for (k = 0; k < LENGTH(t); k++) {
 	if (i > LENGTH(R_x) || j > LENGTH(R_y))
@@ -750,6 +764,8 @@ SEXP sdists_align(SEXP R_x, SEXP R_y, SEXP t) {
     if (i < LENGTH(R_x) || j < LENGTH(R_y))
 	error("invalid edit transcript");
 
+    UNPROTECT(1);
+ 
     return r;
 }
 

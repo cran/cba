@@ -42,7 +42,7 @@ order.greedy(dist)
 d <- dist(matrix(runif(20), ncol=2))
 hc <- hclust(d)
 co <- order.optimal(d, hc$merge)
-md <- -as.dist(crossprod(as.matrix(d)))	# Murtagh's distances
+md <- -as.dist(crossprod(as.matrix(d, diag = 0)))   # Murtagh's distances
 hg <- order.greedy(md)
 go <- order.optimal(md, hg$merge)
 ### compare images

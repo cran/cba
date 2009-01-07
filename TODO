@@ -1,4 +1,12 @@
 
+* check which functions are now in seriation
+  and remove such from cba.
+
+* move sdists and friends to a seperate
+  package.
+
+ceeboo 2009
+
 * complete this list with known issues.
 
 * improve the documentation.

@@ -1,69 +1,42 @@
 
-Release 0.1
-Release date: 2005-05-30
+Release 0.2-6
+Release date: 2009-01-07
 
-Alpha release of the Rock package which implements the Rock algorithm.
-Focus is on efficient implementation of time critical functions: distance
-computation and merging.
+dists, row.dist, col.dist, colSums.dist, colMeans.dist,
+rowSums.dist, rowMeans.dist, [[.dist, subset.dist, dim.dist, 
+dimnames.dist, dapply, dapply.list were removed as the same
+functionality is provided in package proxy.
 
-Release 0.1-1
-Release date: 2005-07-02
+cluproxplot and seriation were removed as these are provided
+and further developed in package seriation.
 
-Bug fixes, better fitting in with existing R functionality (e.g. class dist).
-Added efficient conversion of nominal variables to dummy coding.
+in sdists.c changed temporary storage from CHARSXP to RAWSXP
+for compatibility with R-2.9.x.
 
-Release 0.1-2
-Release date: 2005-08-30
+added pairwise option to sdists.
 
-Major changes include merging in of Proximus. Visualization is sketchy but
-useable. Most of the stuff definitely belongs to separate packages. However, 
-it all ended up here. The C code is at least -Wall -pedantic clean.
+added sdists.center and sdists.center.align.
 
-Release 0.1-3
-Release date: 2005-09-08
+reversed CHANGELOG.
 
-The package develops into a trash bag: moved optimal leaf ordering and stuff in. This sucks!
+Release 0.2-5
+Release date: 2008-05-25
 
-Release 0.1-4
-Release date: 2005-09-12
+fixed encoding declaration in proximus documentation (C)
+fixed example in rockCluster documentation (C)
 
-Added drop option to as.dummy and sparse K-means code. 
-Added clusimplot (Michael)
-Added Mushroom data set (Michael)
+Release 0.2-1
+Release date: 2006-09-04
 
-Release 0.1-5
-Release date: 2005-10-26
+fixed Windoze C99 versus gnu99 issues (C)
+fixed order.matrix and order.data.frame (C)
 
-Fixed similarity conversion for intraClusterSim in clusimplot (Michael)
-renamed clusimplot to cluproxplot (Cluster Proximity plot) (M)
-cluproxplot uses grid now and includes a silhouettes plot (M)
-added interface for seriation (M)
+Release 0.2-0
+Release date: 2006-08-31
 
-
-Release 0.1-6
-Release date: 2005-12-12
-
-cluproxplot uses now really grid (M)
-added colorkey for cluproxplot (M)
-
-Release 0.1-7
-Release date: 2006-01-27
-
-added cluProxMatrix class w/ print and plot methods (M)
-simplified the cluproxplot interface by using plotOptions for all plotting 
-	related options (m)
-added threshold to cluproxplot (M)
-
-Release 0.1-8
-Release date: 2006-03-01
-
-fixed random-access bug in subset_dist C code which made the return 
-value dependent on the order of the subset indexes (C)
-added names to cluster labels in rockCluster and ccfksm (C)
-added C code for fuzzy binary distance computation (C)
-added C code for distance computation on sequences (C)
-reduced cluproxplots memory needs (M)
-introduced hcl colorspace and fixed colorkey for cluproxplot (M)
+added stress (C)
+fixed future problems with strict type checking in (C)
+by using SET_STRING_ELT instead of SET_ELEMENT.
 
 Release 0.1-9
 Release date: see next
@@ -76,16 +49,69 @@ added interrupt checks to all distance functions (C)
 added traceback plot for sdists (C)
 added cluster.dist (C)
 
-Release 0.2-0
-Release date: 2006-08-31
+Release 0.1-8
+Release date: 2006-03-01
 
-added stress (C)
-fixed future problems with strict type checking in C
-by using SET_STRING_ELT instead of SET_ELEMENT.
+fixed random-access bug in subset_dist C code which made the return 
+value dependent on the order of the subset indexes (C)
+added names to cluster labels in rockCluster and ccfksm (C)
+added C code for fuzzy binary distance computation (C)
+added C code for distance computation on sequences (C)
+reduced cluproxplots memory needs (M)
+introduced hcl colorspace and fixed colorkey for cluproxplot (M)
 
-Release 0.2-1
-Release date: 2006-09-04
+Release 0.1-7
+Release date: 2006-01-27
 
-fixed Windoze C99 versus gnu99 issues (C)
-fixed order.matrix and order.data.frame (C)
+added cluProxMatrix class w/ print and plot methods (M)
+simplified the cluproxplot interface by using plotOptions for all plotting 
+	related options (m)
+added threshold to cluproxplot (M)
+
+Release 0.1-6
+Release date: 2005-12-12
+
+cluproxplot uses now really grid (M)
+added colorkey for cluproxplot (M)
+
+Release 0.1-5
+Release date: 2005-10-26
+
+Fixed similarity conversion for intraClusterSim in clusimplot (Michael)
+renamed clusimplot to cluproxplot (Cluster Proximity plot) (M)
+cluproxplot uses grid now and includes a silhouettes plot (M)
+added interface for seriation (M)
+
+Release 0.1-4
+Release date: 2005-09-12
+
+Added drop option to as.dummy and sparse K-means code. 
+Added clusimplot (Michael)
+Added Mushroom data set (Michael)
+
+Release 0.1-3
+Release date: 2005-09-08
+
+The package develops into a trash bag: moved optimal leaf ordering
+and stuff in. This sucks! (C)
+
+Release 0.1-2
+Release date: 2005-08-30
+
+Major changes include merging in of Proximus. Visualization is sketchy but
+useable. Most of the stuff definitely belongs to separate packages. However, 
+it all ended up here. The C code is at least -Wall -pedantic clean.
+
+Release 0.1-1
+Release date: 2005-07-02
+
+Bug fixes, better fitting in with existing R functionality (e.g. class dist).
+Added efficient conversion of nominal variables to dummy coding.
+
+Release 0.1
+Release date: 2005-05-30
+
+Alpha release of the Rock package which implements the Rock algorithm.
+Focus is on efficient implementation of time critical functions: distance
+computation and merging.
 

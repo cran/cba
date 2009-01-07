@@ -9,13 +9,15 @@
 }
 \usage{
 sdists(x, y = NULL, method = "ow", weight = c(1, 0, 2), 
-       exclude = c(NA,NaN,Inf,-Inf))
+       exclude = c(NA,NaN,Inf,-Inf), pairwise = FALSE)
 }
 \arguments{
   \item{x,y}{a list (of vectors) or a vector of character.}
   \item{method}{a mnemonic string referencing a distance measure.}
   \item{weight}{vector or matrix of parameter values.}
   \item{exclude}{argument to factor.}
+  \item{pairwise}{compute distances for the parallel pairs of \code{x}
+    and \code{y} only.}
 }
 \details{
   This function provides a common interface to different methods for 
@@ -70,7 +72,7 @@ sdists(x, y = NULL, method = "ow", weight = c(1, 0, 2),
 \section{Warning}{The interface is experimental and may change in the future} 
 \seealso{
 \code{\link{sdists.trace}} for computation of edit transcripts and sequence alignments,
-\code{\link{dists}} for computation of common distances,
+\code{\link[proxy:dist]{dist}} for computation of common distances,
 \code{\link{agrep}} for searches for approximate matches.
 }
 \examples{
@@ -88,6 +90,8 @@ x <- sapply(rbinom(3,64,0.5),function(n,x)
 x
 sdists(x,method="aw",weight=w)
 sdists(x,x,method="aw",weight=w)		# check
+## pairwise
+sdists(x,rev(x),method="aw",weight=w,pairwise = TRUE)
 diag(w) <- seq(0,7)
 sdists(x,method="aw", weight=w)			# global alignment
 sdists(x,method="awl",weight=w)			# local alignment

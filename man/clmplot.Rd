@@ -9,7 +9,7 @@
 }
 \usage{
 clmplot(x, col, col.bycol = FALSE, order=FALSE,
-	dists.method = "binary", hclust.method = "average",
+	dist.method = "binary", hclust.method = "average",
 	axes = FALSE, xlab = "", ylab = "", ...)
 }
 \arguments{
@@ -17,7 +17,7 @@ clmplot(x, col, col.bycol = FALSE, order=FALSE,
   \item{col}{an optional vector defining a coloring.}
   \item{col.bycol}{option to color by columns.}
   \item{order}{option to (pre)order the rows and columns.}
-  \item{dists.method}{method to be used by \code{dists}.}
+  \item{dist.method}{method to be used by \code{dist}.}
   \item{hclust.method}{method to be used by \code{hclust}.}
   \item{axes}{option to plot axes.}
   \item{xlab, ylab}{labels for the x and y axis.}
@@ -35,7 +35,7 @@ clmplot(x, col, col.bycol = FALSE, order=FALSE,
   from \code{\link{heat.colors}}. 
  
   If \code{order} is \code{TRUE} the rows and columns are ordered
-  by \code{hclust} where the distances are computed by \code{dists}. 
+  by \code{hclust} where the distances are computed by \code{dist}. 
 
   Note that an axis is only plotted if the number of elements (rows or
   columns) is less than 100.

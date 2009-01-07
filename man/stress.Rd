@@ -54,7 +54,7 @@ stress.dist(x, rows = NULL, cols = NULL, bycol = FALSE,
 \author{Christian Buchta}
 %\note{}
 \seealso{
-  \code{\link{dist}} for general distance computation.
+  \code{\link[proxy:dist]{dist}} for general distance computation.
 }
 \examples{
 ##
