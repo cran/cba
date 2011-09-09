@@ -2,15 +2,15 @@
 \alias{clmplot}
 \title{Plotting Logical Matrices}
 \description{
-  A wrapper function to image that produces a level plot with the option to 
-  color the rows (or columns) based on a clustering and/or classification 
-  of the data, and the option to reorder the rows and columns for better
-  presentation.
+  A wrapper function to \code{image} that produces a level plot with
+  the option to color the rows (or columns) based on a clustering and/or
+  classification of the data, and the option to reorder the rows and
+  columns for better presentation.
 }
 \usage{
 clmplot(x, col, col.bycol = FALSE, order=FALSE,
-	dist.method = "binary", hclust.method = "average",
-	axes = FALSE, xlab = "", ylab = "", ...)
+        dist.method = "binary", hclust.method = "average",
+        axes = FALSE, xlab = "", ylab = "", ...)
 }
 \arguments{
   \item{x}{an logical matrix.}

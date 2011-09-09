@@ -9,7 +9,7 @@
 stress(x, rows = NULL, cols = NULL, type = "moore")
 
 stress.dist(x, rows = NULL, cols = NULL, bycol = FALSE,
-	    type = "moore")
+            type = "moore")
 }
 \arguments{
   \item{x}{a matrix object.}

@@ -229,10 +229,12 @@ typedef struct resNode {
 static int  res_cnt;		/* number of result elements */
 static RES *res_last;		/* last element of result list */
 
-static void freeRes(RES *r) {
+static int freeRes(RES *r) {
 	
+    int i;
     RES *p, *q;
     
+    i = 0;
     for (p = r; p != NULL; p = q) {
 	q = p->next;
 	
@@ -240,7 +242,10 @@ static void freeRes(RES *r) {
 	freeVec(p->y);
 	
 	Free(p);
+	i++;
     }
+
+    return i;
 }
 
 /* copy result list to R and clean up
@@ -303,12 +308,17 @@ static SEXP res2R(RES *r, MAT *m) {
 
         SET_NAMES(R_res, R_obj);
 	
+	if (i == res_cnt) {
+	    i += freeRes(q);
+		 freeMat(m);
+	    error("res2R result count error [%i:%i]", i, res_cnt);
+	}
 	SET_ELEMENT(R_lst, i++, R_res);
 	
 	UNPROTECT(7);
     }
     if (i != res_cnt)
-       warning("res2R result count error");
+       error("res2R result count error [%i:%i]", i, res_cnt);
     
     SET_ELEMENT(R_ret, 2, R_lst);
     
@@ -595,12 +605,19 @@ SEXP proximus(SEXP R_mat, SEXP R_max_radius, SEXP R_min_size, SEXP R_min_retry,	
     RES *r;
 
     SEXP R_res;
-    
+   
+    if (!LENGTH(R_max_radius) || 
+	!LENGTH(R_min_size  ) || 
+	!LENGTH(R_min_retry ) || 
+	!LENGTH(R_max_iter  ) || 
+	!LENGTH(R_debug     ))
+	error("proximus: missing parameter");
+
     max_radius = INTEGER(R_max_radius)[0];
-    min_size   = INTEGER(R_min_size)[0];
-    min_retry  = INTEGER(R_min_retry)[0];
-    max_iter   = INTEGER(R_max_iter)[0];
-    debug      = LOGICAL(R_debug)[0];
+    min_size   = INTEGER(R_min_size  )[0];
+    min_retry  = INTEGER(R_min_retry )[0];
+    max_iter   = INTEGER(R_max_iter  )[0];
+    debug      = LOGICAL(R_debug     )[0];
 
     if (!IS_LOGICAL(R_mat))
        error("proximus: matrix not logical");

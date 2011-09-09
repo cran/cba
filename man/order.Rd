@@ -10,7 +10,7 @@
 \usage{
 order.dist(x, index = FALSE)
 order.matrix(x, type = "neumann", by = c("both","rows","cols"),
-	     index = FALSE)
+             index = FALSE)
 order.data.frame(x, type = "neumann", by = c("both","rows","cols"),
                  index = FALSE)
 }
@@ -58,7 +58,7 @@ order.data.frame(x, type = "neumann", by = c("both","rows","cols"),
 ## not a hard problem
 data(iris)
 d <- dist(iris[1:4])
-image(order.dist(d))
+implot(order.dist(d))
 data(townships)
 x <- order.data.frame(townships)
 x

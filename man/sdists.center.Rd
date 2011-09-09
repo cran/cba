@@ -7,7 +7,7 @@
 \usage{
 sdists.center(x, d = NULL, method = "ow", weight = c(1, 0, 2),
               exclude = c(NA, NaN, Inf, -Inf), FUN = NULL, ...,
-	      unique = FALSE)
+              unique = FALSE)
 }
 \arguments{
   \item{x}{a list (of vectors) of a vector of character.}

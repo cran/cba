@@ -22,7 +22,8 @@ lminter <- function(x, block.size=1, nbin=0) {
 
 # plot a logical matrix with the option to reduce the resolution
 
-lmplot <- function(x, block.size=1, gray=FALSE, xlab="", ylab="", ...) {
+lmplot <- function(x, block.size=1, gray=FALSE, xlab="", ylab="",
+		   axes = FALSE, ...) {
     if (!is.logical(x))
        stop(paste(sQuote("x"),"not logical"))
     if (block.size < 1)
@@ -39,7 +40,7 @@ lmplot <- function(x, block.size=1, gray=FALSE, xlab="", ylab="", ...) {
     gray <- rev(gray.colors(max(2, nbin + 1), start=0, end=1)
                )[is.element(0:max(1, nbin), x)]
 
-    image(x, xlab=xlab, ylab=ylab, col=gray, ...)
+    implot(x, xlab=xlab, ylab=ylab, col=gray, axes = axes, ...)
 }
 
 # plot a logical matrix with the option to color (by rows or 
@@ -83,32 +84,49 @@ clmplot <- function(x, col, col.bycol=FALSE, order=FALSE,
        else
           x <- x * rep(as.integer(col), dim(x)[2])
     }
-    
-    image(x, zlim=c(1,nlevels(col)), col=levels(col), 
-          xlab=xlab, ylab=ylab, ...)
 
-    if (axes) {
-       if ((n <- length(co)) < 100) 
-          axis(1, 1:n, labels=co, las = 2, line = -0.5, tick = 0, 
-               cex.axis = 0.2 + 1/log10(n))
-       if ((n <- length(ro)) < 100)
-          axis(4, 1:n, labels=ro[n:1], las = 2, line = -0.5, tick = 0, 
-               cex.axis = 0.2 + 1/log10(n))
+    implot(structure(x, dimnames = list(ro, co)),
+	   zlim=c(1,nlevels(col)), col=levels(col), xlab=xlab, ylab=ylab,
+	   axes = axes, ...)
 
-    }
     invisible(list(rows=ro, cols=co))
 }
 
-# image method that makes a proper image plot of a matrix.
+# Make a proper image plot of a matrix. That is,
 # the rows and columns are swapped and the order of the 
 # columns (original rows) is reversed.
 
-image.matrix <- function(x, xlab="", ylab="", ...)
-    image.default(1:dim(x)[2], 1:dim(x)[1], t(x)[,dim(x)[1]:1], axes=FALSE,
-                  xlab=xlab, ylab=ylab, ...)
-
-image.dist <- function(x, xlab="", ylab="", ...)
-    image(as.matrix(x), xlab=xlab, ylab=ylab, ...)
+implot <- function(x, xlab="", ylab="", axes = FALSE, ticks = 10, 
+		   las = 2, ...) {
+    if (inherits(x, "dist"))
+	x <- as.matrix(x)
+    else {
+	if (!is.matrix(x))
+	    stop("'x' not of class matrix")
+	x <- t(x)
+    }
+    x <- x[,rev(seq_len(dim(x)[2])),drop = FALSE]
+    image.default(seq_len(dim(x)[1]), seq_len(dim(x)[2]), x, 
+		  axes=FALSE, xlab=xlab, ylab=ylab, ...)
+    if (axes) {
+	if (ticks < 1)
+	    stop("'ticks' invalid")
+	ticks <- as.integer(ticks)
+	if (length(rownames(x))) {
+	    at <- seq(1, dim(x)[1], length.out = min(ticks, dim(x)[1]))
+	    axis(1, at, labels = rownames(x)[at], las = las,
+		 line = -0.5, tick = 0, 
+		 cex.axis = 0.2 + 1/log10(length(at)))
+	}
+	if (length(colnames(x))) {
+	    at <- seq(1, dim(x)[2], length.out = min(ticks, dim(x)[2]))
+	    axis(4, at, labels = colnames(x)[at], las = las,
+		 line = -0.5, tick = 0, 
+		 cex.axis = 0.2 + 1/log10(length(at)))
+	}
+    }
+    invisible(x)
+}
 
 ###
 

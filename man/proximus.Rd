@@ -9,7 +9,7 @@
 }
 \usage{
 proximus(x, max.radius = 2, min.size = 1, min.retry = 10,
-	 max.iter = 16, debug = FALSE)
+         max.iter = 16, debug = FALSE)
 }
 \arguments{
   \item{x}{a logical matrix.}

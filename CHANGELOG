@@ -1,4 +1,12 @@
 
+Release 0.2-7
+Release date: 2011-09-09
+
+changed image.matrix to implot so that other packages which 
+use image work with cba.
+
+fixed justification issues in documentation.
+
 Release 0.2-6
 Release date: 2009-01-07
 

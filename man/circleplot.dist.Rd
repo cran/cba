@@ -5,7 +5,8 @@
   Function for visualizing distance graphs using a circular layout.
 }
 \usage{
-circleplot.dist(x, cutoff = 0.5, col = 1, circle = FALSE, scale = 1.4)
+circleplot.dist(x, cutoff = 0.5, col = 1, circle = FALSE,
+                scale = 1.4)
 }
 \arguments{
   \item{x}{an object of class \code{dist}.}

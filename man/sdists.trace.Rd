@@ -9,7 +9,7 @@
 }
 \usage{
 sdists.trace(x, y, method = "ow", weight = c(1, 0, 2),
-	     exclude = c(NA,NaN,Inf,-Inf), graph = FALSE)
+             exclude = c(NA, NaN, Inf, -Inf), graph = FALSE)
 }
 \arguments{
   \item{x,y}{a numeric or string vector.}

@@ -61,8 +61,8 @@ op <- par(mfrow=c(2,2), pty="s")
 plot(hc, main="hclust")
 plot(ho, main="optimal")
 # compare images
-image(d[[hc$order]])
-image(d[[co$order]])
+implot(d[[hc$order]])
+implot(d[[co$order]])
 par(op)
 ### compare lengths
 order.length(d, hc$order)

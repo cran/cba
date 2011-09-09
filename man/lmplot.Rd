@@ -2,11 +2,12 @@
 \alias{lmplot}
 \title{Plotting Logical Matrices}
 \description{
-  Implements a wrapper function to image that produces a black and white or 
-  gray-scale plot of a logical matrix.
+  Implements a wrapper function to \code{image} that produces a black and
+  white or gray-scale plot of a logical matrix.
 }
 \usage{
-lmplot(x, block.size = 1, gray = FALSE, xlab = "", ylab = "", ...)
+lmplot(x, block.size = 1, gray = FALSE, xlab = "", ylab = "", 
+       axes = FALSE, ...)
 }
 \arguments{
   \item{x}{a logical matrix.}
@@ -14,6 +15,7 @@ lmplot(x, block.size = 1, gray = FALSE, xlab = "", ylab = "", ...)
   \item{gray}{optionally use a gray scale.}
   \item{xlab}{title for the x axis.}
   \item{ylab}{title for the y axis.}
+  \item{axes}{option to plot axes.}
   \item{\dots}{further arguments to \code{image}.}
 }
 \details{

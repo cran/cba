@@ -7,8 +7,9 @@
 }
 \usage{
 sdists.center.align(x, center, method = "ow", weight = c(1, 0, 2),
-                    exclude = c(NA, NaN, Inf, -Inf), break.ties = TRUE,
-		    transitive = FALSE, to.data.frame = FALSE)
+                    exclude = c(NA, NaN, Inf, -Inf),
+                    break.ties = TRUE, transitive = FALSE,
+                    to.data.frame = FALSE)
 }
 \arguments{
   \item{x}{a list (of vectors) or a vector of character.}
@@ -17,8 +18,8 @@ sdists.center.align(x, center, method = "ow", weight = c(1, 0, 2),
   \item{weight}{argument to \code{sdists}.}
   \item{exclude}{arguments to \code{sdists}.}
   \item{break.ties}{a logical specifying whether random tie-breaking
-    should be perforemd. Otherwise the first alignment is used.}
-  \item{transitive}{a logical specifiying whether the sequences in
+    should be performed. Otherwise the first alignment is used.}
+  \item{transitive}{a logical specifying whether the sequences in
     \code{x} should be aligned with each other, too.}
   \item{to.data.frame}{a logical specifying whether the result should
     be converted to \code{data.frame}.}

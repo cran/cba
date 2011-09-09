@@ -12,6 +12,7 @@ export(
     order.length,order.optimal,order.greedy,
     order.dist,order.matrix,order.data.frame,
     stress,stress.dist,
+    implot,
     circleplot.dist)
 S3method("as.dummy",logical)
 S3method("as.dummy",integer)
@@ -27,8 +28,6 @@ S3method(print,proximus)
 S3method(summary,proximus)
 S3method(print,"summary.proximus")
 S3method(predict,ccfkms)
-S3method(image,matrix)
-S3method(image,dist)
 S3method(cut,ordered)
 S3method(plot,"sdists.graph")
 useDynLib(cba)

@@ -9,7 +9,7 @@
 }
 \usage{
 sdists(x, y = NULL, method = "ow", weight = c(1, 0, 2), 
-       exclude = c(NA,NaN,Inf,-Inf), pairwise = FALSE)
+       exclude = c(NA, NaN, Inf, -Inf), pairwise = FALSE)
 }
 \arguments{
   \item{x,y}{a list (of vectors) or a vector of character.}
