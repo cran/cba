@@ -552,9 +552,11 @@ static RES *partition(VEC *s, MAT *m, int d, int i) {
 	       
 	       freeVec(xx);
 
-	       if (s->n)
-		  res_last->next = partition(s, m, d+1, i);
-	       
+	       if (s->n) {
+		  z = res_last;
+		  z->next = partition(s, m, d+1, i);
+	       }
+
 	       if (debug)
 	          Rprintf("%3i <<\n", d);
 	       
@@ -577,8 +579,9 @@ static RES *partition(VEC *s, MAT *m, int d, int i) {
     remSet(z->x, s);
     
     freeRes(z);
-    
-    res_last->next = partition(s, m, d+1, i);
+
+    z = res_last;    
+    z->next = partition(s, m, d+1, i);
     
     if (debug)
        Rprintf("%3i <\n", d);

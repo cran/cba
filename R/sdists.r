@@ -219,7 +219,8 @@ function(x, circle.col = 1, graph.col = 2, circle.scale = c("mean", "max", "last
                   x1 = g$y1 + 1/2, y1 = g$x1 + 1/2,
                   default.units = "native",
                   gp = gpar(col = graph.col, lwd = g$weight,
-                            lty = (cn[g$y1+1] == rn[g$x1+1]) + 1))
+                            lty = (g$y1 > g$y0 & g$x1 > g$x0 & 
+                                   cn[g$y1+1] == rn[g$x1+1]) + 1))
 
     popViewport()
 }

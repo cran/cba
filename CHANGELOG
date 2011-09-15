@@ -1,4 +1,12 @@
 
+Release 0.2-8
+Release date: 2011-09-15
+
+fixed lty issue in plot.sdists.graph.
+
+fixed possible issue on sparc-solaris in proximus.c.
+
+
 Release 0.2-7
 Release date: 2011-09-09
 
