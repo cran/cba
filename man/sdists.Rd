@@ -8,7 +8,7 @@
   matrix between two such lists or vectors.
 }
 \usage{
-sdists(x, y = NULL, method = "ow", weight = c(1, 0, 2), 
+sdists(x, y = NULL, method = "ow", weight = c(1, 1, 0, 2), 
        exclude = c(NA, NaN, Inf, -Inf), pairwise = FALSE)
 }
 \arguments{
@@ -32,7 +32,9 @@ sdists(x, y = NULL, method = "ow", weight = c(1, 0, 2),
 
 \describe{
     \item{\code{ow}:}{operation-weight edit distance. Weights have to be
-	specified for insertion/deletion, match, and replacement.}
+	specified for deletion, insertion, match, and replacement. Other
+	weights for initial operations can be specified as
+	\code{weight[5:6]}.}
     \item{\code{aw}:}{alphabet-weight sequential alignment similarity.
 	A matrix of weights (scores) for all possible symbol replacements 
 	needs to be specified with the convention that the first row/column 
@@ -78,7 +80,7 @@ sdists(x, y = NULL, method = "ow", weight = c(1, 0, 2),
 \examples{
 ### numeric data
 sdists(list(c(2,2,3),c(2,4,3)))			# 2
-sdists(list(c(2,2,3),c(2,4,3)),weight=c(1,0,1)) # 1
+sdists(list(c(2,2,3),c(2,4,3)),weight=c(1,1,0,1)) # 1
 
 ### character data
 w <- matrix(-1,nrow=8,ncol=8)			# weight/score matrix for

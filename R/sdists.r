@@ -16,7 +16,7 @@
 # 
 # ceeboo 2006, 2008
 
-sdists <- function(x,y=NULL, method="ow", weight=c(1,0,2),
+sdists <- function(x,y=NULL, method="ow", weight=c(1,1,0,2),
                    exclude=c(NA,NaN,Inf,-Inf), pairwise = FALSE) {
     METHODS <- c("ow","aw","awl")
     code <- pmatch(method, METHODS)
@@ -44,8 +44,8 @@ sdists <- function(x,y=NULL, method="ow", weight=c(1,0,2),
        l <- colnames(weight)
     }
     else {
-       if (length(weight) < 3)
-          stop("'weight' invalid")
+       if (length(weight) < 4)
+	  stop("'weight' invalid")
        # determine common symbol set
        l <- sort(unique(c(unlist(x),unlist(y),"")),na.last=TRUE)       
     }
@@ -80,7 +80,7 @@ sdists <- function(x,y=NULL, method="ow", weight=c(1,0,2),
 # 'table' and the traceback graph in attribute 'graph'.
 
 sdists.trace <- 
-function(x,y, method="ow", weight=c(1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = FALSE) {
+function(x,y, method="ow", weight=c(1,1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = FALSE, partial = FALSE) {
     METHODS <- c("ow","aw","awl")
     code <- pmatch(method, METHODS)
     if (is.na(code))
@@ -106,6 +106,8 @@ function(x,y, method="ow", weight=c(1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = 
     if (!is.vector(y))
         stop("'y' not a vector")
     if (code >= 2) {
+       if (partial)
+	  stop("'partial' not implemented")
        if (!is.matrix(weight))
           stop("'weight' not a matrix")
        if (is.null(colnames(weight)))
@@ -119,8 +121,14 @@ function(x,y, method="ow", weight=c(1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = 
           l1 <- rownames(weight)  
     }
     else {
-       if (length(weight) < 3)
+       if (length(weight) < 4)
           stop("'weight' invalid")
+       if (partial) {
+	  if (length(weight) < 5)
+	     weight <- c(weight, weight[1], 0)
+	  if (length(weight) < 6)
+	     weight <- c(weight, 0)
+       }
        # determine symbol sets
        l1 <- l2 <- sort(unique(c(x,y,"")),na.last=TRUE)     
     }
@@ -128,9 +136,26 @@ function(x,y, method="ow", weight=c(1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = 
     y <- factor(y,levels=l2,exclude=if(is.integer(y))NA else exclude)
     if (!is.double(weight))
         storage.mode(weight) <- "double"
-    t <- .Call("sdists_transcript", x, y, as.integer(code), weight, graph)
+    t <- .Call("sdists_transcript", x, y, as.integer(code), weight, graph, partial)
     if (is.na(t[1]))
         return(t)
+    # reduce set of transcripts/paths
+    if (partial) {
+	z <- t
+	## reduce to maximum number of trailing inserts
+	k <- attr(regexpr("I+$", z), "match.length")
+	z <- z[k == max(k)]
+	## reduce to maximum number of matches
+	k <- sapply(lapply(strsplit(z, ""), table), "[", "M")
+	k <- which(k == max(k, na.rm = TRUE))
+	if (length(k))
+	    z <- z[k]
+	## reduce to maximum number of leading inserts
+	k <- attr(regexpr("^I+", z), "match.length")
+	z <- z[k == max(k)]
+	attributes(z) <- attributes(t)
+	t <- z
+    }
     if (graph) {
         dimnames(attr(t, "table")) <- 
             list(x = c("", as.character(x)), y = c("", as.character(y)))
@@ -143,6 +168,7 @@ function(x,y, method="ow", weight=c(1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = 
     z <- lapply(t, function(t) .Call("sdists_align", x, y, t))
     names(z) <- t
     attr(z, "value") <- attr(t, "value")
+    attr(z, "partial") <- attr(t, "partial")
     class(z) <- "sdists.trace"
     z
 }
@@ -165,7 +191,7 @@ function(x,y, method="ow", weight=c(1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph = 
 # ceeboo 2006
 
 plot.sdists.graph <- 
-function(x, circle.col = 1, graph.col = 2, circle.scale = c("mean", "max", "last"), main = "", ...) {
+function(x, circle.col = 1, graph.col = 2, circle.scale = c("mean", "max", "last", "text"), main = "", ...) {
     
     circle.scale <- match.arg(circle.scale)
     
@@ -176,11 +202,14 @@ function(x, circle.col = 1, graph.col = 2, circle.scale = c("mean", "max", "last
     nx <- dim(t)[2]
     ny <- dim(t)[1]
 
-    t <- t - min(t)
-    t <- t / switch(circle.scale, mean = mean(t),
-                                   max = max(t),
-                                  last = t[ny,nx])
-    
+    if (circle.scale == "text")
+	fontsize <- 24	## FIXME
+    else {    
+	t <- t - min(t)
+	t <- t / switch(circle.scale, mean = mean(t),
+				      max  = max(t),
+                                      last = t[ny,nx])
+    }
     cn <- colnames(t)
     rn <- rownames(t)
 
@@ -204,17 +233,28 @@ function(x, circle.col = 1, graph.col = 2, circle.scale = c("mean", "max", "last
     grid.xaxis(at = seq(nx)-0.5, label = cn)
     grid.yaxis(at = seq(ny)-0.5, label = rn)
     
-    grid.circle(x = rep(1:nx,  each = ny) - 1/2,
-                y = rep(1:ny, times = nx) - 1/2,
-                r = t / 2,
+    if (circle.scale == "text")
+        mapply(grid.text,
+            label = t,
+            x = rep(1:nx,  each = ny) - 1/2,
+            y = rep(1:ny, times = nx) - 1/2,
+            MoreArgs = list(
+                check.overlap = TRUE,
                 default.units = "native",
-                gp = gpar(col = circle.col))
+                gp = gpar(col = "lightgrey", fontsize = fontsize))
+        )
+    else
+        grid.circle(x = rep(1:nx,  each = ny) - 1/2,
+                    y = rep(1:ny, times = nx) - 1/2,
+                    r = t / 2,
+                    default.units = "native",
+                    gp = gpar(col = circle.col))
 
     grid.segments(x0 = b$y0 + 1/2, y0 = b$x0 + 1/2,
                   x1 = b$y1 + 1/2, y1 = b$x1 + 1/2,
                   default.units = "native",
                   gp = gpar(lty = 3))
-
+ 
     grid.segments(x0 = g$y0 + 1/2, y0 = g$x0 + 1/2,
                   x1 = g$y1 + 1/2, y1 = g$x1 + 1/2,
                   default.units = "native",

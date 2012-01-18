@@ -8,8 +8,9 @@
   a combined edit graph. 
 }
 \usage{
-sdists.trace(x, y, method = "ow", weight = c(1, 0, 2),
-             exclude = c(NA, NaN, Inf, -Inf), graph = FALSE)
+sdists.trace(x, y, method = "ow", weight = c(1, 1, 0, 2),
+             exclude = c(NA, NaN, Inf, -Inf), graph = FALSE,
+	     partial = FALSE)
 }
 \arguments{
   \item{x,y}{a numeric or string vector.}
@@ -17,6 +18,7 @@ sdists.trace(x, y, method = "ow", weight = c(1, 0, 2),
   \item{weight}{vector or matrix of parameter values.}
   \item{exclude}{argument to factor.}
   \item{graph}{option to compute the combined edit graph.}
+  \item{partial}{option to compute an approximate substring match.}
 }
 \details{
   Function \code{sdists.trace} complements the distance computation between
@@ -49,6 +51,11 @@ sdists.trace(x, y, method = "ow", weight = c(1, 0, 2),
   sequences of length n and m, respectively \eqn{O(n*m)} for the local
   alignment problem. However, note that the runtime for generating all
   transcripts can be \eqn{O((n*m)^3)} in the worst case.
+
+  If \code{partial = FALSE} computes an approximate substring match of
+  \code{x} (the pattern) in \code{y}, for \code{method = "ow"} only.
+  Returns the subset of paths which require the maximum number of match
+  and initial and final insert operations.
 }
 \value{
   A list with components each a list of two factors, the aligned sequences.
@@ -86,10 +93,10 @@ sdists.trace(x, y, method = "ow", weight = c(1, 0, 2),
 ### from the book
 x1 <- "vintner"
 y1 <- "writers"
-b1 <- sdists.trace(x1, y1, weight=c(1,0,1))
+b1 <- sdists.trace(x1, y1, weight=c(1,1,0,1))
 b1
 ## longest common subsequence ?
-sdists.trace("a","b", weight=c(0,-1,0))
+sdists.trace("a","b", weight=c(0,0,-1,0))
 ## from the book
 w2 <- matrix(-2,ncol=13,nrow=13)
 w2[1,] <- w2[,1] <- -1
@@ -108,8 +115,8 @@ rownames(w3) <- c("","1","2","3","4")
 colnames(w3) <- c("","A","B","C","D")
 b3 <- sdists.trace(x3, y3, method="aw", weight=w3)
 b3
-### test graphics computations
-b11 <- sdists.trace(x1, y1, weight=c(1,0,1), graph = TRUE)
-b11
+## partial
+b4 <- sdists.trace(x1, y1, weight=c(1,1,0,1), partial = TRUE)
+b4
 }
 \keyword{cluster}

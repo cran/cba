@@ -5,7 +5,7 @@
   Find centroid sequences among a collection of sequences.
 }
 \usage{
-sdists.center(x, d = NULL, method = "ow", weight = c(1, 0, 2),
+sdists.center(x, d = NULL, method = "ow", weight = c(1, 1, 0, 2),
               exclude = c(NA, NaN, Inf, -Inf), FUN = NULL, ...,
               unique = FALSE)
 }

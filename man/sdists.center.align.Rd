@@ -6,7 +6,7 @@
   center-star-tree heuristic. 
 }
 \usage{
-sdists.center.align(x, center, method = "ow", weight = c(1, 0, 2),
+sdists.center.align(x, center, method = "ow", weight = c(1, 1, 0, 2),
                     exclude = c(NA, NaN, Inf, -Inf),
                     break.ties = TRUE, transitive = FALSE,
                     to.data.frame = FALSE)

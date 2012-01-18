@@ -14,7 +14,7 @@
 ## set of sequences.
 ##
 sdists.center <-
-function(x, d = NULL, method = "ow", weight = c(1, 0, 2),
+function(x, d = NULL, method = "ow", weight = c(1, 1, 0, 2),
     exclude = c(NA, NaN, Inf, -Inf), FUN = NULL, ..., unique = FALSE)
 {
     if (is.null(d))
@@ -50,7 +50,7 @@ function(x, d = NULL, method = "ow", weight = c(1, 0, 2),
 ##      make a first or random choice.
 ##
 sdists.center.align <-
-function(x, center, method = "ow", weight = c(1, 0, 2),
+function(x, center, method = "ow", weight = c(1, 1, 0, 2),
     exclude = c(NA, NaN, Inf, -Inf), break.ties = TRUE, transitive = FALSE,
     to.data.frame = FALSE)
 {

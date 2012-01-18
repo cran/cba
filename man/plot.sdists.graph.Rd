@@ -7,7 +7,7 @@
 }
 \usage{
 \method{plot}{sdists.graph}(x, circle.col = 1, graph.col = 2,
-     circle.scale = c("mean", "max", "last"), main = "", ...)
+     circle.scale = c("mean", "max", "last", "text"), main = "", ...)
 }
 \arguments{
   \item{x}{an object of class \code{sdists.graph.}}
@@ -26,7 +26,8 @@
   The circumference of a circle is proportional to the minimum cost
   (maximum weight) of edit (alignment) operations leading to a table cell.
   \code{circle.scale} specifies the type of normalization performed where
-  \code{last} means the last table entry (containing the optimum value).
+  \code{last} means the last table entry (containing the optimum value),
+  and \code{text} draws the values instead of circles.
   
   The (back)pointers, defining possible (traceback) paths, are plotted
   as \code{dotted} edges. Note that a traceback starts in the last cell
@@ -55,8 +56,13 @@
 ## continue example in sdists.trace
 x1 <- "vintner"
 y1 <- "writers"
-b11 <- sdists.trace(x1, y1, weight=c(1,0,1), graph = TRUE)
+b11 <- sdists.trace(x1, y1, weight=c(1,1,0,1), graph = TRUE)
 b11
 plot(b11)
+plot(b11, circle.scale = "text")
+## partial
+b12 <- sdists.trace(x1, y1, weight=c(1,1,0,1), graph = TRUE, partial = TRUE)
+b12
+plot(b12)
 }
 \keyword{cluster}

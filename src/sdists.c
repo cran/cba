@@ -23,7 +23,7 @@
  * note that we do not implement the most efficient algorithmic 
  * concepts known in the field.
  *
- * (C) ceeboo 2005, 2006
+ * (C) ceeboo 2005, 2006, 2011
  */
 
 /* compute the operation weighted edit distance of two
@@ -53,7 +53,7 @@ double edist_ow(int *x, int *y, double *w, int nx, int ny, int nw,
 	       else {
 		  if (y[j-1] == NA_INTEGER)
 		     return NA_REAL;
-		  z2 = z0[j] = j * w[0];
+		  z2 = z0[j] = j * (nw > 5 ? w[5] : w[1]);
 		  if (b)
 		     b[j*(nx+1)] = 2;
 		  if (v)
@@ -63,7 +63,7 @@ double edist_ow(int *x, int *y, double *w, int nx, int ny, int nw,
 		      x0 = x[i-1];
 		      if (x0 == NA_INTEGER)
 			 return NA_REAL;
-		      z1 = z2 = i * w[0];
+		      z1 = z2 = i * (nw > 4 ? w[4] : w[0]);
 		      if (b)
 			 b[i] = 1;
 		      if (v)
@@ -72,8 +72,8 @@ double edist_ow(int *x, int *y, double *w, int nx, int ny, int nw,
 		   else {
 		      y0 = y[j-1];
 		      s0 = z0[j] + w[0];
-		      s1 = z1 + w[0];
-		      s2 = z0[j-1] + ((x0 == y0) ? w[1] : w[2]);
+		      s1 = z1 + w[1];
+		      s2 = z0[j-1] + ((x0 == y0) ? w[2] : w[3]);
 		      z2 = min(s0, s1);
 		      z2 = min(z2, s2);
 		      if (b)
@@ -294,9 +294,9 @@ SEXP sdists(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_pairwise) {
     int nx, ny, nw;
     int i, j, k, n, m = 0;	/* default symmetric */
     SEXP x, y, t, r;		/* return value */
-	
+
     nw = LENGTH(R_weight);
-    
+ 
     switch (INTEGER(R_method)[0]) {
 	case 1:
 	    sdfun = edist_ow;
@@ -318,7 +318,8 @@ SEXP sdists(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_pairwise) {
     }
     
     if (isNull(R_y)) {
-       if (isMatrix(R_weight) && !is_symmetric(REAL(R_weight), nw))
+       if ((isMatrix(R_weight) && !is_symmetric(REAL(R_weight), nw)) ||
+	  (!isMatrix(R_weight) && REAL(R_weight)[0] != REAL(R_weight)[1])) 
 	    error("auto-similarities for asymmetric weights not implemented");
        R_y = R_x;
     } 
