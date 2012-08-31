@@ -26,7 +26,7 @@ proximus <- function(x, max.radius=2, min.size=1, min.retry=10, max.iter=16,
     storage.mode(min.retry) <- storage.mode(max.iter) <- "integer"
     storage.mode(debug) <- "logical"
     
-    obj <- .Call("proximus", x, max.radius, min.size, min.retry, max.iter, 
+    obj <- .Call(R_proximus, x, max.radius, min.size, min.retry, max.iter, 
                                                                  debug)
     obj$max.radius <- max.radius
     obj$min.size <- min.size

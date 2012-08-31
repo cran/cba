@@ -21,7 +21,7 @@ stress <- function(x, rows=NULL, cols=NULL, type="moore") {
     if (is.null(cols))
        cols <- as.integer(1:dim(x)[2])
     type <- as.integer(TYPE[type])
-    x <- .Call("stress", x, rows, cols, type)
+    x <- .Call(R_stress, x, rows, cols, type)
     x
 }
 
@@ -44,7 +44,7 @@ stress.dist <- function(x, rows=NULL, cols=NULL, bycol=FALSE, type="moore") {
     type <- as.integer(TYPE[type])
     storage.mode(bycol) <- "logical"
     #
-    obj <- .Call("stress_dist", x, rows, cols, bycol, type)
+    obj <- .Call(R_stress_dist, x, rows, cols, bycol, type)
     # return dist object
     if (bycol)
     obj <- structure(obj, Size= if (bycol) dim(x)[2] else dim(x)[1], 
@@ -63,7 +63,7 @@ stress.dist <- function(x, rows=NULL, cols=NULL, bycol=FALSE, type="moore") {
 order.dist <- function(x, index = FALSE) {
     if (!inherits(x, "dist"))
         stop("'x' not of class dist")
-    k <- .Call("orderTSP", x, sample(attr(x, "Size")))
+    k <- .Call(R_orderTSP, x, sample(attr(x, "Size")))
     cat("length:", order.length(x, k),"\n")
     if (index)
         return(k)
@@ -78,18 +78,18 @@ function(x, type = "neumann", by = c("both","rows","cols"), index = FALSE) {
     if (by == "both") {
         r <- sample(dim(x)[1])
         c <- sample(dim(x)[2])
-        c <- c[.Call("orderTSP", stress.dist(x,r,c,TRUE, type), seq(c))] 
-        r <- r[.Call("orderTSP", stress.dist(x,r,c,FALSE,type), seq(r))]
+        c <- c[.Call(R_orderTSP, stress.dist(x,r,c,TRUE, type), seq(c))] 
+        r <- r[.Call(R_orderTSP, stress.dist(x,r,c,FALSE,type), seq(r))]
     } else
     if (by == "rows") {
         r <- sample(dim(x)[1])
         c <- seq(dim(x)[2])
-        r <- r[.Call("orderTSP", stress.dist(x,r,c,FALSE,type), seq(r))]
+        r <- r[.Call(R_orderTSP, stress.dist(x,r,c,FALSE,type), seq(r))]
     } else
     if (by == "cols") {
         r <- seq(dim(x)[1])
         c <- sample(dim(x)[2])
-        c <- c[.Call("orderTSP", stress.dist(x,r,c,TRUE, type), seq(c))] 
+        c <- c[.Call(R_orderTSP, stress.dist(x,r,c,TRUE, type), seq(c))] 
     }
     cat("stress:",stress(x,r,c,type),"\n")
     if (index)

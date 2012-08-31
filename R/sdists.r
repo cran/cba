@@ -59,7 +59,7 @@ sdists <- function(x,y=NULL, method="ow", weight=c(1,1,0,2),
     }
     if (!is.double(weight))
        storage.mode(weight) <- "double"
-    obj <- .Call("sdists",x,y,as.integer(code),weight,pairwise)
+    obj <- .Call(R_sdists,x,y,as.integer(code),weight,pairwise)
     if (is.null(y))
        obj <- structure(obj, Size=length(x), class="dist",
                              Diag=FALSE, Upper=FALSE,
@@ -136,7 +136,7 @@ function(x,y, method="ow", weight=c(1,1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph 
     y <- factor(y,levels=l2,exclude=if(is.integer(y))NA else exclude)
     if (!is.double(weight))
         storage.mode(weight) <- "double"
-    t <- .Call("sdists_transcript", x, y, as.integer(code), weight, graph, partial)
+    t <- .Call(R_sdists_transcript, x, y, as.integer(code), weight, graph, partial)
     if (is.na(t[1]))
         return(t)
     # reduce set of transcripts/paths
@@ -159,13 +159,13 @@ function(x,y, method="ow", weight=c(1,1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph 
     if (graph) {
         dimnames(attr(t, "table")) <- 
             list(x = c("", as.character(x)), y = c("", as.character(y)))
-        attr(t, "graph") <- .Call("sdists_graph", t)
+        attr(t, "graph") <- .Call(R_sdists_graph, t)
         names(attr(t, "graph")) <- c("x0", "y0", "x1", "y1", "weight")
         names(attr(t, "pointer")) <- c("x0", "y0", "x1", "y1")
         class(t) <- "sdists.graph"
         return(t)
     }
-    z <- lapply(t, function(t) .Call("sdists_align", x, y, t))
+    z <- lapply(t, function(t) .Call(R_sdists_align, x, y, t))
     names(z) <- t
     attr(z, "value") <- attr(t, "value")
     attr(z, "partial") <- attr(t, "partial")

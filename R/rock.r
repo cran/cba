@@ -19,7 +19,7 @@ rockLink <- function(x, beta=0.5) {
     if (!is.double(x))
        storage.mode(x) <- "double"
     storage.mode(beta) <- "double"
-    obj <- .Call("rockLink", x, beta)
+    obj <- .Call(R_rockLink, x, beta)
     obj <- structure(obj, Size=attr(x,"Size"),
                      class="dist", Diag=FALSE, Upper=FALSE,
                      Labels=attr(x, "Labels"), method="rock")
@@ -41,7 +41,7 @@ rockMerge <- function(x, n, theta=0.5, debug=FALSE) {
     storage.mode(n) <- "integer"
     storage.mode(theta) <- "double"
     storage.mode(debug) <- "logical"
-    obj <- .Call("rockMerge", x, n, theta, debug)
+    obj <- .Call(R_rockMerge, x, n, theta, debug)
     names(obj) <- c("cl","size")
     names(obj$cl) <- attr(x,"Labels")
     invisible(obj)
@@ -60,7 +60,7 @@ rockClass <- function(x, cl, beta=1-theta, theta=0.5) {
        storage.mode(x) <- "double"
     storage.mode(beta) <- storage.mode(theta) <- "double"
     storage.mode(cl) <- "integer"
-    obj <- .Call("rockClass", x, cl, beta, theta)
+    obj <- .Call(R_rockClass, x, cl, beta, theta)
     names(obj) <- c("cl","size")
     names(obj$cl) <- rownames(x)
     invisible(obj)

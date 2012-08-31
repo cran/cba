@@ -1,19 +1,18 @@
 import("Matrix")
-export(
-    proximus,
-    rockCluster, rockLink,
-    ccfkms,
-    sdists,sdists.trace,sdists.center,sdists.center.align,
-    cluster.dist,
-    gknn,
-    as.dummy,
-    lmplot,clmplot,
-    rlbmat,
-    order.length,order.optimal,order.greedy,
-    order.dist,order.matrix,order.data.frame,
-    stress,stress.dist,
-    implot,
-    circleplot.dist)
+export(proximus,
+       rockCluster, rockLink,
+       ccfkms,
+       sdists,sdists.trace,sdists.center,sdists.center.align,
+       cluster.dist,
+       gknn,
+       as.dummy,
+       lmplot,clmplot,
+       rlbmat,
+       order.length,order.optimal,order.greedy,
+       order.dist,order.matrix,order.data.frame,
+       stress,stress.dist,
+       implot,
+       circleplot.dist)
 S3method("as.dummy",logical)
 S3method("as.dummy",integer)
 S3method("as.dummy",factor)
@@ -30,4 +29,24 @@ S3method(print,"summary.proximus")
 S3method(predict,ccfkms)
 S3method(cut,ordered)
 S3method(plot,"sdists.graph")
-useDynLib(cba)
+useDynLib(cba,
+          ccfkms,
+          cluster_dist,
+          as_dummy,
+          gknn,
+          order_optimal,
+          order_length, 
+          order_greedy,
+          lminter,
+          proximus, 
+          rockLink,
+          rockMerge,
+          rockClass,
+          sdists,
+          sdists_transcript,
+          sdists_graph,
+          sdists_align,
+          stress,
+          stress_dist,
+          orderTSP,
+          .fixes = "R_")

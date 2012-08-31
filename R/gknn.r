@@ -17,7 +17,7 @@ gknn <- function(x, y, k=1, l=0, break.ties=TRUE, use.all=TRUE, prob=FALSE) {
     storage.mode(y) <- storage.mode(k) <- storage.mode(l) <- "integer"
     storage.mode(break.ties) <- storage.mode(use.all) <- storage.mode(prob) <- "logical"
     #
-    y <- .Call("gknn", x, y, k, l, break.ties, use.all, prob)
+    y <- .Call(R_gknn, x, y, k, l, break.ties, use.all, prob)
     y
 }
 

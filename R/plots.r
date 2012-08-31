@@ -16,7 +16,7 @@ lminter <- function(x, block.size=1, nbin=0) {
 
     storage.mode(block.size) <- storage.mode(nbin) <- "integer"
 
-    x <- .Call("lminter", x, block.size, nbin)
+    x <- .Call(R_lminter, x, block.size, nbin)
     x 
 }
 

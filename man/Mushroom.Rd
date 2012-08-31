@@ -92,7 +92,7 @@ data("Mushroom")
   \url{http://www.ics.uci.edu/~mlearn/MLRepository.html}
 }
 \references{
-  Blake, C.L. \& Merz, C.J. (1998).
+  Blake, C.L. & Merz, C.J. (1998).
   UCI Repository of Machine Learning Databases.
   Irvine, CA: University of California, Department of Information and
   Computer Science.

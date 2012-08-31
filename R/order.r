@@ -15,7 +15,7 @@ order.optimal <- function(dist, merge) {
     if (!is.double(dist))
        storage.mode(dist) <- "double"
     storage.mode(merge) <- "integer"
-    obj <- .Call("order_optimal", dist, merge)
+    obj <- .Call(R_order_optimal, dist, merge)
     names(obj) <- c("merge","order","length")
     names(obj$order) <- attr(dist,"Labels")
     obj
@@ -44,7 +44,7 @@ order.length <- function(dist, order) {
        storage.mode(dist) <- "double"
     if (!is.integer(order))
        storage.mode(order) <- "integer"
-    x <- .Call("order_length", dist, order)
+    x <- .Call(R_order_length, dist, order)
     x
 }
 
@@ -56,7 +56,7 @@ order.greedy <- function(dist) {
        stop(paste(sQuote("dist"),"not of class dist"))
     if (!is.double(dist))
        storage.mode(dist) <- "double"
-    obj <- .Call("order_greedy", dist)
+    obj <- .Call(R_order_greedy, dist)
     names(obj) <- c("merge", "order", "height");
     obj
 }

@@ -40,11 +40,11 @@ ccfkms <- function (x, n, p=NULL, par=2, max.iter=100, opt.std=FALSE,
     storage.mode(max.iter) <- "integer"
     storage.mode(opt.std) <- storage.mode(debug) <- "logical"
   
-    obj <- .Call("ccfkms", x, p, par, max.iter, opt.std, debug)
+    obj <- .Call(R_ccfkms, x, p, par, max.iter, opt.std, debug)
     if (opt.retry > 0) {
        for (i in 1:opt.retry) {
            p <- ccfkms_sample(x,n)
-           robj <- .Call("ccfkms", x, p, par, max.iter, opt.std, debug)
+           robj <- .Call(R_ccfkms, x, p, par, max.iter, opt.std, debug)
 	       if (robj[[4]] < obj[[4]])
 	          obj <- robj
        }

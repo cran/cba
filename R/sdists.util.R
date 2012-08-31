@@ -84,7 +84,7 @@ function(x, center, method = "ow", weight = c(1, 1, 0, 2),
                 t <- gsub("[Dd]","?", names(a)[k])
                 if (regexpr("[Ii]", t) > -1) 
                     r <- lapply(r, function(x) {
-                        x <- .Call("sdists_align", x, center, t)[[1]]
+                        x <- .Call(R_sdists_align, x, center, t)[[1]]
                         x[is.na(x)] <- ""
                         x
                     })
