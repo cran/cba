@@ -2,6 +2,9 @@
 #include <R.h>
 #include <Rdefines.h>
 
+// arrayIndex.c
+SEXP int_arraySubscript(int, SEXP, const char *, const char *, SEXP, Rboolean, SEXP);
+
 /* compute the stress measure based on Moor Neighborhoods, i.e. the 
  * sums of the squared distances of a point to its eight (five at the 
  * margins and three at the corners) adjacent neighbors as defined by 
@@ -118,11 +121,18 @@ SEXP stress(SEXP R_x, SEXP R_r, SEXP R_c, SEXP R_type) {
 	
     SEXP R_obj;
 
+#ifdef _COMPAT_
     PROTECT(R_r = arraySubscript(0, R_r, GET_DIM(R_x), getAttrib, 
 				                       (STRING_ELT), R_x));
     PROTECT(R_c = arraySubscript(1, R_c, GET_DIM(R_x), getAttrib, 
 						       (STRING_ELT), R_x));
-    
+#else
+    PROTECT(R_r = int_arraySubscript(0, R_r, "dim", "dimnames", R_x, 
+						    TRUE, R_NilValue));
+    PROTECT(R_c = int_arraySubscript(1, R_c, "dim", "dimnames", R_x, 
+						    TRUE, R_NilValue));
+#endif
+
     nrx = INTEGER(GET_DIM(R_x))[0];		/* number of rows */
     
     nr = LENGTH(R_r);
@@ -302,10 +312,17 @@ SEXP stress_dist(SEXP R_x, SEXP R_r, SEXP R_c, SEXP R_bycol, SEXP R_type) {
     
     SEXP R_obj = R_NilValue;	/* compiler hack */
 
+#ifdef _COMPAT_
     PROTECT(R_r = arraySubscript(0, R_r, GET_DIM(R_x), getAttrib, 
                                                        (STRING_ELT), R_x));
     PROTECT(R_c = arraySubscript(1, R_c, GET_DIM(R_x), getAttrib, 
                                                        (STRING_ELT), R_x));
+#else
+    PROTECT(R_r = int_arraySubscript(0, R_r, "dim", "dimnames", R_x, 
+						    TRUE, R_NilValue));
+    PROTECT(R_c = int_arraySubscript(1, R_c, "dim", "dimnames", R_x, 
+						    TRUE, R_NilValue));
+#endif
     
     nrx = INTEGER(GET_DIM(R_x))[0];		/* number of rows */
     

@@ -1,5 +1,5 @@
-041fc3f4bf0622288e2ae76f1319ae2d *CHANGELOG
-7575c777d671cd2438127ae4259bb134 *DESCRIPTION
+58f07c7bd417650c0ed206a4cf12ebec *CHANGELOG
+99520d72f1bddbaa08da84a27b3ea539 *DESCRIPTION
 77f3feabee79a3b7c4e4658283eb550b *NAMESPACE
 d0ed53738ae7486b78da4ecf4a620977 *R/ccfkms.r
 b3f65fab6ff0043e305d77f43f1698f1 *R/circleplot.R
@@ -15,9 +15,9 @@ e2fcae8c897b066b9eb8058b0c48cca9 *R/sdists.r
 b477f489bcccf323f5005220358a59a3 *R/sdists.util.R
 0b612ff43ec0a1c5910dc8fae2d78768 *R/stress.r
 4d22d82120f151d8a1aba261ee1721e4 *TODO
-0e476afcb43a417fe3ba5eb1ebf6da06 *data/Mushroom.rda
-a514aa21007f33bc4bcee9eefc449ad9 *data/Votes.rda
-0762f870adb70d7730e0043a36944d50 *data/townships.rda
+3a6814dbbc306825c7df0f7c4b1b0033 *data/Mushroom.rda
+5ffdf2a9eca2f1180455603386bf5b34 *data/Votes.rda
+e5e7664b01c352c805a8e97f35a5d37f *data/townships.rda
 2e65b9e3b935a2d706aee404065623eb *man/Mushroom.Rd
 e7d0d43b11487f4fcc1c85554de6f0b2 *man/Votes.Rd
 33bee73777d10f2b368a7f2c34131c9e *man/ccfkms.Rd
@@ -48,6 +48,7 @@ f6f2e066701e66c42079552978da753a *man/sdists.trace.Rd
 b400b9082051a9387ca3aa94b65a6979 *man/stress.Rd
 d6cf6d45781842f2e405165bb84448fd *man/summary.proximus.Rd
 85110593cfcfd8e14e87834012bd95df *man/townships.Rd
+9811937ba72592910a0804f6aaf565ad *src/arrayIndex.c
 4b120e39168e774b8148128866726443 *src/ccfkms.c
 4caf1a612e14ca1860e5c772609e6bc4 *src/cluster.c
 de9a955fe73b30af2c2aec47c7f24251 *src/coding.c
@@ -58,4 +59,4 @@ c64aa0a75887b9a61da5bff3e3354d88 *src/gknn.c
 2273c64d978a10edd0114f82c74b696d *src/proximus.c
 ed95a9da9c80f685038836b2b1a81615 *src/rock.c
 f97a68533d04377e6354262aa6222a4e *src/sdists.c
-f36a3b3b5c9442e429adf148ee1a12ad *src/stress.c
+692eaa3e763f8d56d35b7063ce861aff *src/stress.c
