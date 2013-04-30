@@ -1,4 +1,9 @@
 
+Release 0.2-12
+Release date: 2013-04-30
+
+fixed invalid memory access in rockMerge.
+
 Release 0.2-11
 Release date: 2012-11-30
 

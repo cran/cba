@@ -321,21 +321,6 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
 	       v[i] = z;
 	       w[i] = k;
 	    }
-	    if (w[k] == j) {
-	       v[k] = -1;
-	       kkk = p[kk];
-	       for (l = k+1; l < m; l++) {
-		   if (l == j)
-		      continue;
-		   ll = o[l];
-		   z = x[ll+kkk] / (t[f[kk]+f[ll]] - 
-				    t[f[kk]] - t[f[ll]]);
-		   if (z > v[k]) {
-		      v[k] = z;
-		      w[k] = l;
-		   }
-	       }
-	    }
 	}
 
 	/* reorganize the indexes of the clusters,
@@ -359,11 +344,14 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
 	    if (w[k] > j)
 	       w[k]--;
 	
-	for (k = j+1; k < m; k++) {
+	for (k = j+1; k < m-1; k++) {
 	    o[k-1] = o[k];
 	    v[k-1] = v[k];
 	    w[k-1] = w[k]-1;
 	}
+	if (k < m)
+	    o[k-1] = o[k];
+
 	m--;
     }
     Free(x);
@@ -397,7 +385,7 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
 	INTEGER(R_tmp)[k] = o[kk];
     }
 
-    s = Calloc(m/10+2, char);		/* stringified integers */
+    s = Calloc((int) log10(m) + 2, char);	/* stringified integers */
     
     PROTECT(R_str = NEW_STRING(m));
     for (j = 0; j < m; j++) {
@@ -439,7 +427,7 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
     UNPROTECT(1);
    
     PROTECT(R_dim = NEW_LIST(1));
-    SET_ELEMENT(R_dim, 0, duplicate(GET_LEVELS(VECTOR_ELT(R_obj, 0))));
+    SET_ELEMENT(R_dim, 0, GET_LEVELS(VECTOR_ELT(R_obj, 0)));
     
     SET_DIMNAMES(R_tmp, R_dim);
     UNPROTECT(1);
@@ -583,7 +571,7 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     
     PROTECT(R_str = NEW_STRING(na));
     for (j = 0; j < nl; j++)
-	SET_STRING_ELT(R_str, j, mkChar(CHAR(STRING_ELT(R_lev, j))));
+	SET_STRING_ELT(R_str, j, STRING_ELT(R_lev, j));
     if (na>nl)
        SET_STRING_ELT(R_str, j, NA_STRING);
     
@@ -602,6 +590,8 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     PROTECT(R_tmp = NEW_INTEGER(na));
     Memcpy(INTEGER(R_tmp), cf, na);
 
+    Free(cf);
+
     PROTECT(R_dim = NEW_INTEGER(1));
     INTEGER(R_dim)[0] = na;
 
@@ -609,7 +599,7 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     UNPROTECT(1);
     
     PROTECT(R_dim = NEW_LIST(1));
-    SET_ELEMENT(R_dim, 0, duplicate(GET_LEVELS(VECTOR_ELT(R_obj, 0)))); 
+    SET_ELEMENT(R_dim, 0, GET_LEVELS(VECTOR_ELT(R_obj, 0))); 
     
     SET_DIMNAMES(R_tmp, R_dim);
     UNPROTECT(1);
