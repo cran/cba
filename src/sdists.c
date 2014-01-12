@@ -362,7 +362,7 @@ SEXP sdists(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_pairwise) {
 	    UNPROTECT(1);
 	    PROTECT(t = allocVector(REALSXP, LENGTH(y) * 2));
 	}
-	for (i = i; i < n; i++) {
+	for (; i < n; i++) {
 	    x  = VECTOR_ELT(R_x, i);
 	    REAL(r)[k++] = (*sdfun)(INTEGER(x), INTEGER(y), REAL(R_weight),
 				    LENGTH(x), LENGTH(y), nw, REAL(t), 0, 0);

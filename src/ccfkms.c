@@ -364,7 +364,7 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
 
 	for (i = 0; i < m->nr; i++) {
 	    for (k = 0; k < np; k++) {
-		ct[k] =- cc[k];
+		ct[k] = -cc[k];
 		for (j = m->ri[i]; j < m->ri[i + 1]; j++)
 		    ct[k] += m->cv[j] * p[k + m->ci[j] * np];
 	    }
