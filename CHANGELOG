@@ -1,4 +1,13 @@
 
+Release 0.2-16
+
+fixed colnames in fitted.proximus.
+
+Release 0.2-15
+Release date: 2015-07-23
+
+fixed imports.
+
 Release 0.2-14
 
 renamed int_arraySubscript.

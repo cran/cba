@@ -1,5 +1,5 @@
-a90580b97d6adbaf325017a97c2c2094 *CHANGELOG
-fa362c3e77acb7461aeee8a29fc1ed2f *DESCRIPTION
+430922232e71db2eb8d788f979ce3044 *CHANGELOG
+2c4c0e579e9a252fadaa0f1a5dab8873 *DESCRIPTION
 aca4b7b11912d8250a70faf8c52094d1 *NAMESPACE
 d0ed53738ae7486b78da4ecf4a620977 *R/ccfkms.r
 b3f65fab6ff0043e305d77f43f1698f1 *R/circleplot.R
@@ -9,7 +9,7 @@ bf4f81f977a8b4b33913bb39089b10a5 *R/cut.ordered.r
 8d6b01de986c64b57f048fe36b6f30ab *R/gknn.r
 feb86496c8eafc9b9eb6546cf1b71dce *R/order.r
 c41a46cc9d9e1c409f03426bbad0c1fb *R/plots.r
-3b790c158bdec5788a7cfd2b1b7b9750 *R/proximus.r
+623be7b7526f0244ee5b5d48cf8653e9 *R/proximus.r
 b9ec985120759f11b82f51dac96b37ee *R/rock.r
 e2fcae8c897b066b9eb8058b0c48cca9 *R/sdists.r
 b477f489bcccf323f5005220358a59a3 *R/sdists.util.R

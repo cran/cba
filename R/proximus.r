@@ -55,7 +55,7 @@ fitted.proximus <- function(object, drop=FALSE, ...) {
        c <- c[k]
     }
     rownames(x) <- object$rownames[k]
-    colnames(x) <- object$colnames[k]
+    colnames(x) <- object$colnames
     attr(c, "Index") <- which(k)
     #
     x <- list(x=x, pl=factor(c))
