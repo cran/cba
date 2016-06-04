@@ -1,5 +1,5 @@
-430922232e71db2eb8d788f979ce3044 *CHANGELOG
-2c4c0e579e9a252fadaa0f1a5dab8873 *DESCRIPTION
+3b16bee1b83ac5f27923e4f16c048bda *CHANGELOG
+83dd3108b4e0c1bd80d0e1110dd9a3de *DESCRIPTION
 aca4b7b11912d8250a70faf8c52094d1 *NAMESPACE
 d0ed53738ae7486b78da4ecf4a620977 *R/ccfkms.r
 b3f65fab6ff0043e305d77f43f1698f1 *R/circleplot.R
@@ -15,9 +15,9 @@ e2fcae8c897b066b9eb8058b0c48cca9 *R/sdists.r
 b477f489bcccf323f5005220358a59a3 *R/sdists.util.R
 0b612ff43ec0a1c5910dc8fae2d78768 *R/stress.r
 4d22d82120f151d8a1aba261ee1721e4 *TODO
-10fb5e92116140bc5c4219fc1cc8ac88 *data/Mushroom.rda
-40c8e38a39e9d725db4f38fe2d528ae5 *data/Votes.rda
-24625282d3b5474d764b207f8448ae4b *data/townships.rda
+d31045fb1447dba1350e8f15887a28eb *data/Mushroom.rda
+b3469e2f7ef6c51ee28cb812603e2176 *data/Votes.rda
+94e4c88b80b2e45f355e27fbda274c6b *data/townships.rda
 2e65b9e3b935a2d706aee404065623eb *man/Mushroom.Rd
 e7d0d43b11487f4fcc1c85554de6f0b2 *man/Votes.Rd
 33bee73777d10f2b368a7f2c34131c9e *man/ccfkms.Rd
