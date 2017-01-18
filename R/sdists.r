@@ -136,7 +136,7 @@ function(x,y, method="ow", weight=c(1,1,0,2), exclude=c(NA,NaN,Inf,-Inf), graph 
     y <- factor(y,levels=l2,exclude=if(is.integer(y))NA else exclude)
     if (!is.double(weight))
         storage.mode(weight) <- "double"
-    t <- .Call(R_sdists_transcript, x, y, as.integer(code), weight, graph, partial)
+    t <- .Call(R_sdists_transcript, x, y, as.integer(code), weight, graph)
     if (is.na(t[1]))
         return(t)
     # reduce set of transcripts/paths

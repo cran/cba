@@ -47,7 +47,7 @@ x <- as.integer(sample(3,10,rep=TRUE))
 as.dummy(x)
 is.na(x) <- c(3,5)
 as.dummy(x)
-x <- as.data.frame(x,x)
+x <- as.data.frame(x)
 as.dummy(x)
 }
 \keyword{cluster}

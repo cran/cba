@@ -14,7 +14,7 @@ ccfkms_sample <- function(x, n) {
 }
 
 ccfkms <- function (x, n, p=NULL, par=2, max.iter=100, opt.std=FALSE, 
-					                        opt.retry=0, debug=FALSE) {
+					    opt.retry=0, debug=FALSE) {
     ## dgRMatrix is currently broken
     if (inherits(x, "dgTMatrix"))
         x <- t(as(x, "dgCMatrix"))

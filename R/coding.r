@@ -21,7 +21,7 @@ as.dummy.integer <- function(x, ...) {
 }
 
 as.dummy.factor <- function(x, ...) {
-    x <- .Call("as_dummy", x)
+    x <- .Call("R_as_dummy", x)
     x
 }
 

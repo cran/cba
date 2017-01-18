@@ -30,27 +30,7 @@ S3method(print,"summary.proximus")
 S3method(predict,ccfkms)
 S3method(cut,ordered)
 S3method(plot,"sdists.graph")
-useDynLib(cba,
-          ccfkms,
-          cluster_dist,
-          as_dummy,
-          gknn,
-          order_optimal,
-          order_length, 
-          order_greedy,
-          lminter,
-          proximus, 
-          rockLink,
-          rockMerge,
-          rockClass,
-          sdists,
-          sdists_transcript,
-          sdists_graph,
-          sdists_align,
-          stress,
-          stress_dist,
-          orderTSP,
-          .fixes = "R_")
+useDynLib("cba", .registration = TRUE)
 ## 2015/7
 importFrom("methods",
            "as")
