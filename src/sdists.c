@@ -697,7 +697,8 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 
     PROTECT(r = PairToVectorList(r));
     SET_TYPEOF(r, STRSXP);
-    setAttrib(r, install("value"), ScalarReal(d));
+    setAttrib(r, install("value"), PROTECT(ScalarReal(d)));
+    UNPROTECT(1);
 
     if (LOGICAL(R_table)[0] == TRUE) {
 	setAttrib(r, install("table"), tv);
@@ -730,11 +731,13 @@ SEXP sdists_align(SEXP R_x, SEXP R_y, SEXP t) {
     
     if (isFactor(R_x)) {
 	SET_LEVELS(x, GET_LEVELS(R_x));
-	setAttrib(x, install("class"), mkString("factor"));
+	setAttrib(x, install("class"), PROTECT(mkString("factor")));
+	UNPROTECT(1);
     }
     if (isFactor(R_y)) {
 	SET_LEVELS(y, GET_LEVELS(R_y));
-	setAttrib(y, install("class"), mkString("factor"));
+	setAttrib(y, install("class"), PROTECT(mkString("factor")));
+	UNPROTECT(1);
     }
 
     i = j = i0 = j0 = 0;

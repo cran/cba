@@ -23,7 +23,7 @@ static int debug = FALSE;  /* user defined */
 
 /* copy a variable to R */
 
-SEXP var2R(int v) {
+static SEXP var2R(int v) {
 
     SEXP R_obj;
 
