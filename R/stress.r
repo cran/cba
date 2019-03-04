@@ -106,6 +106,7 @@ order.data.frame <-
 function(x, type = "neumann", by = c("both","rows","cols"), index = FALSE) {
     if (!inherits(x, "data.frame"))
         stop("'x' not a data frame")
+    by <- match.arg(by)
     k <- sapply(x, function(x) is.numeric(x) || is.logical(x))
     if (!any(k)) {
         warning("cannot order on ordinal attributes only")

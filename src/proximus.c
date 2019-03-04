@@ -27,7 +27,7 @@ static SEXP var2R(int v) {
 
     SEXP R_obj;
 
-    PROTECT(R_obj = NEW_INTEGER(1));
+    R_obj = NEW_INTEGER(1);
 
     INTEGER(R_obj)[0] = v;
 
@@ -79,7 +79,7 @@ static SEXP vec2R(VEC *v, int o) {
     
     SEXP R_obj;
 
-    PROTECT(R_obj = NEW_INTEGER(v->n));
+    R_obj = NEW_INTEGER(v->n);
  
     for (j = 0; j < v->n; j++)
    	INTEGER(R_obj)[j] = v->v[j] + o;
@@ -266,8 +266,9 @@ static SEXP res2R(RES *r, MAT *m) {
     
     PROTECT(R_ret = NEW_LIST(3));	    /* results header */
     
-    SET_ELEMENT(R_ret, 0, var2R(nr));
-    SET_ELEMENT(R_ret, 1, var2R(nc));
+    SET_ELEMENT(R_ret, 0, PROTECT(var2R(nr)));
+    SET_ELEMENT(R_ret, 1, PROTECT(var2R(nc)));
+    UNPROTECT(2);
 
     PROTECT(R_obj = NEW_STRING(3));
     
@@ -277,7 +278,7 @@ static SEXP res2R(RES *r, MAT *m) {
 
     SET_NAMES(R_ret, R_obj);
 
-    UNPROTECT(3);
+    UNPROTECT(2);
     
     PROTECT(R_lst = NEW_LIST(res_cnt));	    /* results list */
     
@@ -287,12 +288,14 @@ static SEXP res2R(RES *r, MAT *m) {
 		
 	PROTECT(R_res = NEW_LIST(5));
 	
-	SET_ELEMENT(R_res, 0, vec2R(p->x,1));
-	SET_ELEMENT(R_res, 1, vec2R(p->y,1));
+	SET_ELEMENT(R_res, 0, PROTECT(vec2R(p->x,1)));
+	SET_ELEMENT(R_res, 1, PROTECT(vec2R(p->y,1)));
+	UNPROTECT(2);
 	
-	SET_ELEMENT(R_res, 2, var2R(p->n));
-	SET_ELEMENT(R_res, 3, var2R(p->c));
-	SET_ELEMENT(R_res, 4, var2R(p->r));
+	SET_ELEMENT(R_res, 2, PROTECT(var2R(p->n)));
+	SET_ELEMENT(R_res, 3, PROTECT(var2R(p->c)));
+	SET_ELEMENT(R_res, 4, PROTECT(var2R(p->r)));
+	UNPROTECT(3);
 
 	freeVec(p->x);
 	freeVec(p->y);
@@ -307,6 +310,7 @@ static SEXP res2R(RES *r, MAT *m) {
         SET_STRING_ELT(R_obj, 4, mkChar("r"));
 
         SET_NAMES(R_res, R_obj);
+	UNPROTECT(1);
 	
 	if (i == res_cnt) {
 	    i += freeRes(q);
@@ -314,8 +318,7 @@ static SEXP res2R(RES *r, MAT *m) {
 	    error("res2R result count error [%i:%i]", i, res_cnt);
 	}
 	SET_ELEMENT(R_lst, i++, R_res);
-	
-	UNPROTECT(7);
+	UNPROTECT(1);
     }
     if (i != res_cnt)
        error("res2R result count error [%i:%i]", i, res_cnt);
