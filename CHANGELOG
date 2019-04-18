@@ -1,4 +1,13 @@
 
+Release 0.2-21
+
+fixed UNPROTECT in proximus.
+fixed missing PROTECT in sdists.
+
+Release 0.2-20
+
+changed UN / PROTECT approach in proximus.
+
 Release 0.2-18
 
 added DLL registry.

@@ -1,7 +1,7 @@
 Package: cba
 Type: Package
 Title: Clustering for Business Analytics
-Version: 0.2-20
+Version: 0.2-21
 Author: Christian Buchta and Michael Hahsler
 Maintainer: Christian Buchta <christian.buchta@wu.ac.at>
 Description: Implements clustering techniques such as Proximus and Rock, utility functions for efficient computation of cross distances and data manipulation. 
@@ -11,6 +11,6 @@ Suggests: gclus, colorspace
 Encoding: latin1
 License: GPL-2
 NeedsCompilation: yes
-Packaged: 2019-03-04 16:36:37 UTC; hornik
+Packaged: 2019-04-18 15:33:05 UTC; hornik
 Repository: CRAN
-Date/Publication: 2019-03-04 16:40:28 UTC
+Date/Publication: 2019-04-18 15:46:59 UTC

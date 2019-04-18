@@ -690,12 +690,17 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
 	PROTECT(r);
 	r = CONS(mkChar(s), r);
 	UNPROTECT(1);
+	PROTECT(r);
 	R_CheckUserInterrupt();
+	UNPROTECT(1);
     } while (n);
 
     UNPROTECT(2);
 
-    PROTECT(r = PairToVectorList(r));
+    PROTECT(r);
+    r = PairToVectorList(r);
+    UNPROTECT(1);
+    PROTECT(r);
     SET_TYPEOF(r, STRSXP);
     setAttrib(r, install("value"), PROTECT(ScalarReal(d)));
     UNPROTECT(1);

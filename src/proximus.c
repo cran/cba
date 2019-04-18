@@ -278,7 +278,7 @@ static SEXP res2R(RES *r, MAT *m) {
 
     SET_NAMES(R_ret, R_obj);
 
-    UNPROTECT(2);
+    UNPROTECT(1);
     
     PROTECT(R_lst = NEW_LIST(res_cnt));	    /* results list */
     
@@ -325,7 +325,7 @@ static SEXP res2R(RES *r, MAT *m) {
     
     SET_ELEMENT(R_ret, 2, R_lst);
     
-    UNPROTECT(1);
+    UNPROTECT(2);
     
     return R_ret;
 }
@@ -649,8 +649,6 @@ SEXP proximus(SEXP R_mat, SEXP R_max_radius, SEXP R_min_size, SEXP R_min_retry,	
 
     freeMat(m);
     
-    UNPROTECT(1);
-
     return R_res;
 }
 

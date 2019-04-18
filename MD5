@@ -1,5 +1,5 @@
-4755c3b674715915242f0a36d5afba9f *CHANGELOG
-753afd6c0f6e4e131528b6a43a03e5fd *DESCRIPTION
+c8a6810053e4dffcac3e4f95d2680f36 *CHANGELOG
+e0d05533dab28a6c4fd770ff59d1cedb *DESCRIPTION
 ee83dfb5779aac9143c472be1e0c33a4 *NAMESPACE
 b55737d69dd264044306e179d174d017 *R/ccfkms.r
 b3f65fab6ff0043e305d77f43f1698f1 *R/circleplot.R
@@ -57,7 +57,7 @@ c64aa0a75887b9a61da5bff3e3354d88 *src/gknn.c
 17e1e159b79439e8c6a5e6bb0757908d *src/greedy.c
 754456b8a5172943507a549604994f39 *src/interpolate.c
 5899a7d270acda77b1e527a0443ad0d8 *src/optimal.c
-b222dd99bc72cb96847db90e45aad779 *src/proximus.c
+93e175c368c3c07efac28713f717b09a *src/proximus.c
 b43a1c7cba01948a58852c7be0645f5e *src/rock.c
-43b7f0c583571323c931ba54fe0937eb *src/sdists.c
+dad8cd9333cc78a732108fb4c271f680 *src/sdists.c
 fea7854b09482f20f42dd2b41beaf991 *src/stress.c
