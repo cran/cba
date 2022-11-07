@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{utf-8}
 \name{proximus}
 \alias{proximus}
 \title{Proximus}
@@ -68,7 +68,7 @@ proximus(x, max.radius = 2, min.size = 1, min.retry = 10,
   \item{colnames}{colnames of the data matrix.}
 }
 \references{
-  M. Koyutürk, A. Graham, and N. Ramakrishnan. Compression, Clustering, and 
+  M. KoyutÃ¼rk, A. Graham, and N. Ramakrishnan. Compression, Clustering, and 
   Pattern Discovery in Very High-Dimensional Discrete-Attribute Data Sets. 
   \emph{IEEE Transactions On Knowledge and Data Engineering}, Vol. 17, No. 4, 
   (April) 2005.

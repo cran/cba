@@ -1,5 +1,5 @@
-c8a6810053e4dffcac3e4f95d2680f36 *CHANGELOG
-e0d05533dab28a6c4fd770ff59d1cedb *DESCRIPTION
+69cc69a2b81a83f23a35f49460a28bad *CHANGELOG
+65b6b86baa407e90630249456403c4b1 *DESCRIPTION
 ee83dfb5779aac9143c472be1e0c33a4 *NAMESPACE
 b55737d69dd264044306e179d174d017 *R/ccfkms.r
 b3f65fab6ff0043e305d77f43f1698f1 *R/circleplot.R
@@ -9,15 +9,15 @@ bf4f81f977a8b4b33913bb39089b10a5 *R/cut.ordered.r
 8d6b01de986c64b57f048fe36b6f30ab *R/gknn.r
 feb86496c8eafc9b9eb6546cf1b71dce *R/order.r
 c41a46cc9d9e1c409f03426bbad0c1fb *R/plots.r
-623be7b7526f0244ee5b5d48cf8653e9 *R/proximus.r
+8f2d4d1812261bf2807f643d98da152b *R/proximus.r
 b9ec985120759f11b82f51dac96b37ee *R/rock.r
 643c8ea3ec692a00994078661a279447 *R/sdists.r
 b477f489bcccf323f5005220358a59a3 *R/sdists.util.R
 8366a3f21b1cbfd5ae6b386d08c462fc *R/stress.r
 4d22d82120f151d8a1aba261ee1721e4 *TODO
-d58bacfe2b996daa3ca797ccc6432685 *data/Mushroom.rda
-746485d903240a5bc6761cd8830a27f5 *data/Votes.rda
-44bc9161834e92cbb6d13b457b2c5f0e *data/townships.rda
+1d082e34751b86f2eec9002530ef0683 *data/Mushroom.rda
+29252ea1e818bb6234d87dd45d7e7023 *data/Votes.rda
+ee0710bb02aafe991232bed602b9af89 *data/townships.rda
 2e65b9e3b935a2d706aee404065623eb *man/Mushroom.Rd
 e7d0d43b11487f4fcc1c85554de6f0b2 *man/Votes.Rd
 33bee73777d10f2b368a7f2c34131c9e *man/ccfkms.Rd
@@ -38,7 +38,7 @@ c1b36ba2096a39cbcee4c9be20940746 *man/order.length.Rd
 9fb50f3e806b85e2a083876805600662 *man/plot.sdists.graph.Rd
 4add29e1d8ca3101c9c0f499d6ffaa3a *man/predict.ccfkms.Rd
 fe35e1ffc9d3b99109d7051d70b29b18 *man/predict.rock.Rd
-599d26f54d4f633c6f3c2d27d934d750 *man/proximus.Rd
+be793dd63a489009151361be90fe0d0e *man/proximus.Rd
 d16cc9c1022c241850648cb9632a3873 *man/rlbmat.Rd
 a4710e715566cbe4cc4c894cf6b83aa0 *man/rockCluster.Rd
 f86cfb9cf7e0d48890b0596b7eba7c52 *man/sdists.Rd
@@ -57,7 +57,7 @@ c64aa0a75887b9a61da5bff3e3354d88 *src/gknn.c
 17e1e159b79439e8c6a5e6bb0757908d *src/greedy.c
 754456b8a5172943507a549604994f39 *src/interpolate.c
 5899a7d270acda77b1e527a0443ad0d8 *src/optimal.c
-93e175c368c3c07efac28713f717b09a *src/proximus.c
+c72ac54ae06b7bf17c5cfbef9c6ec481 *src/proximus.c
 b43a1c7cba01948a58852c7be0645f5e *src/rock.c
 dad8cd9333cc78a732108fb4c271f680 *src/sdists.c
 fea7854b09482f20f42dd2b41beaf991 *src/stress.c

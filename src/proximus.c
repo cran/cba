@@ -3,7 +3,7 @@
  *
  * implements the paper:
  * 
- * M. Koyutürk, A. Graham, and N. Ramakrishnan. Compression, Clustering, 
+ * M. KoyutÃ¼rk, A. Graham, and N. Ramakrishnan. Compression, Clustering, 
  * and Pattern Discovery in Very High-Dimensional Descrete-Attribute Data 
  * Sets. IEEE Transactions On Knowledge and Data Engineering, Vol. 17, 
  * No. 4, (April) 2005
