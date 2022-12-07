@@ -1,5 +1,5 @@
-69cc69a2b81a83f23a35f49460a28bad *CHANGELOG
-65b6b86baa407e90630249456403c4b1 *DESCRIPTION
+5474109e3c1721873eeffef3444b4fd3 *CHANGELOG
+5f4d3d8d89dda5b564b63788be0692b5 *DESCRIPTION
 ee83dfb5779aac9143c472be1e0c33a4 *NAMESPACE
 b55737d69dd264044306e179d174d017 *R/ccfkms.r
 b3f65fab6ff0043e305d77f43f1698f1 *R/circleplot.R
@@ -49,8 +49,8 @@ b400b9082051a9387ca3aa94b65a6979 *man/stress.Rd
 d6cf6d45781842f2e405165bb84448fd *man/summary.proximus.Rd
 85110593cfcfd8e14e87834012bd95df *man/townships.Rd
 b4a706d255fa2aeb729a733b122586af *src/arrayIndex.c
-bbdda7008b55f302df98d14f508e5755 *src/ccfkms.c
-4caf1a612e14ca1860e5c772609e6bc4 *src/cluster.c
+9ca98783cd41c91a125a91185312e181 *src/ccfkms.c
+111261fcfaa5901cde5a0f4cc7166a19 *src/cluster.c
 de9a955fe73b30af2c2aec47c7f24251 *src/coding.c
 ef8c122e8f74586bbad0f10e8735d795 *src/dll.c
 c64aa0a75887b9a61da5bff3e3354d88 *src/gknn.c
@@ -58,6 +58,6 @@ c64aa0a75887b9a61da5bff3e3354d88 *src/gknn.c
 754456b8a5172943507a549604994f39 *src/interpolate.c
 5899a7d270acda77b1e527a0443ad0d8 *src/optimal.c
 c72ac54ae06b7bf17c5cfbef9c6ec481 *src/proximus.c
-b43a1c7cba01948a58852c7be0645f5e *src/rock.c
+6704480fe9751a7f71c0e6607028c772 *src/rock.c
 dad8cd9333cc78a732108fb4c271f680 *src/sdists.c
 fea7854b09482f20f42dd2b41beaf991 *src/stress.c

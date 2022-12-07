@@ -473,11 +473,12 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
     
     /* levels attribute */
 
-    s = Calloc(np/10+2, char);		    /* stringified integers */
+    int sn = np/10+2;
+    s = Calloc(sn, char);		    /* stringified integers */
         
     PROTECT(R_tmp = NEW_STRING(np));
     for (j = 0; j < np; j++) {
-	sprintf(s,"%i",j+1);
+	snprintf(s,sn,"%i",j+1);
 	SET_STRING_ELT(R_tmp, j, mkChar(s));
     }
     Free(s);

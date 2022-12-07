@@ -95,12 +95,13 @@ SEXP cluster_dist(SEXP R_x, SEXP R_beta) {
     Free(b);
     
     /* make return value a factor */
-    
-    s = Calloc(k/10+2, char);           /* stringified integers */
+   
+    int sn = k/10+2;
+    s = Calloc(sn, char);           /* stringified integers */
     
     PROTECT(R_str = NEW_STRING(k));
     for (j = 0; j < k; j++) {
-        sprintf(s,"%i",j+1);
+        snprintf(s,sn,"%i",j+1);
         SET_STRING_ELT(R_str, j, mkChar(s));
     }
     Free(s);

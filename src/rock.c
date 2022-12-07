@@ -385,11 +385,12 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
 	INTEGER(R_tmp)[k] = o[kk];
     }
 
-    s = Calloc((int) log10(m) + 2, char);	/* stringified integers */
+    int sn = (int) log10(m) + 2;
+    s = Calloc(sn, char);	/* stringified integers */
     
     PROTECT(R_str = NEW_STRING(m));
     for (j = 0; j < m; j++) {
-	sprintf(s,"%i",j+1);
+	snprintf(s,sn,"%i",j+1);
 	SET_STRING_ELT(R_str, j, mkChar(s));
     }
     Free(s);
