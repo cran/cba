@@ -45,16 +45,19 @@
   It is important to recognize that \code{NA} in this database does 
   not mean that the value of the attribute is unknown.  It 
   means simply, that the value is not "yea" or "nay" (see above).
-}
-\source{
-\url{http://www.ics.uci.edu/~mlearn/MLRepository.html}
-}
-\references{
+
+  The current version of the UC Irvine Machine Learning Repository Congressional Voting Records
+  data set is available from \doi{10.24432/C5C01P}.
+
   Blake, C.L. & Merz, C.J. (1998).
   UCI Repository of Machine Learning Databases.
   Irvine, CA: University of California, Department of Information and
   Computer Science.	  
+  Formerly available from \samp{http://www.ics.uci.edu/~mlearn/MLRepository.html}.
 }
+%\source{
+%\url{https://archive.ics.uci.edu/dataset/105/congressional+voting+records}
+%}
 \examples{
 data(Votes)
 summary(Votes)

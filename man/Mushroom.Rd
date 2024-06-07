@@ -87,16 +87,19 @@ data("Mushroom")
     it be} for Poisonous Oak and Ivy.
 
   Unused levels in the original data were dropped.
-}
-\source{
-  \url{http://www.ics.uci.edu/~mlearn/MLRepository.html}
-}
-\references{
+
+  The current version of the UC Irvine Machine Learning Repository Mushroom
+  data set is available from \doi{10.24432/C5959T}
+
   Blake, C.L. & Merz, C.J. (1998).
   UCI Repository of Machine Learning Databases.
   Irvine, CA: University of California, Department of Information and
   Computer Science.
+  Formerly available from \samp{http://www.ics.uci.edu/~mlearn/MLRepository.html}.
 }
+%\source{
+%\url{https://archive.ics.uci.edu/dataset/73/mushroom}
+%}
 \examples{
 data("Mushroom")
 summary(Mushroom)

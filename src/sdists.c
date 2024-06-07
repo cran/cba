@@ -701,7 +701,9 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
     r = PairToVectorList(r);
     UNPROTECT(1);
     PROTECT(r);
-    SET_TYPEOF(r, STRSXP);
+    r = coerceVector(r, STRSXP);
+    UNPROTECT(1);
+    PROTECT(r);
     setAttrib(r, install("value"), PROTECT(ScalarReal(d)));
     UNPROTECT(1);
 

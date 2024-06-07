@@ -1,4 +1,9 @@
 
+Realease 0.2-24
+
+fixed SET_TYPEOF in sdists.
+fixed invalid URLs in documentation.
+
 Realease 0.2-23
 
 sprintf was not an issue.
