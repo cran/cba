@@ -79,8 +79,8 @@ SEXP rockLink(SEXP R_x, SEXP R_beta) {
     for (l = 0; l < m; l++)
 	INTEGER(R_obj)[l] = 0;				/* this sucks! */
     
-    v = Calloc(n, int);
-    p = Calloc(n, int);					/* column offset */
+    v = R_Calloc(n, int);
+    p = R_Calloc(n, int);				/* column offset */
     
     for (k = 0; k < n; k++)
 	p[k] = k*(n-1)-k*(k+1)/2-1;
@@ -109,8 +109,8 @@ SEXP rockLink(SEXP R_x, SEXP R_beta) {
 	    }
     }
     
-    Free(p);
-    Free(v);
+    R_Free(p);
+    R_Free(v);
     
     UNPROTECT(1);
     
@@ -179,20 +179,20 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
     
     z = 1 + 2 * (1-z) / (1+z);
     
-    x = Calloc(m, int);				/* link counts */
+    x = R_Calloc(m, int);			/* link counts */
     
     Memcpy(x, INTEGER(R_x), m);
 
-    o = Calloc(n, int);				/* sample index */
-    c = Calloc(n, int);				/* cluster index */
-    f = Calloc(n, int);				/* cluster size */
+    o = R_Calloc(n, int);			/* sample index */
+    c = R_Calloc(n, int);			/* cluster index */
+    f = R_Calloc(n, int);			/* cluster size */
     
-    p = Calloc(n, int);				/* column offset in dist */
+    p = R_Calloc(n, int);			/* column offset in dist */
     
-    t = Calloc(n+1, double);			/* table of powers */
+    t = R_Calloc(n+1, double);			/* table of powers */
 
-    v = Calloc(n-1, double);			/* column maximum */
-    w = Calloc(n-1, int);			/* row index */
+    v = R_Calloc(n-1, double);			/* column maximum */
+    w = R_Calloc(n-1, int);			/* row index */
     
     for (k = 0; k < n; k++) {
 	o[k] = k;
@@ -354,12 +354,12 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
 
 	m--;
     }
-    Free(x);
+    R_Free(x);
     
-    Free(p);
-    Free(t);
-    Free(v);
-    Free(w);
+    R_Free(p);
+    R_Free(t);
+    R_Free(v);
+    R_Free(w);
     
     if (m > nn)
        Rprintf("rockMerge: terminated with %i clusters\n", m);
@@ -386,14 +386,14 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
     }
 
     int sn = (int) log10(m) + 2;
-    s = Calloc(sn, char);	/* stringified integers */
+    s = R_Calloc(sn, char);	/* stringified integers */
     
     PROTECT(R_str = NEW_STRING(m));
     for (j = 0; j < m; j++) {
 	snprintf(s,sn,"%i",j+1);
 	SET_STRING_ELT(R_str, j, mkChar(s));
     }
-    Free(s);
+    R_Free(s);
     
     SET_LEVELS(R_tmp, R_str);
     UNPROTECT(1);
@@ -417,9 +417,9 @@ SEXP rockMerge(SEXP R_x, SEXP R_n, SEXP R_theta, SEXP R_debug) {
 	}
     }
     
-    Free(o);
-    Free(c);
-    Free(f);
+    R_Free(o);
+    R_Free(c);
+    R_Free(f);
 
     PROTECT(R_dim = NEW_INTEGER(1));
     INTEGER(R_dim)[0] = m;
@@ -498,7 +498,7 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     
     l = INTEGER(R_l);			    /* number of levels */
 
-    n = Calloc(nc, double);		    /* expected neighbors */
+    n = R_Calloc(nc, double);		    /* expected neighbors */
     
     /* check the validity of the indexes and
      * compute the expected number of neighbors 
@@ -507,7 +507,7 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     for (j = 0; j < nc; j++) {
 	i = l[j];
 	if (i == NA_INTEGER || i < 1 || i > nl) {
-	   Free(n);
+	   R_Free(n);
 	   error("rockClass: invalid cluster index(es)");
 	}
 	n[i-1]++;
@@ -515,7 +515,7 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     for (j = 0; j < nl; j++) {
 	z = n[j];
 	if (z == 0) {				    /* not contiguous */
-	   Free(n);
+	   R_Free(n);
 	   error("rockClass: invalid cluster index(es)");
 	}
 	n[j] = pow(1+z, t);
@@ -525,13 +525,13 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     
     beta = REAL(R_beta)[0];			    /* threshold */
    
-    c = Calloc(nl, int);
+    c = R_Calloc(nl, int);
     
     PROTECT(R_obj = NEW_LIST(2));
     
     PROTECT(R_tmp = NEW_INTEGER(nr));		    /* class indexes */
 
-    cf = Calloc(nl+1, int);			    /* class frequencies */
+    cf = R_Calloc(nl+1, int);			    /* class frequencies */
     
     GetRNGstate();
     
@@ -565,8 +565,8 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
 
     PutRNGstate();
     
-    Free(n);
-    Free(c);
+    R_Free(n);
+    R_Free(c);
 
     na = nl+(cf[nl]>0);
     
@@ -591,7 +591,7 @@ SEXP rockClass(SEXP R_x, SEXP R_l, SEXP R_beta, SEXP R_theta) {
     PROTECT(R_tmp = NEW_INTEGER(na));
     Memcpy(INTEGER(R_tmp), cf, na);
 
-    Free(cf);
+    R_Free(cf);
 
     PROTECT(R_dim = NEW_INTEGER(1));
     INTEGER(R_dim)[0] = na;

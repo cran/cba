@@ -87,8 +87,8 @@ SEXP order_greedy(SEXP R_dist) {
     
     GetRNGstate();
 
-    p = Calloc(n-1, int);		    /* column pointers */
-    c = Calloc(n, int);
+    p = R_Calloc(n-1, int);		    /* column pointers */
+    c = R_Calloc(n, int);
 	
     for (k = 0; k < n-1; k++) {
 	c[k] = k;			    /* candidate leaves */
@@ -113,7 +113,7 @@ SEXP order_greedy(SEXP R_dist) {
 	        rr = minDist(x, r.i, c, p, n-k-1);
 
 	if (!R_FINITE(ll.v) || !R_FINITE(rr.v)) {
-	    Free(c); Free(p);
+	    R_Free(c); R_Free(p);
 	    error("order_greedy: non-finite values");
 	}
 
@@ -148,8 +148,8 @@ SEXP order_greedy(SEXP R_dist) {
 	   order[i++] = -left[k];
     order[j] = -right[0];
     
-    Free(c);
-    Free(p);
+    R_Free(c);
+    R_Free(p);
 
     PutRNGstate();
 

@@ -67,6 +67,13 @@ x2 <- cbind(rbind(matrix(1,4,4),matrix(0,4,4)),
 stress.dist(x2)
 stress.dist(x2, bycol=TRUE)
 stress.dist(x2, type="neumann")
+\dontrun{
+##
+(res <- stress(x2, rows=c(1,8)))
+rownames(x2) <- c(letters[1:7], "ä")
+stopifnot(identical(res, stress(x2, rows=c("a","ä"))))
+stopifnot(identical(res, stress(x2, rows=c("a",iconv("ä", to="latin1")))))
+}
 }
 \keyword{hplot}
 \keyword{cluster}

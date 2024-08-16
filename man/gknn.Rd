@@ -50,11 +50,13 @@ gknn(x, y, k = 1, l = 0, break.ties = TRUE, use.all = TRUE,
 \examples{
 \dontrun{
 ### extend Rock example
-data(Votes)
-x <- as.dummy(Votes[-17])
-rc <- rockAll(x, n=2, m=100, theta=0.73, predict=FALSE, debug=TRUE)
-gc <- gknn(dist(x, rc$y, method="binary"), rc$cl, k=3)
-table(gc[rc$s], rc$cl)
+example("rockCluster")
+k <- sample(nrow(x), 100)
+y <- rf$cl[k]
+levels(y)[3:4] <- 0
+gk <- gknn(dist(x, x[k,], method="binary"), y, k=3)
+attr(gk, "levels")[3] <- levels(rf$cl)[4]
+table(cl = rf$cl, gk)
 }
 }
 \keyword{cluster}

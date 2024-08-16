@@ -142,8 +142,8 @@ SEXP stress(SEXP R_x, SEXP R_r, SEXP R_c, SEXP R_type) {
      * this sucks!
      */
     
-    r = Calloc(nr, int);
-    c = Calloc(nc, int);
+    r = R_Calloc(nr, int);
+    c = R_Calloc(nc, int);
 
     /* copy and shift indexes */
     
@@ -162,12 +162,12 @@ SEXP stress(SEXP R_x, SEXP R_r, SEXP R_c, SEXP R_type) {
 	    REAL(R_obj)[0] = stressNeumann(REAL(R_x), r, c, nr, nc, nrx);
 	    break;
 	default:
-	    Free(r);
-	    Free(c);
+	    R_Free(r);
+	    R_Free(c);
 	    error("stress: type not implemented");
     }
-    Free(r);
-    Free(c);
+    R_Free(r);
+    R_Free(c);
 
     UNPROTECT(3);
        
@@ -333,8 +333,8 @@ SEXP stress_dist(SEXP R_x, SEXP R_r, SEXP R_c, SEXP R_bycol, SEXP R_type) {
      * this sucks!
      */
     
-    r = Calloc(nr, int);
-    c = Calloc(nc, int);
+    r = R_Calloc(nr, int);
+    c = R_Calloc(nc, int);
     
     /* copy and shift indexes */
     
@@ -348,7 +348,7 @@ SEXP stress_dist(SEXP R_x, SEXP R_r, SEXP R_c, SEXP R_bycol, SEXP R_type) {
 	    PROTECT(R_obj = NEW_NUMERIC(nr*(nr-1)/2));
 
 	    d = REAL(R_obj);
-	    t = Calloc(nr, double);
+	    t = R_Calloc(nr, double);
 	    
 	    switch(INTEGER(R_type)[0]) {
 		case 1:
@@ -358,18 +358,18 @@ SEXP stress_dist(SEXP R_x, SEXP R_r, SEXP R_c, SEXP R_bycol, SEXP R_type) {
 	            distNeumann(REAL(R_x), r, c, nr, nc, nrx, 1, d, t);
 		    break;
 		default:
-		    Free(r);
-		    Free(c);
-		    Free(t);
+		    R_Free(r);
+		    R_Free(c);
+		    R_Free(t);
 		    error("stress_dist: \"type\" not implemented");
 	    }
-	    Free(t);
+	    R_Free(t);
 	    break;
 	case 1:
 	    PROTECT(R_obj = NEW_NUMERIC(nc*(nc-1)/2));
 
 	    d = REAL(R_obj);
-	    t = Calloc(nc, double);
+	    t = R_Calloc(nc, double);
 	    
 	    switch(INTEGER(R_type)[0]) {
 		case 1:
@@ -379,20 +379,20 @@ SEXP stress_dist(SEXP R_x, SEXP R_r, SEXP R_c, SEXP R_bycol, SEXP R_type) {
 		    distNeumann(REAL(R_x), c, r, nc, nr, 1, nrx, d, t);
 		    break;
 		default:
-		    Free(r);
-		    Free(c);
-		    Free(t);
+		    R_Free(r);
+		    R_Free(c);
+		    R_Free(t);
 		    error("stress_dist: type not implemented");
 	    }
-	    Free(t);
+	    R_Free(t);
 	    break;
 	default:
-	    Free(r);
-	    Free(c);
+	    R_Free(r);
+	    R_Free(c);
 	    error("stress_dist: \"bycol\" invalid");
     }
-    Free(r);
-    Free(c);
+    R_Free(r);
+    R_Free(c);
 
     UNPROTECT(3);
 

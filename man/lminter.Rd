@@ -34,7 +34,7 @@ lminter(x, block.size = 1, nbin = 0)
 \examples{
 \dontrun{
 x <- matrix(sample(c(FALSE, TRUE), 4 ,rep=TRUE), ncol=2)
-lminter(x, block.size=2, nbin=2)
+cba:::lminter(x, block.size=2, nbin=2)
 }}
 \keyword{cluster}
 \keyword{hplot}

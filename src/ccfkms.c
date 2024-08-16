@@ -61,11 +61,11 @@ typedef struct {
 static void FreeSMat(SMAT *m) {
     if (m->s != 0)
 	return;
-    Free(m->ri);
-    Free(m->ci);
-    Free(m->cv);
+    R_Free(m->ri);
+    R_Free(m->ci);
+    R_Free(m->cv);
     
-    Free(m);
+    R_Free(m);
 }
 
 /* copy R matrix in full-storage representation to sparse 
@@ -89,12 +89,12 @@ static SMAT *matrix2smat(SEXP R_mat) {
 
     x = REAL(R_mat);
   
-    ri = Calloc(nr+1, int);			    /* row start indexes */
+    ri = R_Calloc(nr+1, int);			    /* row start indexes */
     
     n = 1024;					    /* initial memory */
 
-    ci = Calloc(n, int);			    /* column indexes */
-    cv = Calloc(n, double);			    /* column values */
+    ci = R_Calloc(n, int);			    /* column indexes */
+    cv = R_Calloc(n, double);			    /* column values */
 
     k = 0;
     for (i = 0; i < nr; i++) {			    /* rows */
@@ -104,8 +104,8 @@ static SMAT *matrix2smat(SEXP R_mat) {
 	    if (R_FINITE(z) && z != 0.0) {
 	       if (k == n) {
 		  n *= 2;			    /* double memory */
-		  ci = Realloc(ci, n, int);
-		  cv = Realloc(cv, n, double);
+		  ci = R_Realloc(ci, n, int);
+		  cv = R_Realloc(cv, n, double);
 	       }
 	       ci[k] = j;
 	       cv[k++] = z;
@@ -115,8 +115,8 @@ static SMAT *matrix2smat(SEXP R_mat) {
     ri[i] = k;
     
     if (n > k) {
-       ci = Realloc(ci, k, int);
-       cv = Realloc(cv, k, double);
+       ci = R_Realloc(ci, k, int);
+       cv = R_Realloc(cv, k, double);
     }
 
     if (debug) {
@@ -124,7 +124,7 @@ static SMAT *matrix2smat(SEXP R_mat) {
        Rprintf("Sparsity: %4.2f\n",k / (double) (nr * nc));
     }
     
-    m = Calloc(1, SMAT);
+    m = R_Calloc(1, SMAT);
     
     m->ri = ri;
     m->ci = ci;
@@ -205,11 +205,11 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
 
     opt_std = INTEGER(R_opt_std)[0];		/* standardization option */
   
-    am = Calloc(m->nc, double);			/* attribute means */
+    am = R_Calloc(m->nc, double);		/* attribute means */
     as = NULL;					/* attribute standard
 							     deviations */ 
     if (opt_std)
-       as = Calloc(m->nc, double);
+       as = R_Calloc(m->nc, double);
     
     for (i = 0; i < m->nr; i++)
 	for (j = m->ri[i]; j < m->ri[i + 1]; j++) {
@@ -223,9 +223,9 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
 	if (opt_std) {
 	   as[i] = sqrt(as[i] / m->nr - pow(am[i], 2));
            if (as[i] == 0) {
-	      Free(am);
+	      R_Free(am);
 	      if (opt_std)
-	         Free(as);
+	         R_Free(as);
 	      FreeSMat(m);
               error("ccfkms: zero standard deviation");
 	   }
@@ -244,9 +244,9 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
     np = INTEGER(GET_DIM(R_p))[0];		/* number of prototypes */
     
     if (INTEGER(GET_DIM(R_p))[1] != m->nc) {	/* check */
-       Free(am);
+       R_Free(am);
        if (opt_std)
-          Free(as);
+          R_Free(as);
        FreeSMat(m);
        error("ccfkms: \"x\" and \"p\" do not conform");
     }
@@ -317,9 +317,9 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
 
     GetRNGstate();
     
-    pt = Calloc(np * m->nc, double);	    /* prototype temporary */
-    cc = Calloc(np, double);		    /* conjugate convex */
-    ct = Calloc(np, double);		    /* conjugate convex temporary */
+    pt = R_Calloc(np * m->nc, double);	    /* prototype temporary */
+    cc = R_Calloc(np, double);		    /* conjugate convex */
+    ct = R_Calloc(np, double);		    /* conjugate convex temporary */
 
     if (debug)
        Rprintf("\n %3s %5s %5s %3s\n","#","inf","var","nap");
@@ -429,9 +429,9 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
 	if (old_inf > inf)
 	   warning("ccfkms: decrease in information");
     }
-    Free(pt);
-    Free(cc);
-    Free(ct);
+    R_Free(pt);
+    R_Free(cc);
+    R_Free(ct);
 
     PutRNGstate();
     
@@ -458,10 +458,10 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
 	       p[i + j * np] *= as[i];
 	}
     }
-    Free(am);
+    R_Free(am);
     
     if (opt_std)
-       Free(as);
+       R_Free(as);
     
      /* offset memberships to R indexing. 
       */
@@ -474,14 +474,14 @@ SEXP ccfkms(SEXP R_x, SEXP R_p, SEXP R_par, SEXP R_max_iter, SEXP R_opt_std,
     /* levels attribute */
 
     int sn = np/10+2;
-    s = Calloc(sn, char);		    /* stringified integers */
+    s = R_Calloc(sn, char);		    /* stringified integers */
         
     PROTECT(R_tmp = NEW_STRING(np));
     for (j = 0; j < np; j++) {
 	snprintf(s,sn,"%i",j+1);
 	SET_STRING_ELT(R_tmp, j, mkChar(s));
     }
-    Free(s);
+    R_Free(s);
 		    
     SET_LEVELS(VECTOR_ELT(R_obj, 2), R_tmp);
     UNPROTECT(1);

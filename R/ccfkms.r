@@ -4,11 +4,11 @@
 #
 # for details see the C source code.
 #
-# (C) ceeboo 2005, 2007
+# (C) ceeboo 2005, 2007, 2024
 
 ccfkms_sample <- function(x, n) {
     if (inherits(x, "dgCMatrix"))
-        as(t(x[,sample(dim(x)[2],n)]), "matrix")
+        as(selectMethod("t", class(x))(x[,sample(dim(x)[2],n)]), "matrix")
     else
         x[sample(dim(x)[1],n),]
 }
@@ -17,10 +17,9 @@ ccfkms <- function (x, n, p=NULL, par=2, max.iter=100, opt.std=FALSE,
 					    opt.retry=0, debug=FALSE) {
     ## dgRMatrix is currently broken
     if (inherits(x, "dgTMatrix"))
-        x <- t(as(x, "dgCMatrix"))
-    else
+        x <-  as(x, "dgCMatrix")
     if (inherits(x, "dgCMatrix"))
-        x <- t(x)
+        x <- selectMethod("t", class(x))(x)
     else
     if (!is.matrix(x))
        stop(paste(sQuote("x"), "invalid argument"))

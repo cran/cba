@@ -171,7 +171,7 @@ double edist_awl(int *x, int *y, double *w, int nx, int ny, int nw,
     double z1 = 0, z2 = 0, z = 0, s0 = 0, s1 = 0, s2 = 0;
     
     if (b)
-       p = Calloc(nx*ny, int);
+       p = R_Calloc(nx*ny, int);
 
     for (i = 0; i <= nx; i++) {
 	for (j = 0; j <= ny; j++)
@@ -236,7 +236,7 @@ double edist_awl(int *x, int *y, double *w, int nx, int ny, int nw,
     if (b) {
        while (l-- > 0)
 	  b[p[l]] = b[p[l]] + 16;
-       Free(p);
+       R_Free(p);
     }
     return -z;
 }
@@ -609,10 +609,10 @@ SEXP sdists_transcript(SEXP R_x, SEXP R_y, SEXP R_method, SEXP R_weight, SEXP R_
     // R-2.9.x
     b = (char *) RAW(PROTECT(allocVector(RAWSXP, (nx+1)*(ny+1))));
 
-    t = Calloc(ny+1, double);
+    t = R_Calloc(ny+1, double);
 
     d = (*sdfun)(INTEGER(R_x),INTEGER(R_y), REAL(R_weight), nx, ny, nw, t, b, v);
-    Free(t);
+    R_Free(t);
 
     if (!R_FINITE(d)) {
 	UNPROTECT(1);
@@ -797,8 +797,8 @@ SEXP sdists_align(SEXP R_x, SEXP R_y, SEXP t) {
  *	  table. the latter we number again by columns. the time 
  *	  complexity thus depends on sorting.
  *	  
- * fixme: Calloc may raise an error so that we cannot free memory
- *	  previously allocated with calloc or Calloc.
+ * fixme: R_Calloc may raise an error so that we cannot free memory
+ *	  previously allocated with calloc or R_Calloc.
  *
  * ceeboo 2006
  */
@@ -814,7 +814,7 @@ SEXP sdists_graph(SEXP x) {
     for (k = 0; k < LENGTH(x); k++)
 	k0 += LENGTH(STRING_ELT(x, k));
     
-    i0 = Calloc(k0, int);
+    i0 = R_Calloc(k0, int);
     
     k0 = 0;
     for (h = 0; h < LENGTH(x); h++) {
@@ -855,21 +855,21 @@ SEXP sdists_graph(SEXP x) {
 		i += nx+2;
 		break;
 	    default:
-		Free(i0);
+		R_Free(i0);
 		error("invalid symbol");
 	    }
 	    i0[k0++] =  l + i * n;
 	    l = i;
 	}
 	if (p != nx || q != ny) {
-	    Free(i0);
+	    R_Free(i0);
 	    error("transcripts do not conform");
 	}
     }
     
     R_isort(i0, k0);
 
-    i1 = Calloc(k0, int);
+    i1 = R_Calloc(k0, int);
 
     l = i0[0];
     k1 = 0;
@@ -900,8 +900,8 @@ SEXP sdists_graph(SEXP x) {
 	INTEGER(y1)[k] = (j - l) / (nx+1);
 	INTEGER(f )[k] = i1[k];
     }
-    Free(i0);
-    Free(i1);
+    R_Free(i0);
+    R_Free(i1);
 
     UNPROTECT(1);
     return r;

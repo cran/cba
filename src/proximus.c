@@ -43,8 +43,8 @@ typedef struct {
 
 static VEC *newVec(int n) {
 
-    int *v = Calloc(n, int);
-    VEC *p = Calloc(1, VEC);
+    int *v = R_Calloc(n, int);
+    VEC *p = R_Calloc(1, VEC);
    
     p->v = v;
     p->n = n;
@@ -66,8 +66,8 @@ static VEC *copyVec(VEC *v) {
 static void freeVec(VEC *v) {
 
     if (v->v != NULL)
-       Free(v->v);
-    Free(v);
+       R_Free(v->v);
+    R_Free(v);
 }
 
 /* copy a vector to R where an offset is added 
@@ -112,9 +112,9 @@ typedef struct {
 
 static void freeMat(MAT *m) {
 	
-    Free(m->ri);
-    Free(m->ci);
-    Free(m);
+    R_Free(m->ri);
+    R_Free(m->ci);
+    R_Free(m);
 }
 
 /* copy and transpose R matrix to sparse matrix */
@@ -134,10 +134,10 @@ static MAT *R_mat2mat(SEXP R_mat) {
     nr = INTEGER(GET_DIM(R_mat))[0];		/* number of rows */
     nc = INTEGER(GET_DIM(R_mat))[1];		/* number of columns */
 
-    ci = Calloc(nr+1, int);			/* column start */
+    ci = R_Calloc(nr+1, int);			/* column start */
 
     n = 1024;					/* initial size */
-    ri = Calloc(n, int);			/* row indexes */
+    ri = R_Calloc(n, int);			/* row indexes */
 
     k = 0;
     for (j = 0; j < nr; j++) {
@@ -146,7 +146,7 @@ static MAT *R_mat2mat(SEXP R_mat) {
 	    if (x[i * nr + j] == 1) {
 	       if (k == n) {			/* used up */
 		  n *= 2;			/* double size */
-		  ri = Realloc(ri, n, int);
+		  ri = R_Realloc(ri, n, int);
 	       }
 	       ri[k++] = i;
 	    }
@@ -154,7 +154,7 @@ static MAT *R_mat2mat(SEXP R_mat) {
     ci[j] = k;					/* length of ri */
 
     if (n > k)					/* free unused */
-       ri = Realloc(ri, k, int);
+       ri = R_Realloc(ri, k, int);
 
     
     if (debug) {
@@ -162,7 +162,7 @@ static MAT *R_mat2mat(SEXP R_mat) {
        Rprintf("Sparsity: %4.2f\n",k / (double) (nr * nc));
     }
     
-    m = Calloc(1, MAT);
+    m = R_Calloc(1, MAT);
 
     m->ri = ri;
     m->ci = ci;
@@ -241,7 +241,7 @@ static int freeRes(RES *r) {
 	freeVec(p->x);
 	freeVec(p->y);
 	
-	Free(p);
+	R_Free(p);
 	i++;
     }
 
@@ -299,7 +299,7 @@ static SEXP res2R(RES *r, MAT *m) {
 
 	freeVec(p->x);
 	freeVec(p->y);
-	Free(p);
+	R_Free(p);
 	
         PROTECT(R_obj = NEW_STRING(5));
     
@@ -407,17 +407,17 @@ static RES *approximate(VEC *s, MAT *m) {
     
     freeVec(v);
     
-    x->v = Realloc(x->v, x->n, int);	/* see above */
+    x->v = R_Realloc(x->v, x->n, int);	/* see above */
     if (y->n)				/* see above */
-       y->v = Realloc(y->v, y->n, int);
+       y->v = R_Realloc(y->v, y->n, int);
     else {
-       Free(y->v);
+       R_Free(y->v);
        y->v = NULL;
     }
 
     /* package result */
     
-    p = Calloc(1, RES);
+    p = R_Calloc(1, RES);
     
     p->x = x;
     p->y = y;
@@ -472,7 +472,7 @@ static VEC *presenceSet(VEC *s, MAT *m) {
     
     freeVec(y);
     
-    x->v = Realloc(x->v, x->n, int);
+    x->v = R_Realloc(x->v, x->n, int);
    
     return x;
 }

@@ -74,10 +74,10 @@ SEXP gknn(SEXP R_x, SEXP R_y, SEXP R_k, SEXP R_l, SEXP R_break_ties,
     break_ties = LOGICAL(R_break_ties)[0];  /* tie breaking */
     use_all = LOGICAL(R_use_all)[0];	    /* use all neighbors */
     
-    o = Calloc(n, int);			    /* order */
-    c = Calloc(nc+1, int);		    /* class counts */
+    o = R_Calloc(n, int);		    /* order */
+    c = R_Calloc(nc+1, int);		    /* class counts */
     
-    x = Calloc(n, double);		    /* distances */
+    x = R_Calloc(n, double);		    /* distances */
 
     PROTECT(R_obj = NEW_INTEGER(nr));
     
@@ -169,9 +169,9 @@ SEXP gknn(SEXP R_x, SEXP R_y, SEXP R_k, SEXP R_l, SEXP R_break_ties,
 	      INTEGER(R_obj)[i] = NA_INTEGER;
 	}
     }
-    Free(o);
-    Free(c);
-    Free(x);
+    R_Free(o);
+    R_Free(c);
+    R_Free(x);
     
     PutRNGstate();
 

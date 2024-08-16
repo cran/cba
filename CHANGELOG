@@ -1,10 +1,15 @@
+Release 0.2-25
 
-Realease 0.2-24
+use R_Calloc/R_Free instead of the long deprecated Calloc/Free.
+emulate NonNullStringMatch.
+fixed dontrun examples.
+
+Release 0.2-24
 
 fixed SET_TYPEOF in sdists.
 fixed invalid URLs in documentation.
 
-Realease 0.2-23
+Release 0.2-23
 
 sprintf was not an issue.
 

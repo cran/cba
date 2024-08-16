@@ -33,7 +33,7 @@ S3method(plot,"sdists.graph")
 useDynLib("cba", .registration = TRUE)
 ## 2015/7
 importFrom("methods",
-           "as")
+           "as", "selectMethod")
 importFrom("stats", 
            "hclust", "runif")
 importFrom("graphics", 

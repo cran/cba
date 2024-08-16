@@ -83,7 +83,7 @@ SEXP cluster_dist(SEXP R_x, SEXP R_beta) {
     
     /* make indexes contiguous */
     
-    b = Calloc(n, int);
+    b = R_Calloc(n, int);
     
     k = 0;
     for (i = 0; i < n; i++) {
@@ -92,19 +92,19 @@ SEXP cluster_dist(SEXP R_x, SEXP R_beta) {
 	   b[j] = ++k;
 	c[i] = b[j];
     }
-    Free(b);
+    R_Free(b);
     
     /* make return value a factor */
    
     int sn = k/10+2;
-    s = Calloc(sn, char);           /* stringified integers */
+    s = R_Calloc(sn, char);		/* stringified integers */
     
     PROTECT(R_str = NEW_STRING(k));
     for (j = 0; j < k; j++) {
         snprintf(s,sn,"%i",j+1);
         SET_STRING_ELT(R_str, j, mkChar(s));
     }
-    Free(s);
+    R_Free(s);
  
     SET_LEVELS(R_obj, R_str);
     UNPROTECT(1);

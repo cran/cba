@@ -59,6 +59,7 @@ clmplot(x, col=rep(c(1,2),each=5))
 clmplot(x, col=rep(c("red","blue"),each=5))
 clmplot(x, col=rep(c("red","blue"),each=5), col.bycol=TRUE)
 \dontrun{
+example("rockCluster")
 ### continue example (see rockCluster)
 col <- Votes$Class                                  # color by party
 levels(col) <- c("red","blue")
